@@ -1,0 +1,30 @@
+<html>
+
+<head>
+    <title>Calendar</title>
+    <script src="/components/formWrapper.js"></script>
+</head>
+
+<body>
+    <div class="section">
+        <h1>add event</h1>
+        <form-wrapper id="form">
+            <input type="text" placeholder="title" name="title" />
+            <input type="datetime-local" placeholder="start" name="start" />
+            <input type="datetime-local" placeholder="end" name="end" />
+            <input type="checkbox" name="add_summary">add summary</input>
+            <input type="submit" value="登録"></input>
+        </form-wrapper>
+    </div>
+    <script>
+        const form = document.getElementById('form')
+        form.submitClick(e => {
+            const inputs = form.getInputs()
+            const ret = {}
+            for (let input of inputs) if (input.value !== undefined) ret[input.name] = input.value
+            form.send('/api/events', "POST", { events: [ret] }).then(res => console.log(res))
+        })
+    </script>
+</body>
+
+</html>
