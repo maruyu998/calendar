@@ -5,16 +5,17 @@
   "main": "server.js",
   "dependencies": {
     "basic-auth": "^2.0.1",
+    "config": "^3.3.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongodb": "^3.5.7",
-    "config": "^3.3.1"
+    "mongodb": "^3.5.7"
   },
   "devDependencies": {},
   "scripts": {
     "start": "node server.js",
     "deploy": "NODE_ENV=production node server.js",
     "dev": "NODE_ENV=development nodemon server.js",
-    "forever": "NODE_ENV=production forever start --minUptime 60000 --spinSleepTime 20000 server.js"
+    "forever": "NODE_ENV=production forever start --minUptime 60000 --spinSleepTime 20000 --uid calendar -a server.js"
   },
   "author": "",
   "license": "ISC"
