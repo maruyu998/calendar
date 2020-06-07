@@ -14,13 +14,15 @@ module.exports = class Parser {
 
   async getEvents(req, method) {
     if (method == "GET") {
-      // const res = await this.Mongo.getEvents();
-      // return res
-      return {}
+      const res = await this.Mongo.getEvents();
+      return res
     }
     if (method == "POST") {
-      const { title, start, end, add_summary } = req.body.events[0]
-      return await this.Mongo.addEvent({ title, start: new Date(start), end: new Date(end), add_summary })
+      let { title, start, end, add_summary, daily } = req.body.events[0]
+      start = new Date(start);
+      end = new Date(end)
+      if (daily) { start.setHours(0, 0, 0); end.setHours(0, 0, 0) }
+      return await this.Mongo.addEvent({ title, start, end, add_summary, daily })
     }
   }
 

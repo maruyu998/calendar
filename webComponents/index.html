@@ -1,30 +1,54 @@
 <html>
 
 <head>
-    <title>Calendar</title>
-    <script src="/components/formWrapper.js"></script>
+  <title>Calendar</title>
+  <script src="/components/formWrapper.js"></script>
+  <script type="module" src="/components/eventlist.js"></script>
 </head>
 
 <body>
-    <div class="section">
-        <h1>add event</h1>
-        <form-wrapper id="form">
-            <input type="text" placeholder="title" name="title" />
-            <input type="datetime-local" placeholder="start" name="start" />
-            <input type="datetime-local" placeholder="end" name="end" />
-            <input type="checkbox" name="add_summary">add summary</input>
-            <input type="submit" value="登録"></input>
-        </form-wrapper>
-    </div>
-    <script>
-        const form = document.getElementById('form')
-        form.submitClick(e => {
-            const inputs = form.getInputs()
-            const ret = {}
-            for (let input of inputs) if (input.value !== undefined) ret[input.name] = input.value
-            form.send('/api/events', "POST", { events: [ret] }).then(res => console.log(res))
-        })
-    </script>
+  <div class="section">
+    <h1>add event</h1>
+    <form-wrapper id="form">
+      <input type="text" placeholder="title" name="title" />
+      <input id="daily" type="checkbox" name="daily">daily</input>
+      <input id="start" type="datetime-local" placeholder="start" name="start" />
+      <input id="end" type="datetime-local" placeholder="end" name="end" />
+      <input type="checkbox" name="add_summary">add summary</input>
+      <input type="submit" value="登録"></input>
+    </form-wrapper>
+  </div>
+  <div class="section">
+    <div is="event-list"></div>
+  </div>
+  <script>
+    const daily = document.getElementById('daily')
+    function getDT(type) {
+      const now = new Date()
+      zslice = (s) => ("0" + s).slice(-2)
+      if (type == "date") return `${now.getFullYear()}-${zslice(1 + now.getMonth())}-${zslice(now.getDate())}`
+      if (type == "time") return `${zslice(now.getHours())}:${zslice(now.getMinutes())}`
+    }
+
+    function change() {
+      const s = document.getElementById('start')
+      const e = document.getElementById('end')
+      if (daily.checked) { s.type = "date"; e.type = "date"; }
+      else { s.type = "datetime-local"; e.type = "datetime-local" }
+      const now = getDT("date") + ((daily.checked) ? "" : ("T" + getDT("time")))
+      s.value = now; e.value = now
+    }
+    change()
+    daily.addEventListener('click', () => change())
+
+    const form = document.getElementById('form')
+    form.submitClick(e => {
+      const inputs = form.getInputs()
+      const ret = {}
+      for (let input of inputs) if (input.value !== undefined) ret[input.name] = input.value
+      form.send('/api/events', "POST", { events: [ret] }).then(res => console.log(res))
+    })
+  </script>
 </body>
 
 </html>
