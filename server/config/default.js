@@ -1,8 +1,9 @@
 const secret = require('./secret');
 
 module.exports = {
-  basic: {
-    user : secret.basic.user,
-    pass : secret.basic.pass,
-  }
+  basic: secret.basic,
+  HASHSALT: secret.HASHSALT,
+  SESSION_SECRET: secret.SESSION_SECRET,
+  app_id: "calendar",
+  app_secret: secret.app_secret
 }
