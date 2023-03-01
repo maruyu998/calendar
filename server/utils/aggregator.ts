@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { URL } from 'node:url';
 
 type Service = "calendar"|"credential";
-type DataType = "event"|"events"|"googlecalendar_credentials"|"googlecalendar_tokens";
+type DataType = "event"|"events"|"googlecalendar_credentials"|"googlecalendar_tokens"|"calendar"|"calendars"|"tz";
 
 export async function getData(service:Service,datatype:DataType,user_id:string,queries:{key:string,value:string}[]=[]){
     const url = new URL(`https://aggregator.maruyu.work/${service}/${datatype}`)

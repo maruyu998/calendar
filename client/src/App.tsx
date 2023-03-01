@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Routes, HashRouter } from 'react-router-dom';
+import './App.scss';
 import Home from './pages/Home';
 
 export default function App() {

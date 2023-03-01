@@ -25,12 +25,15 @@
     "googleapis": "^110.0.0",
     "i": "^0.3.7",
     "moauth": "github:maruyu998/MOauth",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.41",
     "mongodb": "^3.5.7",
     "mtypes": "file:mtypes",
     "mutils": "file:mutils",
     "node-fetch": "^2.6.7",
     "nodemon": "^2.0.20",
     "npm": "^9.2.0",
+    "npm-run-all": "^4.1.5",
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
@@ -47,8 +50,8 @@
     "sdev": "nodemon server/index.ts",
     "sdep": "NODE_ENV=production npx ts-node server/index.ts",
     "dev": "run-p rdev sdev",
-    "dep": "rdep && NODE_ENV=production npx ts-node server/index.ts",
-    "forever": "rdep && NODE_ENV=production forever start --minUptime 60000 --spinSleepTime 20000 --uid calendar -a server/index.js"
+    "dep": "npm run rdep && NODE_ENV=production npx ts-node server/index.ts",
+    "forever": "npm run rdep && NODE_ENV=production forever start --minUptime 60000 --spinSleepTime 20000 --uid calendar -a server/index.js"
   },
   "eslintConfig": {
     "extends": [

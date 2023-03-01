@@ -23,7 +23,7 @@
   },
   "include": [
     "server",
-    "src",
+    "client/src",
     "mtypes",
     "mutils"
   ]

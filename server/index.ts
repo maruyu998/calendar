@@ -45,8 +45,8 @@ app.use(session({
 app.get('/callback', moauth.redirect_requested_page_from_callback_path)
 app.use(moauth.redirect_signin_page_if_not_login)
 
+app.use(express.static(path.join(__dirname, '..', 'client', 'public')))
 app.use('/api', router)
-app.use(express.static(path.join(__dirname, '..', '/public')))
 
 app.listen(3000, ()=>{
   console.log("starting")

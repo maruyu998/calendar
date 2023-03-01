@@ -2,9 +2,10 @@ const path = require('path');
 
 module.exports = {
     mode: process.env.NODE_ENV || 'development',
-    entry: './client/index.tsx',
+    entry: './client/src/index.tsx',
     output: {
-        path: path.join(__dirname, 'public'),
+        path: path.join(__dirname, 'client', 'public'),
+        publicPath: 'client/public/',
         filename: 'main.js',
     },
     module: {
@@ -26,9 +27,10 @@ module.exports = {
     },
     devServer: {
         static: [{
-            directory: path.join(__dirname, 'public'),
-        }, {
-            directory: path.join(__dirname, 'client'),
+            directory: path.join(__dirname, 'client/public'),
+            watch: true
+        },{
+            directory: path.join(__dirname, 'client/src'),
             watch: true
         }],
         port: process.env.PORT,
@@ -36,7 +38,6 @@ module.exports = {
         proxy: {'/api': 'http://localhost:'+process.env.PROXYPORT},
         watchFiles: {
             paths: [
-                'public/index.html',
                 'client/*',
                 'client/**/*',
                 'client/**/**/*',

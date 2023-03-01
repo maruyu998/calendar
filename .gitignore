@@ -3,6 +3,8 @@ nohup.out
 *secret*
 .env
 
+client/public/main.js
+
 # dependencies
 /node_modules
 /.pnp
