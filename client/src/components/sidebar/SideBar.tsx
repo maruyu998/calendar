@@ -1,105 +1,110 @@
-import React, { useEffect, useState } from 'react';
-import { useCookies } from 'react-cookie';
-import { GCalCalendar } from '../../../../mtypes/CalendarEvent';
+import React, { useState } from 'react';
+import { useStateUrlSearchParamType } from 'maruyu-webcommons/react/reactUse';
+import { getCalendarList } from '../../data/calendar';
+import { 
+  getGrantGoogleCalendarUrl, 
+  disconnectGoogleCalendar,
+  refreshGoogleCalendarList,
+} from '../../utils/GoogleCalendar';
+import { useSetting } from '../../contexts/SettingProvider';
+import { useStatus } from '../../contexts/StatusProvider';
 
-export default function SideBar({
-    calendarList, 
-    getCalendarList,
-    c_showSide, 
-    c_showingCalendarIds, cset_showingCalendarIds
-}){
+import SideChovenLeft from "../../assets/icons/tsxs/SideChovenLeft";
+import SideChovenRight from "../../assets/icons/tsxs/SideChovenRight";
+
+export default function SideBar(){
   
-  const [cookie, setCookie] = useCookies(['showButtons'])
-  const { showButtons:c_showButtons } = cookie
-  const cset_showButtons = (v:string) => setCookie('showButtons', v)
-  if(c_showButtons===undefined) cset_showButtons(String(true))
+  const { 
+    showSide, setShowSide,
+    showCalIds, setShowCalIds 
+  } = useSetting();
+  const { calendarList, setCalendarList } = useStatus();
 
-  const [googleAuthUrl, setGoogleAuthUrl] = useState<string|null>(null);
-
-
-  const showingCalendarIds:string[] = c_showingCalendarIds.split(',')
-  const accessRoles = ['owner', 'writer', "reader", 'freeBusyReader'] as const
-  const calendarListDivided:Record<string,Array<GCalCalendar>> = calendarList.reduce(
-    (po,v)=>{po[v['accessRole']].push(v); return po},
-    Object.assign({}, ...accessRoles.map(r=>({[r]:new Array<GCalCalendar>()})))
-  )
-
-  function grant_calendar(){
-    fetch('/api/googlecalendar/grant').then(res=>res.json()).then(res=>{console.log(res);setGoogleAuthUrl(res.url)})
-  }
-  function disconnect_calendar(){
-    fetch('/api/googlecalendar/disconnect').then(res=>res.json()).then(res=>{console.log(res)})
-  }
-  function refresh_calendar(){
-    fetch('/api/googlecalendar/refreshCalendarList').then(res=>res.json()).then(res=>{getCalendarList();console.log(res)})
-  }
+  const [ showButtons, setShowButtons ] = useStateUrlSearchParamType<boolean>("showButtons", false, v=>String(v), v=>v==="true");
+  const [ googleAuthUrl, setGoogleAuthUrl ] = useState<string|null>(null);
 
   return (
-    <div id="side" className="border-end m-1" style={{
-        visibility:(c_showSide==="true")?"visible":"collapse",
-        width:!(c_showSide==="true")?"0px":window.outerWidth>400?"200px":`${window.outerWidth}px`,
-        height:"100%",
-        overflow: "auto"
-    }}>
-      <div className="form-check form-switch">
-        <input className="form-check-input" type="checkbox" role="switch"
-               defaultChecked={c_showButtons==="true"}
-               onChange={e=>cset_showButtons(String(e.target.checked))}
-        />
-        <label className="form-check-label">ボタンを表示</label>
-      </div>
-      <div style={{
-        visibility:c_showButtons==="true"?"visible":"collapse",
-        height:!(c_showButtons==="true")?"0px":"",
-      }}>
-        { 
-          // calendarList === null &&
-          <button type="button" className="btn btn-small btn-warning w-100" onClick={grant_calendar}>
-            <p className="my-0">Grant Google Connection</p>
-          </button>
-        }
-        { 
-          // googleAuthUrl &&
-          <button type="button" className="btn btn-small btn-danger w-100">
-            <a href={String(googleAuthUrl)}><p className="my-0">Click Here to Grant</p></a>
-          </button>
-        }
-        { 
-          // calendarList === null && googleAuthUrl && 
-          <button type="button" className="btn btn-small btn-info w-100" onClick={disconnect_calendar}>
-            <p className="my-0">Disconnect</p>
-          </button>
-        }
-        <button type="button" className="btn btn-small btn-info w-100" onClick={refresh_calendar}>
-          <p className="my-0">Refresh Calendar</p>
-        </button>
-      </div>
-      { calendarList !== null && calendarList !== undefined && Object.entries(calendarListDivided).map(([role,cals],i)=>
-        <div key={i}>
-          <p className="display-6 mb-0 mt-2" style={{fontSize:"1.0em"}}>{role}</p>
-          {cals.map((cal,j)=>(
-            <div key={j}>
-              <div className="form-check form-switch">
-                <input className="form-check-input" type="checkbox" role="switch"
-                       defaultChecked={c_showingCalendarIds.split(",").includes(cal.id)}
-                       onChange={e=>{
-                        console.log(typeof e.target.checked, e.target.checked, showingCalendarIds.includes(cal.id), cal.id)
-                        if(!e.target.checked && showingCalendarIds.includes(cal.id)){
-                            showingCalendarIds.splice(showingCalendarIds.indexOf(cal.id), 1)
-                            cset_showingCalendarIds(String(showingCalendarIds.join(",")))
-                        }else if(e.target.checked && !showingCalendarIds.includes(cal.id)){
-                            showingCalendarIds.push(cal.id)
-                            cset_showingCalendarIds(String(showingCalendarIds.join(",")))
-                        }
-                      }}
-                />
-                <label className="form-check-label" style={{fontSize:"0.6em",wordBreak:"break-all"}}>{cal.summary}</label>
+    <div className="flex h-full">
+      { showSide &&
+        <div className="flex-row border-e border-gray-300 w-56 p-1 pt-16">
+          <div className="form-check form-switch">
+            <input className="form-check-input" type="checkbox" role="switch"
+                    defaultChecked={showButtons}
+                    onChange={e=>setShowButtons(e.target.checked)}
+            />
+            <label className="form-check-label">ボタンを表示</label>
+          </div>
+          <div style={{
+            visibility:showButtons?"visible":"collapse",
+            height:!showButtons?"0px":"",
+          }}>
+            { 
+              // calendarList === null &&
+              <button type="button" className="btn btn-small btn-warning w-full" onClick={
+                ()=>getGrantGoogleCalendarUrl().then(url=>setGoogleAuthUrl(url))
+              }>
+                <p className="my-0">Grant Google Connection</p>
+              </button>
+            }
+            { 
+              // googleAuthUrl &&
+              <button type="button" className="btn btn-small btn-danger w-full">
+                <a href={String(googleAuthUrl)}><p className="my-0">Click Here to Grant</p></a>
+              </button>
+            }
+            { 
+              // calendarList === null && googleAuthUrl && 
+              <button type="button" className="btn btn-small btn-info w-full" onClick={disconnectGoogleCalendar}>
+                <p className="my-0">Disconnect</p>
+              </button>
+            }
+            <button type="button" className="btn btn-small btn-info w-full" onClick={
+              ()=>refreshGoogleCalendarList().then(()=>getCalendarList()).then(cals=>setCalendarList(cals))
+            }>
+              <p className="my-0">Refresh Calendar</p>
+            </button>
+          </div>
+          { calendarList !== null && calendarList !== undefined && 
+            calendarList.map(calendar=>(
+              <div key={calendar.id}>
+                <label className="inline-flex items-center mb-0.5 cursor-pointer">
+                  <input type="checkbox" 
+                    className="sr-only peer invisible"
+                    defaultChecked={showCalIds.includes(calendar.id)}
+                    onChange={e=>{
+                      if(!e.target.checked && showCalIds.includes(calendar.id)){
+                        showCalIds.splice(showCalIds.indexOf(calendar.id), 1)
+                        setShowCalIds([...showCalIds])
+                      }else if(e.target.checked && !showCalIds.includes(calendar.id)){
+                        showCalIds.push(calendar.id)
+                        setShowCalIds([...showCalIds])
+                      }
+                    }}
+                  />
+                  <div className="
+                    relative w-9 h-5 bg-gray-200 
+                    rounded-full peer 
+                    peer-checked:after:translate-x-full 
+                    rtl:peer-checked:after:-translate-x-full 
+                    peer-checked:after:border-white 
+                    after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white 
+                    after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all 
+                    peer-checked:bg-blue-600
+                  "></div>
+                  <span className="ms-3 text-xs font-medium text-gray-900">{calendar.name}</span>
+                </label>
               </div>
-            </div>
-            ))
-          }
+            )
+          )}
         </div>
-      )}
+      }
+      <div className="my-3 absolute">
+        <div className="text-gray-300 h-6 w-6 mx-auto cursor-pointer"
+          onClick={()=>setShowSide(!showSide)}
+        >
+          { showSide ? <SideChovenLeft/> : <SideChovenRight/> }
+        </div>
+      </div>
     </div>
-  )
+  );
 }

@@ -1,123 +1,89 @@
-import React, { useState, useEffect } from 'react';
-import Popup from 'reactjs-popup';
-import MDate from '../../../../mutils/mdate';
-import { timezones } from "../../../../mtypes/date";
+import React from 'react';
+import Datepicker from "react-tailwindcss-datepicker";
+import { MdateTz, TIME_ZONES, TimeZone } from 'maruyu-webcommons/commons/utils/mdate';
+import { useSetting } from '../../contexts/SettingProvider';
+import TopChovenDown from "../../assets/icons/tsxs/TopChovenDown";
+import TopChovenUp from "../../assets/icons/tsxs/TopChovenUp";
+import LeftChoven from '../../assets/icons/tsxs/LeftChoven';
+import LeftDoubleChoven from '../../assets/icons/tsxs/LeftDoubleChoven';
+import RightChoven from '../../assets/icons/tsxs/RightChoven';
+import RightDoubleChoven from '../../assets/icons/tsxs/RightDoubleChoven';
+import TodayIcon from '../../assets/icons/tsxs/TodayIcon';
 
-export default function TopBar({
-    startDate, setStartDate,
-    c_showSide, cset_showSide,
-    c_showDateCount, cset_showDateCount,
-    c_heightScale, cset_heightScale,
-    c_timezone, cset_timezone
-}:{
-  startDate:MDate, setStartDate,
-  c_showSide:string, cset_showSide,
-  c_showDateCount:string, cset_showDateCount,
-  c_heightScale:string, cset_heightScale,
-  c_timezone:string, cset_timezone
-}){
-    
-  const [popup, setPopup] = useState<string|null>(null);
-  useEffect(()=>{
-    setPopup((new URL(window.location.href)).searchParams.get('popup'))
-  }, [])
+export default function TopBar(){
+  const { 
+    showTop, setShowTop,
+    dayDuration, setDayDuration,
+    heightScale, setHeightScale,
+    timezone, setTimezone,
+    startDate, setStartDate
+  } = useSetting();
 
   return (
-    <div>
-        <Popup open={popup==="show_credential"}>
-        <div className="p-5 bg-white shadow-lg">
-          <h1>Google Calendar Credentials</h1>
-          <p>pick the credential data from GCP console</p>
-          <form name="show_credential" onSubmit={e=>{
-              e.preventDefault();
-              fetch("/api/googlecalendar/register", {
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                method: "POST",
-                body: JSON.stringify({
-                  client_id: (document.getElementById('client_id') as HTMLInputElement)?.value,
-                  client_secret: (document.getElementById('client_secret') as HTMLInputElement)?.value,
-                  redirect_uri: (document.getElementById('redirect_uri') as HTMLInputElement)?.value
-                })
-              }).then(res=>res.json()).then(res=>{
-                console.log(res)
-                // window.location = "/"
-              })
-            }}>
-            <div className="mb-3">
-              <label htmlFor="client_id" className="form-level">client_id</label>
-              <input type="text" id="client_id" className="form-control"/>
+    <>
+      {
+        showTop &&
+        <div className="flex border-b border-gray-200 p-1">
+          <button className="px-2 w-8 h-8 hidden sm:block" onClick={()=>setStartDate(startDate.forkAdd(-dayDuration,"date"))}><LeftDoubleChoven/></button>
+          <button className="px-2 w-8 h-8 hidden sm:block" onClick={()=>setStartDate(startDate.forkAdd(-1,"date"))}><LeftChoven/></button>
+          <button className="px-2 w-8 h-8 hidden sm:block" onClick={()=>setStartDate(startDate.forkAdd(1,"date"))}><RightChoven/></button>
+          <button className="px-2 w-8 h-8 hidden sm:block" title="next" onClick={()=>setStartDate(startDate.forkAdd(dayDuration,"date"))}><RightDoubleChoven/></button>
+          <button className="px-2 w-8 h-8 hidden sm:block" title="today" onClick={()=>setStartDate(new MdateTz(undefined, timezone).resetTime())}><TodayIcon/></button>
+          <div className="relative max-w-sm">
+            <div className="absolute inset-y-0 start-0 flex items-center ps-2 pointer-events-none">
+              <svg className="w-3 h-3 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+              </svg>
             </div>
-            <div className="mb-3">
-              <label htmlFor="client_secret" className="form-level">client_secret</label>
-              <input type="text" id="client_secret" className="form-control"/>
-            </div>
-            <div className="mb-3">
-              <label htmlFor="redirect_uri" className="form-level">redirect_uri</label>
-              <input type="text" id="redirect_uri" className="form-control"/>
-            </div>
-            <button className="btn btn-primary" type="submit">Submit</button>
-          </form>
-        </div>
-      </Popup>
-      <div id="header">
-        <div className="d-flex">
-          <button type="button" className="btn btn-light"
-                  onClick={()=>cset_showSide(String(c_showSide!=="true"))}>
-            <i className={!(c_showSide==="true")?"bi bi-list":"bi bi-x-lg"}></i>
-          </button>
-          <button type="button" className="btn btn-light"
-                  onClick={()=>setStartDate(startDate.add(-Number(c_showDateCount),"day"))}>
-            <i className="bi bi-chevron-double-left"></i>
-          </button>
-          <button type="button" className="btn btn-light"
-                  onClick={()=>setStartDate(startDate.add(-1,"day"))}>
-            <i className="bi bi-chevron-left"></i>
-          </button>
-          <button type="button" className="btn btn-light"
-                  onClick={()=>setStartDate(startDate.add(1,"day"))}>
-            <i className="bi bi-chevron-right"></i>
-          </button>
-          <button type="button" className="btn btn-light"
-                  onClick={()=>setStartDate(startDate.add(Number(c_showDateCount),"day"))}>
-            <i className="bi bi-chevron-double-right"></i>
-          </button>
-          <button type="button" className="btn btn-light"
-                  onClick={()=>setStartDate(MDate.now().getResetTime(c_timezone))}>
-            <p className="my-0">Today</p>
-          </button>
-          <div className="input-group" style={{maxWidth:"200px"}}>
-            <input type="date" className="form-control" aria-label="StartDate" 
-              value={startDate.format("YYYY-MM-DD", c_timezone)}
-              onChange={e=>setStartDate(MDate.parse(e.target.value, c_timezone, "YYYY-MM-DD"))}
+            <input type="date" 
+              className="
+                bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                focus:ring-blue-500 focus:border-blue-500 block w-full ps-7 p-1
+              " 
+              value={startDate.format("YYYY-MM-DD")}
+              onChange={e=>setStartDate(MdateTz.parseFormat(e.target.value,"YYYY-MM-DD",timezone))}
             />
           </div>
-          <div className="flex-grow-1">
-            <div className="input-group">
-              <input type="number" className="form-control" aria-label="DateCount" 
-                defaultValue={Number(c_showDateCount)}
+
+          <div className="max-w-xs mx-1">
+            <div className="relative flex items-center max-w-[5rem] rounded-lg border h-full">
+              <input 
+                type="number" 
+                defaultValue={dayDuration}
                 min={1}
-                onChange={e=>cset_showDateCount(Number(e.target.value))}
+                onChange={e=>setDayDuration(Number(e.target.value))}
+                className="
+                  bg-gray-50 border-x-0 border-gray-300 font-medium text-gray-900 text-base 
+                  focus:ring-blue-500 focus:border-blue-500 block w-full ms-3 me-6
+                "
               />
-              <span className="input-group-text">Days</span>
+              <div className="items-center text-[0.5rem] text-gray-400 absolute right-1">Days</div>
             </div>
           </div>
-          <div className="input-group" style={{maxWidth:"200px"}}>
-            <input type="range" className="form-range my-auto" min="0" max="500" id="HeightScale" 
-                   defaultValue={Number(c_heightScale)}
-                   onChange={e=>cset_heightScale(String(Number(e.target.value)))}/>
+
+          <div className="input-group hidden sm:block">
+            <input type="range" className="form-range my-auto" min="0" max="300" id="HeightScale" 
+                    defaultValue={heightScale}
+                    onChange={e=>setHeightScale(Number(e.target.value))}
+                    onDoubleClick={e=>{setHeightScale(100);e.currentTarget.value="100"}}
+            />
           </div>
-          <div className="input-group" style={{maxWidth:"200px"}}>
-            <select className="form-select" onChange={e=>cset_timezone(String(e.target.value))}>
-              {timezones.map((tz,i)=>(
-                <option key={i} value={tz} defaultChecked={tz===c_timezone}>{tz}</option>
+          {/* <div className="input-group" style={{maxWidth:"120px"}}>
+            <select className="form-select" onChange={e=>setTimezone(e.target.value as TimeZone)}>
+              {Object.keys(TIME_ZONES).map((tz,i)=>(
+                <option key={i} value={tz} defaultChecked={tz===timezone}>{tz}</option>
               ))}
             </select>
-          </div>
+          </div> */}
+        </div>
+      }
+      <div className="w-full absolute">
+        <div className="text-gray-300 h-5 w-5 mx-auto cursor-pointer"
+          onClick={()=>setShowTop(!showTop)}
+        >
+          { showTop ? <TopChovenUp/> : <TopChovenDown/> }
         </div>
       </div>
-    </div>
+    </>
   )
 }

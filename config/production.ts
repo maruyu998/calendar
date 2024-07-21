@@ -1,9 +1,21 @@
 import * as secret from './secret';
 
-export const session_secret = secret.session_secret;
-export const mongo_path = secret.mongo_path;
-export const moauth_server = secret.moauth_server;
-export const hash_salt = secret.hash_salt;
-export const app_id = secret.app_id;
-export const app_secret = secret.app_secret;
-export const provider_user_id = secret.provider_user_id;
+export const sessionSecret = secret.sessionSecret;
+export const hashSalt = secret.hashSalt;
+export const mongoPath = secret.mongoPath;
+export const mongoSessionPath = secret.mongoSessionPath;
+export const mongoSessionCollection = secret.mongoSessionCollection;
+
+export const oauthDomain = secret.oauthDomain;
+export const serviceDomain = secret.serviceDomain;
+export const clientName = secret.clientName;
+export const clientId = secret.clientId;
+export const clientSecret = secret.clientSecret;
+
+export const oauthCallbackPath = secret.oauthCallbackPath;
+export const oauthTokenPath = secret.oauthTokenPath;
+export const oauthAuthorizePath = secret.oauthAuthorizePath;
+export const oauthUserInfoPath = secret.oauthUserInfoPath;
+
+export const aggregatorUri = secret.aggregatorUri;
+export const providerUserId = secret.providerUserId;

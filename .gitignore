@@ -2,8 +2,9 @@ node_modules/
 nohup.out
 *secret*
 .env
-
+_dist
 client/public/main.js
+output.css
 
 # dependencies
 /node_modules
