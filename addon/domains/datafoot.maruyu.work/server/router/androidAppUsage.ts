@@ -1,0 +1,32 @@
+import express from "express";
+import { asyncHandler, sendData } from "maruyu-webcommons/node/express";
+import { fetchAndroidAppUsage } from "../process/androidAppUsage";
+import { deserializePacketInQuery, requireQueryZod } from "maruyu-webcommons/node/middleware";
+import {
+  RequestQuerySchema as FetchItemRequestQuerySchema,
+  RequestQueryType as FetchItemRequestQueryType,
+  ResponseObjectType as FetchItemResponseObjectType
+} from "../../share/protocol/androidAppUsage/fetchItem";
+import { fetchCalendar, validateCalendar } from "@addon/server/calendar";
+import { DatafootCalendarSchema, DatafootCalendarType } from "../types/calendar";
+import { UserInfoType } from "maruyu-webcommons/node/types/oauth";
+
+const router = express.Router();
+
+router.get("/item", [
+  deserializePacketInQuery,
+  requireQueryZod(FetchItemRequestQuerySchema)
+], asyncHandler(async function(request:express.Request, response:express.Response){
+    const { userId } = response.locals.userInfo as UserInfoType;
+    const { calendarId, id } = response.locals.query as FetchItemRequestQueryType;
+    const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), DatafootCalendarSchema) as DatafootCalendarType;
+    await fetchAndroidAppUsage({ userId, id })
+          .then(androidAppUsage=>{
+            return {
+
+            } as FetchItemResponseObjectType
+          })
+          .then(responseObject=>sendData(response, responseObject));
+}));
+
+export default router;
