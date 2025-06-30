@@ -1,16 +1,15 @@
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { useStateRef } from 'maruyu-webcommons/react/reactUse';
 import { MdateTz } from 'maruyu-webcommons/commons/utils/mdate';
-import { CaleventClientType } from 'mtypes/v2/Calevent';
+import { CaleventType } from '@client/types/calevent';
 import { useTop } from './TopProvider';
 
 type EditingType = {
   isModalOpen: boolean,
-  selectingCalevent: CaleventClientType|null,
+  selectingCalevent: CaleventType|null,
   selectingNewDate: MdateTz|null,
   closeModal: ()=>void,
   createCalevent: (v:MdateTz)=>void,
-  editCalevent: (v:CaleventClientType)=>void,
+  editCalevent: (v:CaleventType)=>void,
 }
 
 const EditingContext = createContext<EditingType|undefined>(undefined);
@@ -21,15 +20,15 @@ export function useEditing(){
   return context;
 }
 
-export function EditingProvider({children}){
-  
+export function EditingProvider({children}: {children: React.ReactNode}){
+
   const { pressedKeys } = useTop();
 
   const [ isModalOpen, _setIsModalOpen ] = useState<boolean>(false);
-  const [ selectingCalevent, _setSelectingCalevent ] = useState<CaleventClientType|null>(null);
+  const [ selectingCalevent, _setSelectingCalevent ] = useState<CaleventType|null>(null);
   const [ selectingNewDate, _setSelectingNewDate ] = useState<MdateTz|null>(null);
 
-  const editCalevent = useMemo(()=>function(calevent:CaleventClientType){
+  const editCalevent = useMemo(()=>function(calevent:CaleventType){
     _setSelectingCalevent(calevent);
     _setIsModalOpen(true);
   }, [_setSelectingCalevent, _setIsModalOpen]);

@@ -1,25 +1,24 @@
 import React, { useEffect, useMemo } from 'react';
 import { parseColor, isBrightColor } from 'maruyu-webcommons/commons/utils/color';
 import { MdateTz } from 'maruyu-webcommons/commons/utils/mdate';
-import { useEvents } from '../../contexts/EventsProvider';
-import { useStatus } from '../../contexts/StatusProvider';
-import { CaleventClientType } from 'mtypes/v2/Calevent';
-import { useEditing } from '../../contexts/EditingProvider';
-import { getBackgroundColor } from '../../utils/card';
+import { useEvents } from '@client/contexts/EventsProvider';
+import { CaleventType } from '@client/types/calevent';
+import { useEditing } from '@client/contexts/EditingProvider';
+import { getBackgroundColor } from '@client/utils/card';
 
-const DAYEVENT_HEIGHT = 15;
+const DAYEVENT_HEIGHT = 12;
 
 export default function DayEventCurtain({
-  date
+  dateMdate
 }:{
-  date: MdateTz
+  dateMdate: MdateTz
 }){
   const { dayEventGroup } = useEvents();
   const { editCalevent } = useEditing();
-  const dayCalevents = useMemo<CaleventClientType[]>(()=>{
-    const dateString = date.format("YYYY-MM-DD");
+  const dayCalevents = useMemo<CaleventType[]>(()=>{
+    const dateString = dateMdate.format("YYYY-MM-DD");
     return ((dayEventGroup[dateString]||[]).sort((a,b)=>a.startMdate.unix-b.startMdate.unix));
-  }, [date, dayEventGroup])
+  }, [dateMdate, dayEventGroup])
 
   return (
     <div className="border-end w-full" draggable={false}>
@@ -31,8 +30,9 @@ export default function DayEventCurtain({
             <div 
               className="shadow-sm" 
               onClick={()=>editCalevent(calevent)} 
+              title={calevent.title}
               style={{
-                overflow:"hidden", 
+                overflow:"hidden",
                 borderRadius:"3px",
                 width: "100%",
                 height:`${DAYEVENT_HEIGHT}px`,
@@ -40,10 +40,10 @@ export default function DayEventCurtain({
                 backgroundColor
               }}
             >
-              <p className='my-0 py-0' draggable={false} style={{
-                color: textColor, 
-                fontSize: "0.7em", 
-                wordBreak:"break-all", 
+              <p className='my-[-0.2em] py-0' draggable={false} style={{
+                color: textColor,
+                fontSize: "0.6em",
+                wordBreak:"break-all",
                 userSelect:"none"
               }}>
                 {calevent.title}

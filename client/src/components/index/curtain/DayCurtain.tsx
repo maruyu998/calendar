@@ -1,15 +1,16 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { range } from 'maruyu-webcommons/commons/utils/number';
 import { MdateTz } from 'maruyu-webcommons/commons/utils/mdate';
-import { useSetting } from '../../contexts/SettingProvider';
-import { useCurtainLayout } from '../../contexts/CurtainLayoutProvider';
-import { useEvents } from '../../contexts/EventsProvider';
-import { CaleventClientType } from 'mtypes/v2/Calevent';
-import { useEditing } from '../../contexts/EditingProvider';
+import { useSetting } from '@client/contexts/SettingProvider';
+import { useCurtainLayout } from '@client/contexts/CurtainLayoutProvider';
+import { useEvents } from '@client/contexts/EventsProvider';
+import { CaleventType } from '@client/types/calevent';
+import { useEditing } from '@client/contexts/EditingProvider';
 import EventShowCard from './EventShowCard';
-import { useStatus } from '../../contexts/StatusProvider';
+import { useStatus } from '@client/contexts/StatusProvider';
+import { useDragging } from '@client/contexts/DraggingProvider';
 
-const EVENT_MIN_HEIGHT = 8;
+const EVENT_MIN_HEIGHT = 3;
 
 export default function DayCurtain({
   dateMdate,
@@ -17,18 +18,21 @@ export default function DayCurtain({
   dateMdate:MdateTz,
 }){
   const { timezone } = useSetting();
-  const { curtainVirtualHeight: dayHeight } = useCurtainLayout();
+  const { curtainVirtualHeight: height } = useCurtainLayout();
   const { today, currentTime } = useStatus();
   const { widths } = useCurtainLayout();
   const { createCalevent } = useEditing();
+  const { draggingStatusRef } = useDragging();
 
-  const dayWidth = useMemo(()=>{
+  const [ width, setWidth ] = useState<number>(0);
+  useEffect(()=>{
     const dateString = dateMdate.format("YYYY-MM-DD");
-    return widths[dateString] ?? 0;
+    const newWidth = widths[dateString] ?? 0
+    if(newWidth != width) setWidth(newWidth);
   }, [dateMdate, widths])
 
   const { eventGroup } = useEvents();
-  const calevents = useMemo<CaleventClientType[]>(()=>{
+  const calevents = useMemo<CaleventType[]>(()=>{
     const dateString = dateMdate.format("YYYY-MM-DD");
     return (eventGroup[dateString]||[])
             .filter(event=>(
@@ -43,20 +47,21 @@ export default function DayCurtain({
     const endRatio = (end.unix - dateMdate.resetTime().forkAdd(1,'date').unix < 0) ? end.getRatio("date") : 1;
     let topRatio = startRatio;
     let heightRatio = endRatio - topRatio;
-    if(heightRatio < EVENT_MIN_HEIGHT / dayHeight){
-      heightRatio = EVENT_MIN_HEIGHT / dayHeight;
-      if(topRatio + EVENT_MIN_HEIGHT / dayHeight > 1) topRatio = 1 - heightRatio;
+    if(heightRatio < EVENT_MIN_HEIGHT / height){
+      heightRatio = EVENT_MIN_HEIGHT / height;
+      if(topRatio + EVENT_MIN_HEIGHT / height > 1) topRatio = 1 - heightRatio;
     }
     const bottomRatio = topRatio + heightRatio;
     return {topRatio, heightRatio, bottomRatio}
-  }, [dateMdate, dayHeight]);
+  }, [dateMdate, height]);
   const eventsY = useMemo(()=>{
-    return Object.assign({}, ...calevents.map(e=>({[e.id]: calcEventY(e.startMdate, e.endMdate)})));
-  }, [calevents, timezone, dayHeight]);
-  const isOverwrapped = useMemo(()=>function(e1,e2){return (e1.topRatio-e2.bottomRatio)*(e1.bottomRatio-e2.topRatio)<0}, []);
+    return Object.assign({}, ...calevents.map(e=>({[e.id]: calcEventY(e.startMdate, e.endMdate)}))) as {[caleventId:string]:{topRatio:number,heightRatio:number,bottomRatio:number}};
+  }, [calevents, timezone, height]);
+  type tb = {topRatio:number,bottomRatio:number}
+  const isOverwrapped = useMemo(()=>function(e1:tb, e2:tb){return (e1.topRatio-e2.bottomRatio)*(e1.bottomRatio-e2.topRatio)<0}, []);
 
   const positions = useMemo(()=>{
-    const _positions = {};
+    const _positions: Record<string, {index: number, length: number}> = {};
     const positionRows:Array<Record<string,{topRatio:number,bottomRatio:number}>> = []
     for(let event of calevents){
       let done = false;
@@ -90,7 +95,7 @@ export default function DayCurtain({
   }, [positions]);
   const eventsX = useMemo(()=>{
     return Object.assign({}, ...calevents.map(e=>({[e.id]: calcEventX(e.id)})))
-  }, [calevents, positions, dayWidth]);
+  }, [calevents, positions, width]);
   
   const topRatios = useMemo(()=>{
     return [...range(24)].map(i=>new MdateTz(undefined, timezone).resetTime().forkAdd(i,'hour').getRatio("date")*100);
@@ -101,8 +106,9 @@ export default function DayCurtain({
   return (
     <div className="border-e border-gray-200 w-full" draggable={false} style={{height:"100%",position:"relative"}}
       onClick={e=>{
+        if(draggingStatusRef.current != null) return;
         const rect = e.currentTarget.getBoundingClientRect();
-        const ratio = (e.clientY - rect.top) / dayHeight;
+        const ratio = (e.clientY - rect.top) / height;
         let per15 = Math.ceil(ratio*24*60);
         per15 = per15 - per15 % 15;
         createCalevent(dateMdate.resetTime().forkAdd(per15,'minute'));
@@ -126,14 +132,14 @@ export default function DayCurtain({
               width: eventsX[calevent.id].widthRatio,
               height: eventsY[calevent.id].heightRatio
             }}
-            dayWidth={dayWidth}
-            dayHeight={dayHeight}
+            dayWidth={width}
+            dayHeight={height}
           />
         </React.Fragment>
       ))}
       {
         isToday &&
-        <div className="z-30 absolute w-full" style={{
+        <div className="z-30 absolute w-full pointer-events-none" style={{
           top:`${barRatio}%`,
           height:"2px",
           backgroundColor:"rgba(255,0,0,0.8)"

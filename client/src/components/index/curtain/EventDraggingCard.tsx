@@ -2,24 +2,24 @@ import React, { useEffect, useMemo } from 'react';
 import { useStateRef } from 'maruyu-webcommons/react/reactUse';
 import { parseColor, isBrightColor } from 'maruyu-webcommons/commons/utils/color';
 import { MdateTz } from 'maruyu-webcommons/commons/utils/mdate';
-import { useSetting } from '../../contexts/SettingProvider';
-import { CaleventClientType } from 'mtypes/v2/Calevent';
-import { useStatus } from '../../contexts/StatusProvider';
+import { useSetting } from '@client/contexts/SettingProvider';
+import { CaleventType } from '@client/types/calevent';
+import { useStatus } from '@client/contexts/StatusProvider';
 import { DAY } from 'maruyu-webcommons/commons/utils/time';
-import { updateCalevent } from '../../data/calevent';
-import { useTop } from '../../contexts/TopProvider';
-import { useEvents } from '../../contexts/EventsProvider';
-import { getBackgroundColor, getFontSize, getMarginTop, getTexts } from '../../utils/card';
-import { ProcessStateType, useDragging } from '../../contexts/DraggingProvider';
-import { useCurtainLayout } from '../../contexts/CurtainLayoutProvider';
+import { updateCalevent } from '@client/data/calevent';
+import { useEvents } from '@client/contexts/EventsProvider';
+import { getBackgroundColor, getFontSize, getMarginTop, getTexts } from '@client/utils/card';
+import { ProcessStateType, useDragging } from '@client/contexts/DraggingProvider';
+import { useCurtainLayout } from '@client/contexts/CurtainLayoutProvider';
 import { range } from 'maruyu-webcommons/commons/utils/number';
-import { convertClientCalevent } from '../../utils/calevent';
+import { useToast } from 'maruyu-webcommons/react/toast';
+import { convertUpdateItemResponseToClient } from '@client/types/calevent';
 
 type Ratios = { top:number, left:number, width:number, height:number }
 
 export default function EventDraggingCardWrapper(){
   const { 
-    draggingStatusRef, 
+    draggingStatusRef,
     draggingDateRangeRef
   } = useDragging();
   if(draggingStatusRef.current == null) return <></>;
@@ -41,12 +41,12 @@ function EventDraggingCards({
   startDraggingMdate,
   endDraggingMdate,
 }:{
-  calevent: CaleventClientType,
+  calevent: CaleventType,
   processState: ProcessStateType
   startDraggingMdate: MdateTz,
   endDraggingMdate: MdateTz
 }){
-  const { addAlert } = useTop();
+  const { addToast } = useToast();
   const { timezone } = useSetting();
   const { calendarList } = useStatus();
   const { refreshCaleventByUpdate } = useEvents();
@@ -73,16 +73,20 @@ function EventDraggingCards({
       ) return reset();
       updateCalevent({
         caleventId: calevent.id,
-        calendarId: calevent.calendarId, 
-        startMdate: startDraggingMdate, 
-        endMdate: endDraggingMdate, 
-        // isDateEvent: event.style.isAllDay
+        calendarId: calevent.calendarId,
+        startTime: startDraggingMdate.toDate(),
+        endTime: endDraggingMdate.toDate(),
       })
+      .then(responseObject=>convertUpdateItemResponseToClient(responseObject, calendarList, timezone))
       .then(calevent=>{
-        refreshCaleventByUpdate(convertClientCalevent(calevent,timezone,calendarList));  // この行
+        refreshCaleventByUpdate(calevent.id, { 
+          title: calevent.title,
+          startMdate: calevent.startMdate,
+          endMdate: calevent.endMdate,
+        });  // この行
       })
       .catch(error=>{
-        addAlert("UpdateError", error.message);
+        addToast("UpdateError", error.message, "error");
         reset();
       });
       // setTargetCalevent(null); // この行があると、なぜかratioに変化が生じて、上のuseEffectが発火する
@@ -126,7 +130,7 @@ function EventDraggingCard({
   caleventStartMdate,
   caleventEndMdate,
 }:{
-  calevent: CaleventClientType,
+  calevent: CaleventType,
   cardStartMdate: MdateTz,
   cardEndMdate: MdateTz,
   caleventStartMdate: MdateTz
@@ -149,10 +153,10 @@ function EventDraggingCard({
   const fontSize = useMemo(()=>getFontSize({width:widthPx, height:heightPx}), [widthPx, heightPx]);
   const marginTop = useMemo(()=>getMarginTop({height:heightPx}), [heightPx]);
   const texts = useMemo(()=>getTexts({
-    width: widthPx, 
-    height: heightPx, 
-    startMdate: caleventStartMdate, 
-    endMdate: caleventEndMdate, 
+    width: widthPx,
+    height: heightPx,
+    startMdate: caleventStartMdate,
+    endMdate: caleventEndMdate,
     title: calevent.title
   }), [widthPx, heightPx, caleventStartMdate, caleventEndMdate, calevent])
   const backgroundColor = useMemo(()=>getBackgroundColor(calevent), [calevent, cardStartMdate, cardEndMdate]);

@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Mdate, MdateTz } from 'maruyu-webcommons/commons/utils/mdate';
 import { useSetting } from './SettingProvider';
-import { CalendarType } from 'mtypes/v2/Calendar';
-import { getCalendarList } from '../data/calendar';
+import { CalendarType } from '@client/types/calendar';
+import { convertFetchListResponseToClient } from '@client/types/calendar';
+import { fetchCalendarList } from '@client/data/calendar';
 import { DAY, MINUTE } from 'maruyu-webcommons/commons/utils/time';
 
 type StatusType = {
@@ -21,7 +22,7 @@ export function useStatus(){
   return context;
 }
 
-export function StatusProvider({children}){
+export function StatusProvider({children}: {children: React.ReactNode}){
 
   const { timezone } = useSetting();
 
@@ -30,7 +31,7 @@ export function StatusProvider({children}){
   const [ currentTime, setCurrentTime ] = useState<Mdate>(Mdate.now());
 
   useEffect(()=>{
-    let intervalId;
+    let intervalId: NodeJS.Timeout;
     setTimeout(()=>{
       intervalId = setInterval(()=>setToday(new MdateTz(undefined, timezone).resetTime()), DAY)},
       (DAY - (Mdate.now().unix - new MdateTz(undefined, timezone).resetTime().unix))
@@ -38,22 +39,30 @@ export function StatusProvider({children}){
     return ()=>clearInterval(intervalId);
   }, [timezone]);
   useEffect(()=>{
-    let intervalId;
+    let intervalId: NodeJS.Timeout;
     setTimeout(()=>{
       intervalId = setInterval(()=>setCurrentTime(Mdate.now()), MINUTE)
     }, MINUTE - Mdate.now().unix % MINUTE)
     return ()=>clearInterval(intervalId);
   }, []);
 
-  useEffect(()=>{getCalendarList().then(cl=>setCalendarList(cl))},[]);
+  useEffect(()=>{
+    fetchCalendarList()
+    .then(responseObject=>convertFetchListResponseToClient(responseObject))
+    .then(cl=>{
+      console.log("CalendarList: ", cl);
+      return cl;
+    })
+    .then(cl=>setCalendarList(cl))
+  },[]);
 
   return (
     <StatusContext.Provider
       value={{
-        calendarList, 
+        calendarList,
         today,
         currentTime,
-        setCalendarList, 
+        setCalendarList,
         setToday,
       }}
     >{children}</StatusContext.Provider>

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { range } from "maruyu-webcommons/commons/utils/number";
-import { getDivRefWidth } from "../../../utils/ReactRect";
+import { getDivRefWidth } from "@client/utils/ReactRect";
 import { MdateTz } from "maruyu-webcommons/commons/utils/mdate";
-import { useSetting } from "../../../contexts/SettingProvider";
+import { useSetting } from "@client/contexts/SettingProvider";
 import { HOUR } from "maruyu-webcommons/commons/utils/time";
 
 export default function TimeScale(){
@@ -23,7 +23,9 @@ export default function TimeScale(){
       {
         startEndRanges.map(({ startR, endR }, i)=>(
           <div key={i} ref={i===0?firstRef:undefined}
-            className={"px-1 flex items-" + (i===0 ? "start" : i===24 ? "end" : "center")} 
+            className={`
+              px-1 flex ${(i===0 ? "items-start" : i===24 ? "items-end" : "items-center")}
+            `}
             style={{
               position: "absolute",
               top: `${startR*100}%`,

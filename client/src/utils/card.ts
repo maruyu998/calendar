@@ -1,17 +1,10 @@
 import { hsvToRgb, parseColor, printColor, rgbToHsv } from "maruyu-webcommons/commons/utils/color";
 import { Mdate, MdateTz } from "maruyu-webcommons/commons/utils/mdate";
-import { CalendarType } from "mtypes/v2/Calendar";
-import { CaleventClientType } from "mtypes/v2/Calevent";
+import { CaleventType } from "@client/types/calevent";
 
-export function getBackgroundColor(calevent: CaleventClientType){
-  const color = (
-    calevent.style.mainColor ? calevent.style.mainColor
-    : calevent.calendar.calendarSource == "calendar.google.com" ? calevent.calendar.data.backgroundColor
-    : calevent.calendar.calendarSource == "health.maruyu.work" ? calevent.calendar.data.backgroundColor
-    : undefined
-  ) ?? "#333333";
-  if(calevent.endMdate.unix >= Mdate.now().unix) return color;
-  const { hue, saturation, value } = rgbToHsv(parseColor(color));
+export function getBackgroundColor(calevent: CaleventType){
+  if(calevent.endMdate.unix >= Mdate.now().unix) return calevent.style.mainColor;
+  const { hue, saturation, value } = rgbToHsv(parseColor(calevent.style.mainColor));
   return printColor(hsvToRgb({hue, saturation:saturation/3, value}));
 }
 

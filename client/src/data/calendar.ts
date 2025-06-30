@@ -1,12 +1,18 @@
 import { getPacket } from "maruyu-webcommons/commons/utils/fetch";
-import { CalendarType } from "mtypes/v2/Calendar";
+import {
+  ResponseObjectType as FetchListResponseObjectType,
+  ResponseObjectSchema as FetchListResponseObjectSchema,
+} from "@share/protocol/calendar/fetchList";
 
-export async function getCalendarList():Promise<CalendarType[]>{
-  return await getPacket('/api/v2/calendar/list', {}, window)
-  .then(({title,message,data})=>{
-    if(data==null) throw new Error("data is null");
-    return data as { calendarList }
-  })
-  .then(data=>data.calendarList)
-  .catch(error=>console.error(error))
+export async function fetchCalendarList(
+
+):Promise<FetchListResponseObjectType>{
+  const url = new URL('/sec/apsh/calendar/list', window.location.href);
+  const queryData = {};
+  const responseSchema = FetchListResponseObjectSchema;
+  return await getPacket({url, queryData, responseSchema})
+              .catch(error => {
+                console.error(error);
+                throw error;
+              });
 }

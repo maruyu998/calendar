@@ -1,23 +1,23 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { parseColor, isBrightColor } from 'maruyu-webcommons/commons/utils/color';
-import { CaleventClientType } from 'mtypes/v2/Calevent';
-import { useEditing } from '../../contexts/EditingProvider';
-import { useStatus } from '../../contexts/StatusProvider';
-import { getBackgroundColor, getFontSize, getMarginTop, getTexts } from '../../utils/card';
-import { useDragging } from '../../contexts/DraggingProvider';
-import { useEvents } from '../../contexts/EventsProvider';
-import { useTop } from '../../contexts/TopProvider';
+import { CaleventType } from '@client/types/calevent';
+import { useEditing } from '@client/contexts/EditingProvider';
+import { useStatus } from '@client/contexts/StatusProvider';
+import { getBackgroundColor, getFontSize, getMarginTop, getTexts } from '@client/utils/card';
+import { useDragging } from '@client/contexts/DraggingProvider';
+import { useEvents } from '@client/contexts/EventsProvider';
+import { useTop } from '@client/contexts/TopProvider';
 
-const BOTTOM_THRESHOLD_PX = 5;
+const BOTTOM_THRESHOLD_PX = 2;
 type Ratios = { top:number, left:number, width:number, height:number }
 
 export default function EventShowCard({
-  calevent, 
+  calevent,
   ratios,
   dayWidth,
   dayHeight,
 }:{
-  calevent: CaleventClientType,
+  calevent: CaleventType,
   ratios: Ratios,
   dayWidth: number,
   dayHeight: number,
@@ -26,7 +26,7 @@ export default function EventShowCard({
   const { currentTime } = useStatus();
   const { editCalevent } = useEditing();
   const { refreshCaleventByUpdate } = useEvents();
-  const { 
+  const {
     setMouseCoord,
     setDraggingStatus,
     draggingStatusRef,
@@ -86,6 +86,7 @@ export default function EventShowCard({
           opacity: draggingStatusRef.current?.calevent.id == calevent.id ? 0.4 : 1,
         }}
         onTouchStart={e=>{
+          // console.log("onTouchStart");
           if(deviceGenre == "smartphone"){
             touchTimerRef.current = setTimeout(()=>{
               setIsLongPress(true);
@@ -93,6 +94,7 @@ export default function EventShowCard({
           }
         }}
         onTouchEnd={e=>{
+          // console.log("onTouchEnd");
           if(deviceGenre == "smartphone"){
             if(touchTimerRef.current !== null) {
               clearTimeout(touchTimerRef.current);
@@ -107,17 +109,18 @@ export default function EventShowCard({
         }}
         onClick={e=>{
           if(deviceGenre == "pc"){
+            // 通常のクリックをしたときと，ドラッグし終えたときに発火する
+            // console.log(`<TOP> onClick, draggingStatusRef.current?.calevent.id=${draggingStatusRef.current?.calevent.id} ${draggingStatusRef.current?.calevent.id == calevent.id ? "==" : "!="} calevent.id=${calevent.id} `);
             e.stopPropagation();
-            if(draggingStatusRef.current?.calevent.id == calevent.id){
+            if(draggingStatusRef.current?.calevent.id == calevent.id){ // ドラッグし終えたとき
               setDraggingStatus({...draggingStatusRef.current, state:"updating"});
               if(draggingDateRangeRef.current){
-                refreshCaleventByUpdate({
-                  ...calevent,
+                refreshCaleventByUpdate(calevent.id, {
                   startMdate: draggingDateRangeRef.current.start,
                   endMdate: draggingDateRangeRef.current.end,
                 });
               }
-            }else{
+            }else{ // 通常のクリックをしたとき
               setDraggingStatus(null);
               setMouseCoord(null);
               setDraggingDateRange(null);
@@ -129,40 +132,44 @@ export default function EventShowCard({
         <p className="my-0 py-0 break-all select-none" draggable={false} style={{color:textColor, fontSize, marginTop}}>
           {texts.map((item,ind)=><React.Fragment key={ind}>{item}<br/></React.Fragment>)}
         </p>
-        <div className="absolute w-full top-0 cursor-pointer" style={{height: `${topHeight}px`}}
+        <div className="absolute w-full top-0 cursor-pointer" style={{ height: `${topHeight}px` }}
           onPointerMove={event=>{
             if(deviceGenre == "pc"){
               event.stopPropagation();
-              if(event.buttons){
+              if(event.buttons == 1){ // 左クリック
+                // console.log(`<TOP> onPointerMove, event.buttons=${event.buttons}`);
+                const mouseY = event.pageY - (divRef.current?.getBoundingClientRect()?.top || 0);
                 if(draggingStatusRef.current?.calevent.id != calevent.id){
                   setDraggingStatus({
                     state:"top",
                     calevent: calevent,
-                    startMouseCoord: {x:event.pageX, y:event.pageY},
+                    startMouseCoord: {x:event.pageX, y:mouseY},
                   });
                   event.currentTarget.draggable = false;
                 }else{
-                  setMouseCoord({x:event.pageX, y:event.pageY});
+                  setMouseCoord({x:event.pageX, y:mouseY});
                 }
                 event.currentTarget.setPointerCapture(event.pointerId);
               }
             }
           }}
         />
-        <div className="absolute w-full bottom-0 cursor-ns-resize" style={{height:`${bottomHeight}px`}}
+        <div className="absolute w-full bottom-0 cursor-ns-resize" style={{ height: `${bottomHeight}px` }}
           onPointerMove={event=>{
             if(deviceGenre == "pc"){
               event.stopPropagation();
-              if(event.buttons){
+              if(event.buttons == 1){  // 左クリック
+                // console.log(`<BOTTOM> onPointerMove, event.buttons=${event.buttons}`);
+                const mouseY = event.pageY - (divRef.current?.getBoundingClientRect()?.top || 0);
                 if(draggingStatusRef.current?.calevent.id != calevent.id) {
                   setDraggingStatus({
                     state:"bottom",
                     calevent: calevent,
-                    startMouseCoord: {x:event.pageX, y:event.pageY},
+                    startMouseCoord: {x:event.pageX, y:mouseY},
                   });
                   event.currentTarget.draggable = false;
                 }else{
-                  setMouseCoord({x:event.pageX, y:event.pageY});
+                  setMouseCoord({x:event.pageX, y:mouseY});
                 }
                 event.currentTarget.setPointerCapture(event.pointerId);
               }

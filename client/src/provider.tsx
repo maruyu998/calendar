@@ -6,20 +6,20 @@ import { EventsProvider } from "./contexts/EventsProvider";
 import { EditingProvider } from "./contexts/EditingProvider";
 import { DraggingProvider } from "./contexts/DraggingProvider";
 
-export default function Provider({children}){
+export default function Provider({children}: {children: React.ReactNode}): React.ReactElement {
   return (
     <SettingProvider>
       <TopLayoutProvider>
         <StatusProvider>
-          <CurtainLayoutProvider>
-            <EventsProvider>
+          <EventsProvider>
+            <CurtainLayoutProvider>
               <EditingProvider>
                 <DraggingProvider>
                   {children}
                 </DraggingProvider>
               </EditingProvider>
-            </EventsProvider>
-          </CurtainLayoutProvider>
+            </CurtainLayoutProvider>
+          </EventsProvider>
         </StatusProvider>
       </TopLayoutProvider>
     </SettingProvider>

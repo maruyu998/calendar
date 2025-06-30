@@ -1,21 +1,25 @@
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { CaleventClientType } from 'mtypes/v2/Calevent';
 import { SECOND, wait } from 'maruyu-webcommons/commons/utils/time';
-import { getCaleventList } from '../data/calevent';
+import { fetchCaleventList } from '@client/data/calevent';
 import { useSetting } from './SettingProvider';
-import { convertClientCalevent } from '../utils/calevent';
 import { useStatus } from './StatusProvider';
-import { CalendarType } from 'mtypes/v2/Calendar';
 import { MdateTz, TimeZone } from 'maruyu-webcommons/commons/utils/mdate';
-import { useTop } from './TopProvider';
+import { useToast } from 'maruyu-webcommons/react/toast';
+import { CalendarIdType, CalendarType } from '@client/types/calendar';
+import {
+  CaleventIdType,
+  CaleventType,
+  convertFetchListResponseToClient as convertFetchCaleventListResponseToClient,
+} from "@client/types/calevent";
 
-type CaleventGroup = {[dateString:string]:CaleventClientType[]}
-
+type CaleventGroup = {[dateString:string]:CaleventType[]}
+export type UpdateRefreshItemType = Partial<Pick<CaleventType,"title"|"startMdate"|"endMdate"|"style">>
 type EventsType = {
-  eventGroup: CaleventGroup,
-  dayEventGroup: CaleventGroup,
-  refreshCaleventByUpdate: (calevent:CaleventClientType)=>void,
-  refreshCaleventByRemove: (calevent:CaleventClientType)=>void,
+  eventGroup:CaleventGroup,
+  dayEventGroup:CaleventGroup,
+  refreshCaleventByCreate:(calevent:CaleventType)=>void,
+  refreshCaleventByUpdate:(caleventId:CaleventIdType,updateItem:UpdateRefreshItemType)=>void,
+  refreshCaleventByRemove:(caleventId:CaleventIdType)=>void,
 }
 
 const EventsContext = createContext<EventsType|undefined>(undefined);
@@ -26,58 +30,73 @@ export function useEvents(){
   return context;
 }
 
-export function EventsProvider({children}){
-  const { addAlert } = useTop();
-  const { 
+export function EventsProvider({children}: {children: React.ReactNode}){
+  const { addToast } = useToast();
+  const {
     showCalIds,
-    dayDuration, 
-    startDate,
+    dayDuration,
+    startMdate,
     timezone,
   } = useSetting();
   const { calendarList } = useStatus();
   const calendarListRef = useRef<CalendarType[]>(calendarList);
   useEffect(()=>{ calendarListRef.current = calendarList }, [calendarList]);
-  const showCalIdsRef = useRef<string[]>([]);
-  useEffect(()=>{ showCalIdsRef.current = showCalIds }, [showCalIds]);
+  const showCalIdListRef = useRef<CalendarIdType[]>([]);
+  useEffect(()=>{ showCalIdListRef.current = showCalIds }, [showCalIds]);
   const dayDurationRef = useRef<number>(1);
   useEffect(()=>{ dayDurationRef.current = dayDuration }, [dayDuration]);
-  const startDateRef = useRef<MdateTz>(new MdateTz(undefined, timezone).resetTime());
-  useEffect(()=>{ startDateRef.current = startDate}, [startDate]);
+  const startMdateRef = useRef<MdateTz>(new MdateTz(undefined, timezone).resetTime());
+  useEffect(()=>{ startMdateRef.current = startMdate}, [startMdate]);
   const timezoneRef = useRef<TimeZone>("Asia/Tokyo");
   useEffect(()=>{ timezoneRef.current = timezone }, [timezone]);
-  
+
   type FetchingParamsType = {
     fetchStartAt: number,
     paramKey: string,
     isLoading: boolean,
-    caleventList: CaleventClientType[]
+    caleventList: CaleventType[]
   }
 
   const [ isFetching, setIsFetching ] = useState<boolean>(false);
-  const [ caleventList, setCaleventList ] = useState<CaleventClientType[]>([]);
+  const [ caleventList, setCaleventList ] = useState<CaleventType[]>([]);
   const [ eventGroup, setEventGroup ] = useState<CaleventGroup>({});
   const [ dayEventGroup, setDayEventGroup ] = useState<CaleventGroup>({});
 
-  const getGEvents = useMemo(()=>async function(){
-    await wait(()=>calendarListRef.current.length>0, 500);
+  const fetchGEvents = useMemo(()=>async function(){
+    await wait(()=>calendarListRef.current.length > 0, 500);
     await wait(()=>!isFetching, 100);
     setIsFetching(true);
-    const caleventList = await getCaleventList({
-      calendarIds: showCalIdsRef.current, 
-      startMdate: startDateRef.current,
-      endMdate: startDateRef.current.forkAdd(dayDurationRef.current,"date")
-    }).then(caleventList=>(
-      caleventList.map(calevent=>convertClientCalevent(calevent,timezoneRef.current,calendarListRef.current))
-    ));
-    setCaleventList(caleventList);
+    await fetchCaleventList({
+      calendarIdList: showCalIdListRef.current,
+      startTime: startMdateRef.current.toDate(),
+      endTime: startMdateRef.current.forkAdd(dayDurationRef.current,"date").toDate()
+    })
+    .then(responseObject=>convertFetchCaleventListResponseToClient(responseObject, calendarListRef.current, timezone))
+    .then(newCaleventList=>{
+      const oldCaleventMap:{[caleventId:CaleventIdType]:CaleventType} = {}
+      for(const oldCalevent of caleventList) oldCaleventMap[oldCalevent.id] = oldCalevent;
+      setCaleventList(newCaleventList.map(calevent=>{
+        const oldCalevent = oldCaleventMap[calevent.id];
+        if(oldCalevent == undefined) return calevent;
+        if(calevent.updatedAt.getTime() < oldCalevent.updatedAt.getTime()) return oldCalevent;
+        return calevent;
+      }))
+    })
+    .catch(error=>{
+      if(error.name == "AuthenticationError"){
+        setTimeout(()=>window.location.reload(), 15*SECOND);
+      }
+      addToast(`Fetching Error [${error.name}]`, error.message, "error");
+      console.error(error);
+    });
     setIsFetching(false);
-  }, [showCalIds,startDate,dayDuration,timezone,calendarList]);
+  }, [showCalIds, startMdate, dayDuration, timezone, calendarList]);
   useEffect(()=>{
     const eventGroup: CaleventGroup = {}
     for(let calevent of caleventList){
       for(
         let date = calevent.startMdate.resetTime();
-        date.unix < calevent.endMdate.unix; 
+        date.unix < calevent.endMdate.unix;
         date = date.forkAdd(1,'date')
       ){
         const dateString:string = date.format("YYYY-MM-DD");
@@ -85,11 +104,11 @@ export function EventsProvider({children}){
         eventGroup[dateString].push(calevent);
       }
     }
-    const eventGroup_ = {}
-    const dayEventGroup_ = {}
+    const eventGroup_: Record<string, CaleventType[]> = {}
+    const dayEventGroup_: Record<string, CaleventType[]> = {}
     for(let [dateString, caleventList] of Object.entries(eventGroup)){
-      eventGroup_[dateString] = new Array<CaleventClientType>();
-      dayEventGroup_[dateString] = new Array<CaleventClientType>();
+      eventGroup_[dateString] = new Array<CaleventType>();
+      dayEventGroup_[dateString] = new Array<CaleventType>();
       for(let calevent of caleventList) {
         (calevent.style.isAllDay ? dayEventGroup_ : eventGroup_)[dateString].push(calevent)
       }
@@ -99,21 +118,33 @@ export function EventsProvider({children}){
   }, [caleventList])
 
   useEffect(()=>{
-    getGEvents();
+    fetchGEvents();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showCalIds, startDate, dayDuration, timezone])
+  }, [showCalIds, startMdate, dayDuration, timezone])
 
   useEffect(()=>{
-    const intervalId = setInterval(()=>getGEvents(), 30*SECOND);
+    const intervalId = setInterval(()=>fetchGEvents(), 30*SECOND);
     return ()=>clearInterval(intervalId);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const refreshCaleventByUpdate = useMemo(()=>function(calevent:CaleventClientType){
-    setCaleventList([...caleventList.filter(ce=>ce.id!=calevent.id), calevent])
+  const refreshCaleventByCreate = useMemo(()=>function(calevent:CaleventType){
+    setCaleventList([...caleventList, calevent]);
+  }, [caleventList])
+  const refreshCaleventByUpdate = useMemo(()=>function(
+    caleventId:CaleventIdType, 
+    updateItem:UpdateRefreshItemType,
+  ){
+    setCaleventList([
+      ...caleventList.map(ce=>ce.id!=caleventId ? ce : { ...ce, ...updateItem })
+    ]);
   }, [caleventList]);
-  const refreshCaleventByRemove = useMemo(()=>function(calevent:CaleventClientType){
-    setCaleventList([...caleventList.filter(ce=>ce.id!=calevent.id)])
+  const refreshCaleventByRemove = useMemo(()=>function(
+    caleventId:CaleventIdType
+  ){
+    setCaleventList([
+      ...caleventList.filter(ce=>ce.id!=caleventId)
+    ])
   }, [caleventList]);
 
   return (
@@ -121,8 +152,9 @@ export function EventsProvider({children}){
       value={{
         eventGroup,
         dayEventGroup,
+        refreshCaleventByCreate,
         refreshCaleventByUpdate,
-        refreshCaleventByRemove
+        refreshCaleventByRemove,
       }}
     >{children}</EventsContext.Provider>
   )

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { getDivRefWidth, getDivRefHeight } from '../utils/ReactRect';
+import { getDivRefWidth, getDivRefHeight } from '@client/utils/ReactRect';
 import { useSetting } from './SettingProvider';
 
 type TopLayoutType = {
@@ -22,7 +22,7 @@ export function useTopLayout(){
   return context;
 }
 
-export function TopLayoutProvider({children}){
+export function TopLayoutProvider({children}: {children: React.ReactNode}){
 
   const { showTop, showSide } = useSetting();
 
@@ -31,9 +31,9 @@ export function TopLayoutProvider({children}){
   const [ mainHeight, setMainHeight ] = useState<number>(0);
 
   useEffect(()=>{
-    const _setWindowSize = ()=>setWindowSize({width: window.innerWidth, height: window.innerHeight})
-    _setWindowSize()
-    setTimeout(_setWindowSize,500)
+    const _setWindowSize = ()=>setWindowSize({width: window.innerWidth, height: window.innerHeight});
+    _setWindowSize();
+    setTimeout(_setWindowSize,500);
     window.addEventListener("load", ()=>setTimeout(_setWindowSize,500), false);
     window.addEventListener("resize", _setWindowSize);
     return ()=>window.removeEventListener("resize", _setWindowSize);

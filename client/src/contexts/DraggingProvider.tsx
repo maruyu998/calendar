@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useStateRef } from 'maruyu-webcommons/react/reactUse';
 import { MdateTz } from 'maruyu-webcommons/commons/utils/mdate';
-import { CaleventClientType } from 'mtypes/v2/Calevent';
+import { CaleventType } from '@client/types/calevent';
 import { useTop } from './TopProvider';
 import { useCurtainLayout } from './CurtainLayoutProvider';
 import { useSetting } from './SettingProvider';
@@ -13,12 +13,12 @@ export type ProcessStateType = typeof ProcesssStates[number];
 type DateRangeType = { start:MdateTz, end:MdateTz }
 type DraggingStatusType = {
   state: "top"|"bottom"|"updating",
-  calevent: CaleventClientType,
+  calevent: CaleventType,
   startMouseCoord: MouseCoordType
 }
 
 type DraggingType = {
-  setDraggingStatus: (v:DraggingStatusType|null)=>void, 
+  setDraggingStatus: (v:DraggingStatusType|null)=>void,
   draggingStatusRef: React.MutableRefObject<DraggingStatusType|null>,
   setMouseCoord: (v:MouseCoordType|null)=>void,
   mouseCoordRef: React.MutableRefObject<MouseCoordType|null>,
@@ -34,11 +34,11 @@ export function useDragging(){
   return context;
 }
 
-export function DraggingProvider({children}){
+export function DraggingProvider({children}: {children: React.ReactNode}){
   const { pressedKeys } = useTop();
-  const { timezone, dayDuration, startDate } = useSetting();
+  const { timezone, dayDuration, startMdate } = useSetting();
   const { widths, curtainVirtualHeight } = useCurtainLayout();
-  
+
   const [ , setDraggingStatus, draggingStatusRef ] = useStateRef<DraggingStatusType|null>(null);
   const [ , setMouseCoord, mouseCoordRef ] = useStateRef<MouseCoordType|null>(null);
   const [ , setDraggingDateRange, draggingDateRangeRef ] = useStateRef<DateRangeType|null>(null);
@@ -64,14 +64,14 @@ export function DraggingProvider({children}){
       widthCur.push({num, mdate});
     }
     const getMdateFromPointX = (x:number)=>{
-      if(x < 0) return startDate.forkAdd(-1,"date");
+      if(x < 0) return startMdate.forkAdd(-1,"date");
       for(const {num,mdate} of widthCur){
         if(num > x) return mdate;
       }
-      return startDate.forkAdd(dayDuration,"date");
+      return startMdate.forkAdd(dayDuration,"date");
     }
     return getMdateFromPointX;
-  }, [widths, timezone, startDate, dayDuration])
+  }, [widths, timezone, startMdate, dayDuration])
 
   useEffect(()=>{
     if(draggingStatusRef.current == null) return;
@@ -85,7 +85,7 @@ export function DraggingProvider({children}){
     const moveY = mouseCoord.y - startMouseCoord.y;
     const addMinutes = Math.ceil((moveY/curtainVirtualHeight)*24*60/15)*15;
     const ms = addMinutes * MINUTE + addDates * DAY;
-    if(processState=="top") {
+    if(processState=="top"){
       setDraggingDateRange({
         start: calevent.startMdate.addMs(ms),
         end: calevent.endMdate.addMs(ms)
@@ -93,8 +93,9 @@ export function DraggingProvider({children}){
     }
     if(processState=="bottom"){
       const endMdate = new MdateTz(
-        Math.max(calevent.startMdate.unix + 15*MINUTE, calevent.endMdate.unix + ms), 
-      timezone);
+        Math.max(calevent.startMdate.unix + 15*MINUTE, calevent.endMdate.unix + ms),
+        timezone
+      );
       setDraggingDateRange({
         start: calevent.startMdate,
         end: endMdate
@@ -105,11 +106,11 @@ export function DraggingProvider({children}){
   return (
     <DraggingContext.Provider
       value={{
-        setDraggingStatus, 
+        setDraggingStatus,
         draggingStatusRef,
-        setMouseCoord, 
+        setMouseCoord,
         mouseCoordRef,
-        setDraggingDateRange, 
+        setDraggingDateRange,
         draggingDateRangeRef
       }}
     >{children}</DraggingContext.Provider>

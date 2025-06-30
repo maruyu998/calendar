@@ -1,11 +1,12 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { getDivRefWidth, getDivRefHeight } from '../utils/ReactRect';
+import { getDivRefWidth, getDivRefHeight } from '@client/utils/ReactRect';
 import { useSetting } from './SettingProvider';
-import { useStateSession } from 'maruyu-webcommons/react/reactUse';
+import { useTypeStateCookie } from 'maruyu-webcommons/react/reactUse';
 import { useStatus } from './StatusProvider';
 import { MdateTz } from 'maruyu-webcommons/commons/utils/mdate';
 import { range, sum } from 'maruyu-webcommons/commons/utils/number';
 import { useTopLayout } from './TopLayoutProvider';
+import { useEvents } from './EventsProvider';
 
 interface iDayWidths {
   diff: Record<string,number> // {day: string, width: number},
@@ -14,9 +15,8 @@ interface iDayWidths {
 
 type CurtainLayoutType = {
   widths: {[dateString: string]: number;},
-  minWidths: {[dateString: string]: number;},
-  dayWidths: iDayWidths,
-  setDayWidths: React.Dispatch<React.SetStateAction<iDayWidths>>,
+  updateDayWidth: (date:MdateTz,width:number|undefined)=>void,
+  checkIsDayWidthSet: (date:MdateTz)=>boolean,
   timeScaleElm: React.RefObject<HTMLDivElement>,
   dayTopElm: React.RefObject<HTMLDivElement>,
   dayEventElm: React.RefObject<HTMLDivElement>,
@@ -35,11 +35,12 @@ export function useCurtainLayout(){
   return context;
 }
 
-export function CurtainLayoutProvider({children}){
+export function CurtainLayoutProvider({children}: {children: React.ReactNode}){
 
-  const { timezone, dayDuration, startDate, heightScale } = useSetting();
+  const { timezone, dayDuration, startMdate, heightScale } = useSetting();
   const { today } = useStatus();
   const { curtainWidth, mainHeight } = useTopLayout();
+  const { dayEventGroup } = useEvents();
 
   const [ calendarHeight, setCalendarHeight ] = useState<number>(0);
   const [ calendarLeft, setCalendarLeft ] = useState<number>(0);
@@ -50,57 +51,76 @@ export function CurtainLayoutProvider({children}){
     setCalendarLeft(getDivRefWidth(timeScaleElm))
     setCalendarWidth(curtainWidth - getDivRefWidth(timeScaleElm))
     setCalendarHeight(mainHeight - getDivRefHeight(dayTopElm) - getDivRefHeight(dayEventElm))
-  }, [curtainWidth, mainHeight])
+  }, [curtainWidth, mainHeight, dayEventGroup])
   useEffect(()=>{
     setCurtainVirtualHeight(calendarHeight * heightScale / 100)
   }, [calendarHeight, heightScale])
 
 
   const defaultDayWidths:iDayWidths = {diff:{"-1":80,"0":100,"1":80,"2":70,"3":60},exact:{}}
-  const [ dayWidths, setDayWidths ] = useStateSession<iDayWidths>("dayWidths", defaultDayWidths);
-  
-  const [ widths, setWidths ] = useState<{[dateString:string]:number}>({});
-  const [ minWidths, setMinWidths ] = useState<{[dateString:string]:number}>({});
-  
-  useEffect(()=>{
-    function calculateWidths(){
-      function calculateMinWidth(date:MdateTz):number{
-        const number = dayWidths.exact[date.format("YYYY-MM-DD")];
-        if(number !== undefined) return number;
-        for(let [day, number] of Object.entries(dayWidths.diff)){
-          if(date.forkAdd(-Number(day),'date').isToday()) return number;
-        }
-        return 0;
+  const [ dayWidths, setDayWidths ] = useTypeStateCookie<iDayWidths>(
+    "dayWidths",
+    defaultDayWidths,
+    obj=>encodeURIComponent(JSON.stringify(obj)),
+    str=>{ try{ return JSON.parse(decodeURIComponent(str)) }catch(error){ return defaultDayWidths } }
+  );
+  function updateDayWidth(date:MdateTz, width:number|undefined){
+    const yymmdd = date.format("YYYY-MM-DD")
+    const oldWidth = dayWidths.exact[yymmdd];
+    const newWidth = width != undefined ? Math.max(0, width) : undefined;
+    if(oldWidth != newWidth) {
+      if(newWidth == undefined){
+        const updatedExact = { ...dayWidths.exact };
+        delete updatedExact[yymmdd];
+        setDayWidths({ ...dayWidths, exact: updatedExact });
       }
-      let minWidths:Record<string,number> = {}
+      else setDayWidths({...dayWidths, exact:{...dayWidths.exact, [yymmdd]:newWidth}});
+    }
+  }
+  function checkIsDayWidthSet(date:MdateTz){
+    const yymmdd = date.format("YYYY-MM-DD");
+    return dayWidths.exact[yymmdd] != undefined;
+  }
+
+  const [ widths, setWidths ] = useState<{[dateString:string]:number}>({});
+
+  useEffect(()=>{
+    function calculateMinWidth(date:MdateTz):number{
+      const number = dayWidths.exact[date.format("YYYY-MM-DD")];
+      if(number !== undefined) return number;
+      for(const [day, number] of Object.entries(dayWidths.diff)){
+        if(date.forkAdd(-Number(day),'date').isToday()) return number;
+      }
+      return 0;
+    }
+    function calculateWidths(){
+      const minWidths:Record<string,number> = {};
       for(let i=0; i<dayDuration; i++){
-        const date = startDate.forkAdd(i,'date');
+        const date = startMdate.forkAdd(i,'date');
         const minWidth = calculateMinWidth(date);
         if(minWidth > 0) minWidths[date.format("YYYY-MM-DD")] = minWidth;
       }
-      minWidths = Object.assign({},...Object.entries(minWidths).sort((a,b)=>b[1]-a[1]).map(w=>({[w[0]]:w[1]})))
       const widths = Object.assign({}, ...[...range(dayDuration)].map(i=>({
-        [startDate.forkAdd(i,'date').format("YYYY-MM-DD")]: calendarWidth / dayDuration
-      })))
-      if(calendarWidth >= sum(Object.values(minWidths))){
-        const appliedMinWidths = {}
-        for(const [date,number] of Object.entries(minWidths)){
-          if(widths[date] >= number) break;
-          appliedMinWidths[date] = number;
-          widths[date] = number;
-          const appliedMinWidthsLength = Object.keys(appliedMinWidths).length;
-          const appliedMinWidthsSum = sum(Object.values(appliedMinWidths));
-          Object.entries(widths).filter(([date,_])=>!Object.keys(appliedMinWidths).includes(date)).forEach(([date,_])=>{
-            widths[date] = (calendarWidth - appliedMinWidthsSum) / (dayDuration - appliedMinWidthsLength);
-          });
-        }
+        [startMdate.forkAdd(i,'date').format("YYYY-MM-DD")]: calendarWidth / dayDuration
+      })));
+      if(calendarWidth < sum(Object.values(minWidths))) return widths;
+
+      const appliedMinWidths:Record<string,number> = {}
+      for(const [date,number] of Object.entries(minWidths).sort((a,b)=>b[1]-a[1])){
+        if(widths[date] >= number) break;
+        appliedMinWidths[date] = number;
+        widths[date] = number;
+        const appliedMinWidthsLength = Object.keys(appliedMinWidths).length;
+        const appliedMinWidthsSum = sum(Object.values(appliedMinWidths));
+        Object.entries(widths).filter(([date,_])=>!Object.keys(appliedMinWidths).includes(date)).forEach(([date,_])=>{
+          widths[date] = (calendarWidth - appliedMinWidthsSum) / (dayDuration - appliedMinWidthsLength);
+        });
       }
-      return { widths, minWidths }
+      return widths;
     }
-    const { widths, minWidths } = calculateWidths();
+    const widths = calculateWidths();
     setWidths(widths);
-    setMinWidths(minWidths);
-  }, [dayDuration, today, startDate, timezone, curtainWidth, dayWidths, calendarWidth])
+  }, [dayDuration, today, startMdate, timezone, curtainWidth, dayWidths, calendarWidth])
 
   const timeScaleElm = useRef<HTMLDivElement>(null);
   const dayTopElm = useRef<HTMLDivElement>(null);
@@ -111,11 +131,10 @@ export function CurtainLayoutProvider({children}){
     <CurtainLayoutContext.Provider
       value={{
         widths,
-        minWidths,
-        dayWidths,
-        setDayWidths,
+        updateDayWidth,
+        checkIsDayWidthSet,
         timeScaleElm,
-        
+
         dayTopElm,
         dayEventElm,
         calendarElm,

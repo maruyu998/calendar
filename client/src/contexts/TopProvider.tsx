@@ -1,11 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useStateRef } from "maruyu-webcommons/react/reactUse";
-
-type AlertMessageType = {
-  title: string|null, 
-  content: string|null, 
-  deleteAt: Date
-}
+import { ToastProvider } from "maruyu-webcommons/react/toast";
 
 type PressedKeysType = {
   esc: boolean,
@@ -13,7 +8,7 @@ type PressedKeysType = {
   ctrl: boolean,
   alt: boolean
 }
-const defaultPressedKeys = { 
+const defaultPressedKeys = {
   esc:false, shift:false, ctrl:false, alt:false
 }
 
@@ -21,8 +16,6 @@ const DeviceGenres = ["pc", "smartphone"] as const;
 type DeviceGenreType = typeof DeviceGenres[number];
 
 type TopProviderType = {
-  addAlert: (title:string|null,content:string|null,duration?:number)=>void,
-  alertMessages: AlertMessageType[],
   pressedKeys: PressedKeysType,
   deviceGenre: DeviceGenreType
 }
@@ -35,32 +28,13 @@ export function useTop(){
   return context;
 }
 
-export function TopProvider({children}){
-
-  const [ alertMessages, setAlertMessages ] = useState<AlertMessageType[]>([]);
-  const alertMessagesRef = useRef<AlertMessageType[]>([]);
-  useEffect(()=>{
-    alertMessagesRef.current = alertMessages;
-  }, [alertMessages])
-  useEffect(()=>{
-    function delteMessages(){
-      if(alertMessagesRef.current == null) return;
-      if(alertMessagesRef.current.length == 0) return;
-      setAlertMessages(alertMessagesRef.current.filter(({deleteAt})=>deleteAt.getTime() > Date.now()))
-    }
-    const intervalId = setInterval(delteMessages.bind(alertMessages), 100);
-    return ()=>clearInterval(intervalId);
-  }, [])
-  const addAlert = useMemo(()=>function(title:string|null, content:string|null, duration:number=5000){
-    const deleteAt = new Date(Date.now() + duration);
-    setAlertMessages([...alertMessages, { title, content, deleteAt }])
-  }, [alertMessages, setAlertMessages]);
+export function TopProvider({children}: {children: React.ReactNode}){
 
   const [pressedKeys, setPressedKeys, pressedKeysRef] = useStateRef<PressedKeysType>(defaultPressedKeys);
   useEffect(()=>{
     const listener = (e:KeyboardEvent, isPressing:boolean)=>{
       const newPressedKeys = {
-        ...pressedKeysRef.current, 
+        ...pressedKeysRef.current,
         esc: isPressing && e.key == "Escape",
         shift: e.shiftKey,
         ctrl: e.ctrlKey,
@@ -96,11 +70,13 @@ export function TopProvider({children}){
   return (
     <TopContext.Provider
       value={{
-        addAlert,
-        alertMessages,
         pressedKeys,
         deviceGenre,
       }}
-    >{children}</TopContext.Provider>
+    >
+      <ToastProvider>
+        {children}
+      </ToastProvider>
+    </TopContext.Provider>
   )
 }

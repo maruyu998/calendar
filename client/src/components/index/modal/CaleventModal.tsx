@@ -1,14 +1,14 @@
-import { useEditing } from "../../contexts/EditingProvider";
-import SmallModal from "../SmallModal";
-import CaleventNew from "./CaleventNew";
-import CaleventEdit from "./CaleventEdit";
+import { useEditing } from "@client/contexts/EditingProvider";
+import SmallModal from "maruyu-webcommons/react/components/SmallModal";
+import CaleventNew from "../curtain/CaleventNew";
+import CaleventEdit from "../curtain/CaleventEdit";
 
-export default function AllModal({
+export default function CaleventModal({
 
 }:{
 
 }){
-  const { 
+  const {
     isModalOpen,
     closeModal,
     selectingCalevent,
@@ -17,6 +17,7 @@ export default function AllModal({
 
   return (
     <SmallModal
+      modalExtendClassName="w-3xl"
       isOpen={isModalOpen}
       onClose={closeModal}
     >

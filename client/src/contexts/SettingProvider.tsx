@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useEffect, useMemo } from 'react';
-import { useCookie, useStateSession, useStateUrlSearchParamType, useTypeStateCookie } from "maruyu-webcommons/react/reactUse";
-import { CalendarIdType } from 'mtypes/v2/Calendar';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { useStateUrlSearchParamType, useTypeStateCookie } from "maruyu-webcommons/react/reactUse";
+import { CalendarIdType } from '@client/types/calendar';
 import { MdateTz, TimeZone } from 'maruyu-webcommons/commons/utils/mdate';
 import { useTop } from './TopProvider';
 
@@ -16,14 +16,16 @@ type SettingType = {
   heightScale: number,
   timezone: TimeZone,
   showCalIds: CalendarIdType[],
-  startDate: MdateTz,
+  startMdate: MdateTz,
   setShowTop: React.Dispatch<React.SetStateAction<boolean>>,
   setShowSide: React.Dispatch<React.SetStateAction<boolean>>,
   setDayDuration: React.Dispatch<React.SetStateAction<number>>,
   setHeightScale: React.Dispatch<React.SetStateAction<number>>,
   setTimezone: React.Dispatch<React.SetStateAction<TimeZone>>,
   setShowCalIds: React.Dispatch<React.SetStateAction<CalendarIdType[]>>,
-  setStartDate: React.Dispatch<React.SetStateAction<MdateTz>>
+  setStartMdate: React.Dispatch<React.SetStateAction<MdateTz>>,
+  isSettingOpen: boolean,
+  setIsSettingOpen: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 const SettingContext = createContext<SettingType|undefined>(undefined);
@@ -34,43 +36,43 @@ export function useSetting(){
   return context;
 }
 
-export function SettingProvider({children}){
+export function SettingProvider({children}: {children: React.ReactNode}){
 
   const { deviceGenre } = useTop();
 
   const [ showTop, setShowTop ] = useStateUrlSearchParamType<boolean>(
-    'showTop', false, 
+    'showTop', false,
     (v:boolean)=>String(v), (v:string)=>v==="true"
   );
-  
+
   const [ showSide, setShowSide ] = useStateUrlSearchParamType<boolean>(
-    'showSide', false, 
+    'showSide', false,
     (v:boolean)=>String(v), (v:string)=>v==="true"
   );
-  
+
   const [ dayDuration, setDayDuration ] = useStateUrlSearchParamType<number>(
-    'dayDuration', 7, 
+    'dayDuration', 7,
     (v:number)=>String(v), (v:string)=>Number(v)
   );
-  
+
   const [ heightScale, setHeightScale ] = useStateUrlSearchParamType<number>(
-    'heightScale', 100, 
+    'heightScale', 100,
     (v:number)=>String(v), (v:string)=>Number(v)
   );
 
   const [ timezone, setTimezone ] = useStateUrlSearchParamType<TimeZone>(
-    'timezone', "Asia/Tokyo", 
+    'timezone', "Asia/Tokyo",
     (v:TimeZone)=>String(v), (v:string)=>(v as TimeZone)
   );
 
   const [ showCalIds, setShowCalIds ] = useStateUrlSearchParamType<CalendarIdType[]>(
-    'showingCalendarIds', new Array<CalendarIdType>(), 
-    (v:CalendarIdType[])=>v.join(","), 
+    'showingCalendarIds', new Array<CalendarIdType>(),
+    (v:CalendarIdType[])=>v.join(","),
     (v:string)=>v.split(",").filter(isUUIDv4) as Array<CalendarIdType>
   );
   const [ showCalIdsCache, setShowCalIdsCache ] = useTypeStateCookie<CalendarIdType[]>(
     'showingCalendarIds', new Array<CalendarIdType>(),
-    (v:CalendarIdType[])=>v.join(","), 
+    (v:CalendarIdType[])=>v.join(","),
     (v:string)=>v.split(",").filter(isUUIDv4) as Array<CalendarIdType>
   );
   const showCalIdsWrap = useMemo<CalendarIdType[]>(()=>{
@@ -83,28 +85,38 @@ export function SettingProvider({children}){
     return setShowCalIdsCache;
   }, [deviceGenre])
 
-  const [ startDate, setStartDate ] = useStateSession<MdateTz>(
-    'startDate', new MdateTz(undefined, timezone).resetTime().forkAdd(-1,'date'), 
-    (mdate:MdateTz)=>mdate.unix, unix=>new MdateTz(unix, timezone)
+  const [ startMdate, setStartMdate ] = useTypeStateCookie<MdateTz>(
+    'startMdate',
+    new MdateTz(undefined, timezone).resetTime().forkAdd(-1,'date'),
+    (mdate:MdateTz)=>String(mdate.unix),
+    unixStr=>(
+      Number.isNaN(Number(unixStr))
+      ? new MdateTz(undefined, timezone).resetTime().forkAdd(-1,'date')
+      : new MdateTz(Number(unixStr), timezone)
+    )
   )
+
+  const [ isSettingOpen, setIsSettingOpen ] = useState<boolean>(false);
 
   return (
     <SettingContext.Provider
       value={{
         showTop,
-        showSide, 
-        dayDuration, 
+        showSide,
+        dayDuration,
         heightScale,
         timezone,
         showCalIds: showCalIdsWrap,
-        startDate,
+        startMdate,
         setShowTop,
         setShowSide,
         setDayDuration,
         setHeightScale,
         setTimezone,
         setShowCalIds: setShowCalIdsWrap,
-        setStartDate
+        setStartMdate,
+        isSettingOpen,
+        setIsSettingOpen,
       }}
     >{children}</SettingContext.Provider>
   )
