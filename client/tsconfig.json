@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "target": "esnext",
+    "strict": false
+  },
+  "include": [
+    "src",
+    "../webcommons/commons",
+    "../webcommons/react",
+    "../addon/client",
+    "../addon/domains/**/client",
+    "../addon/domains/**/protocol",
+    "../share"
+  ]
+}

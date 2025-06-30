@@ -1,0 +1,25 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "ES2022",
+    "module": "commonjs",
+    "rootDir": "..",
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "paths": {
+      "@share/*": ["../share/*"],
+      "@server/*": ["./src/*"],
+      "@addon/*": ["../addon/*"]
+    }
+  },
+  "include": [
+    "src",
+    "../webcommons/commons",
+    "../webcommons/node",
+    "../addon/server/**/*.ts",
+    "../addon/domains/**/server/*.ts",
+    "../addon/domains/**/protocol/*.ts",
+    "../share"
+  ]
+}

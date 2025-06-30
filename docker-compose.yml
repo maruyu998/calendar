@@ -1,0 +1,24 @@
+networks:
+  net:
+    ipam:
+      driver: default
+      config:
+        - subnet: ${SUBNET}
+
+services:
+  app:
+    build: .
+    container_name: calendar
+    restart: always
+    networks:
+      - net
+    ports:
+      - "${PORT}:3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./build:/app/build
+    environment:
+      - PORT=3000
+    env_file:
+      - .env
