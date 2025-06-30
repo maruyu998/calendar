@@ -1,6 +1,6 @@
 {
   "name": "calendar",
-  "version": "1.0.0",
+  "version": "4.0.0",
   "description": "A modular calendar application with addon-based architecture supporting multiple calendar sources",
   "scripts": {
     "client:build": "NODE_OPTIONS='-r esbuild-register' webpack --config client/webpack.config.ts",
