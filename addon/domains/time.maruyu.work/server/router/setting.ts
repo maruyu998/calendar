@@ -1,6 +1,6 @@
 import express from "express";
 import { deserializePacketInBody, requireBodyZod } from "maruyu-webcommons/node/middleware";
-import { asyncHandler, sendNoContent } from "maruyu-webcommons/node/express";
+import { asyncHandler, sendNoContent } from "@ymwc/node-express";
 import { storeApiKey } from "../process/connect";
 
 import {

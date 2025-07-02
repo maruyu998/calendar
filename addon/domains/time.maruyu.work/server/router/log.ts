@@ -1,5 +1,5 @@
 import express from "express";
-import { asyncHandler, sendData } from "maruyu-webcommons/node/express";
+import { asyncHandler, sendData } from "@ymwc/node-express";
 import { fetchLog, createLog, updateLog, deleteLog } from "../process/log";
 import { deserializePacketInBody, deserializePacketInQuery, requireBodyZod, requireQueryZod } from "maruyu-webcommons/node/middleware";
 import { 

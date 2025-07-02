@@ -1,5 +1,5 @@
 import express from "express";
-import { asyncHandler, sendData } from "maruyu-webcommons/node/express";
+import { asyncHandler, sendData } from "@ymwc/node-express";
 import * as fCalendar from "../../../services/calendar";
 import { ResponseObjectType as FetchListResponseObjectType } from "@share/protocol/calendar/fetchList";
 import { convertRawToFetchListResponseObject } from "@server/types/calendar";

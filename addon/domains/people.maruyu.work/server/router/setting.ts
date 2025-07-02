@@ -1,6 +1,6 @@
 import express from "express";
 import { requireBodyZod, requireQueryZod } from "maruyu-webcommons/node/middleware";
-import { asyncHandler, sendData, sendError, sendNoContent } from "maruyu-webcommons/node/express";
+import { asyncHandler, sendData, sendError, sendNoContent } from "@ymwc/node-express";
 import { storeApiKey } from "../process/connect";
 
 import {

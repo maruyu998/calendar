@@ -1,5 +1,5 @@
 import express from "express";
-import { asyncHandler, sendData, sendError } from "maruyu-webcommons/node/express";
+import { asyncHandler, sendData, sendError } from "@ymwc/node-express";
 import { requireQueryZod, requireBodyZod, deserializePacketInQuery, deserializePacketInBody } from "maruyu-webcommons/node/middleware";
 import { createActivity, deleteActivity, fetchActivity, updateActivity } from "../process/activity";
 import {

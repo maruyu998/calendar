@@ -1,5 +1,5 @@
 import express from "express";
-import { asyncHandler, sendData } from "maruyu-webcommons/node/express";
+import { asyncHandler, sendData } from "@ymwc/node-express";
 import { fetchQuotaList } from "../process/quota";
 import { deserializePacketInQuery, requireQueryZod } from "maruyu-webcommons/node/middleware";
 import { 

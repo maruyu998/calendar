@@ -9,7 +9,7 @@ import secRouter from "./api/web_secure/index";
 import apiRouter from "./api/external/index";
 
 import * as maruyuOAuthClient from "maruyu-webcommons/node/utils/oauth";
-import { asyncHandler, sendError } from "maruyu-webcommons/node/express";
+import { asyncHandler, sendError } from "@ymwc/node-express";
 import { PermissionError } from "@ymwc/errors";
 
 import app from "maruyu-webcommons/node/init";

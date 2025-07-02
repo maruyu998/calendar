@@ -1,6 +1,6 @@
 import express from "express";
 import { getUserApiauths, issueApiauth } from "maruyu-webcommons/node/utils/apiauth";
-import { asyncHandler, sendData } from "maruyu-webcommons/node/express";
+import { asyncHandler, sendData } from "@ymwc/node-express";
 import { deserializePacketInBody, deserializePacketInQuery } from "maruyu-webcommons/node/middleware";
 import { UserInfoType } from "maruyu-webcommons/node/types/oauth";
 
