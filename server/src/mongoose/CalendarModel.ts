@@ -7,7 +7,7 @@ import {
   CalendarPermissionType, CalendarSourceType, CalendarStyleDisplayType,
   CalendarUniqueKeyInSourceType,
 } from '@share/types/calendar';
-import { InternalServerError } from 'maruyu-webcommons/node/errors';
+import { InternalServerError } from '@ymwc/errors';
 import { HexColorType } from 'maruyu-webcommons/commons/utils/color';
 import { UserIdType } from 'maruyu-webcommons/commons/types/user';
 

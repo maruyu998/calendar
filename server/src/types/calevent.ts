@@ -4,7 +4,7 @@ import {
 } from "@share/protocol/calevent/fetchList";
 import { ResponseObjectType as UpdateItemResponseObjectType } from "@share/protocol/calevent/updateItem";
 import { CaleventType } from "@share/types/calevent";
-import { InternalServerError } from "maruyu-webcommons/node/errors";
+import { InternalServerError } from "@ymwc/errors";
 export {
   CaleventPermissionList,
   CaleventStyleDisplayList,

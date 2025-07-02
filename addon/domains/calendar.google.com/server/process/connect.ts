@@ -1,6 +1,6 @@
 import { google } from 'googleapis';
 import CertificationModel, { CredentialType, TokenType } from '@server/mongoose/CertificationModel';
-import { AuthenticationError, InternalServerError } from 'maruyu-webcommons/node/errors';
+import { AuthenticationError, InternalServerError } from '@ymwc/errors';
 import { UserIdType } from 'maruyu-webcommons/commons/types/user';
 
 

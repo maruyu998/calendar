@@ -2,7 +2,7 @@ import { fetchItem as mongoFetchItem } from "@server/mongoose/CaleventModel";
 import { CaleventSchema, CaleventType } from "@share/types/calevent";
 import { CaleventIdType } from "@share/types/calevent";
 import { UserIdType } from "maruyu-webcommons/commons/types/user";
-import { InternalServerError } from "maruyu-webcommons/node/errors";
+import { InternalServerError } from "@ymwc/errors";
 import { z } from "zod";
 
 export function validateCalevent<T extends z.ZodRawShape>(

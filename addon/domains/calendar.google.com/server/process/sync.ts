@@ -1,4 +1,4 @@
-import { InternalServerError } from 'maruyu-webcommons/node/errors';
+import { InternalServerError } from '@ymwc/errors';
 import { updateItem as mongoUpdateItem } from '@server/mongoose/CalendarModel';
 import { getCalendar } from './connect';
 import { DOMAIN } from '../../const';

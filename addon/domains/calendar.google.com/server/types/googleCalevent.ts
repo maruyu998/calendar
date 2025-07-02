@@ -1,7 +1,7 @@
 import { MdateTz, MdateTzSchema } from "maruyu-webcommons/commons/utils/mdate";
 import { z } from "zod";
 import { calendar_v3 } from 'googleapis';
-import { InternalServerError } from "maruyu-webcommons/node/errors";
+import { InternalServerError } from "@ymwc/errors";
 import { ResponseObjectType as FetchItemResponseObjectType } from "../../share/protocol/googleCalevent/fetchItem";
 import { ResponseObjectType as CreateItemResponseObjectType } from "../../share/protocol/googleCalevent/createItem";
 import { ResponseObjectType as UpdateItemResponseObjectType } from "../../share/protocol/googleCalevent/updateItem";

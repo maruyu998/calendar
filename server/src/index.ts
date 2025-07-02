@@ -10,7 +10,7 @@ import apiRouter from "./api/external/index";
 
 import * as maruyuOAuthClient from "maruyu-webcommons/node/utils/oauth";
 import { asyncHandler, sendError } from "maruyu-webcommons/node/express";
-import { PermissionError } from "maruyu-webcommons/node/errors";
+import { PermissionError } from "@ymwc/errors";
 
 import app from "maruyu-webcommons/node/init";
 import { requireApiKey, requireSignin } from "maruyu-webcommons/node/middleware";

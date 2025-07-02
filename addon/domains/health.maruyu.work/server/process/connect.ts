@@ -1,6 +1,6 @@
 import CertificationModel, { ApiKeyType } from '@server/mongoose/CertificationModel';
 import { UserIdType } from 'maruyu-webcommons/commons/types/user';
-import { AuthenticationError, InternalServerError } from 'maruyu-webcommons/node/errors';
+import { AuthenticationError, InternalServerError } from '@ymwc/errors';
 
 
 export async function storeApiKey({

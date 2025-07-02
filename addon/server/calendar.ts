@@ -1,7 +1,7 @@
 import { fetchItem as mongoFetchItem } from "@server/mongoose/CalendarModel";
 import { CalendarIdType, CalendarSchema, CalendarType } from "@share/types/calendar";
 import { UserIdType } from "maruyu-webcommons/commons/types/user";
-import { InternalServerError } from "maruyu-webcommons/node/errors";
+import { InternalServerError } from "@ymwc/errors";
 import { z } from "zod";
 
 export function validateCalendar<T extends z.ZodRawShape>(

@@ -3,7 +3,7 @@ import { CalendarIdType } from "@share/types/calendar";
 import { CaleventIdType, CaleventSchema, CaleventType } from "@share/types/calevent";
 import AbstractAddon from "@addon/server/addon";
 import { fetchCalendar } from "@addon/server/calendar";
-import { InternalServerError } from "maruyu-webcommons/node/errors";
+import { InternalServerError } from "@ymwc/errors";
 import { UserIdType } from "maruyu-webcommons/commons/types/user";
 
 const calendarSourceHandlers: Record<string, typeof AbstractAddon> = {};
