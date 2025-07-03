@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 import "dotenv/config";
-import env from "maruyu-webcommons/node/env";
+import env from "@ymwc/node-env";
 import { z } from "zod";
 
 import pubRouter from "./api/web_public/index";
