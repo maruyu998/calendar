@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Linkify from 'react-linkify';
-import { DAY, HOUR, MINUTE } from 'maruyu-webcommons/commons/utils/time';
+import { DAY, HOUR, MINUTE } from '@ymwc/utils';
 import { MdateTz, TimeZone } from '@ymwc/mdate';
 import { useToast } from 'maruyu-webcommons/react/toast';
 import { CaleventIdType, CaleventType } from "@client/types/calevent";

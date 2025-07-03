@@ -5,7 +5,7 @@ import { ResponseObjectType as UpdateItemResponseObjectType } from "../../share/
 import { ResponseObjectType as DeleteItemResponseObjectType } from "../../share/protocol/activity/deleteItem";
 import { RawActivityType } from "../process/activity";
 import { getNameSummary } from "../utils/people";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 import { PeopleSchema, PeopleType } from "../../share/types/people";
 import { ActivityIdSchema } from "../../share/types/activity";
 

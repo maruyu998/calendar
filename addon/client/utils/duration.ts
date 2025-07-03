@@ -1,5 +1,5 @@
 import { MdateTz, TimeZone } from "@ymwc/mdate";
-import { DAY, HOUR, MINUTE } from "maruyu-webcommons/commons/utils/time";
+import { DAY, HOUR, MINUTE } from "@ymwc/utils";
 
 
 export function createTimeRangeText(startMdate:MdateTz, endMdate:MdateTz):string{

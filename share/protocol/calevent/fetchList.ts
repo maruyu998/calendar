@@ -9,7 +9,7 @@ import {
   CaleventPermissionSchema,
   // CaleventStyleDisplaySchema,
 } from "@share/types/calevent";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 
 export const RequestQuerySchema = z.object({
   calendarIdList: z.array(CalendarIdSchema),

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CalendarIdSchema } from "./calendar";
-import { HexColorSchema } from "maruyu-webcommons/commons";
+import { HexColorSchema } from "@ymwc/utils";
 
 export const CaleventIdSchema = z.string().brand<"CaleventId">();
 export type CaleventIdType = z.infer<typeof CaleventIdSchema>;

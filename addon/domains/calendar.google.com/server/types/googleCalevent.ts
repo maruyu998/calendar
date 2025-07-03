@@ -6,7 +6,7 @@ import { ResponseObjectType as FetchItemResponseObjectType } from "../../share/p
 import { ResponseObjectType as CreateItemResponseObjectType } from "../../share/protocol/googleCalevent/createItem";
 import { ResponseObjectType as UpdateItemResponseObjectType } from "../../share/protocol/googleCalevent/updateItem";
 import { ResponseObjectType as DeleteItemResponseObjectType } from "../../share/protocol/googleCalevent/deleteItem";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 import { GoogleCalendarIdSchema } from "../../share/types/googleCalendar";
 import { GoogleCaleventIdSchema, GoogleCaleventIdType, GoogleCaleventDateSchema } from "../../share/types/googleCalevent";
 

@@ -28,7 +28,7 @@ import EstimatedMinuteForm from '../components/EstimatedMinuteForm';
 import ColorSelector from '../components/ColorSelector';
 import { TaskPriorityType } from '../../share/types/task';
 import { GenreSelector } from '../components/GenreSelector';
-import { generateRandomColor, HexColorType } from 'maruyu-webcommons/commons/utils/color';
+import { generateRandomColor, HexColorType } from '@ymwc/utils';
 import { createTitle } from '../func/task';
 
 

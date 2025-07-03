@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { TimePurposeSchema } from "./timePurpose"
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 
 export const TimeQuotaIdSchema = z.string().brand<"TimeQuotaId">();
 export type TimeQuotaIdType = z.infer<typeof TimeQuotaIdSchema>;

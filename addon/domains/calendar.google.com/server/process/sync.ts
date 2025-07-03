@@ -3,7 +3,7 @@ import { updateItem as mongoUpdateItem } from '@server/mongoose/CalendarModel';
 import { getCalendar } from './connect';
 import { DOMAIN } from '../../const';
 import { CalendarPermissionType, CalendarSourceType, CalendarUniqueKeyInSourceType } from '@share/types/calendar';
-import { HexColorType } from 'maruyu-webcommons/commons/utils/color';
+import { HexColorType } from '@ymwc/utils';
 import { UserIdType } from 'maruyu-webcommons/commons/types/user';
 
 export async function refreshCalendarList({

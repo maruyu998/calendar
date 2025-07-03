@@ -1,4 +1,4 @@
-import { HexColorType } from "maruyu-webcommons/commons/utils/color";
+import { HexColorType } from "@ymwc/utils";
 import { GoogleCaleventColorList } from "../types/googleCalevent";
 
 export function convertColidToColor(colorId:number|string):HexColorType|null{

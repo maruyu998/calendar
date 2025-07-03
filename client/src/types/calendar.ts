@@ -11,8 +11,6 @@ import {
   CalendarType,
 } from "@share/types/calendar";
 
-import { HexColorSchema, HexColorType } from "maruyu-webcommons/commons/utils/color";
-
 export type { CalendarIdType, CalendarSourceType, CalendarType };
 export { CalendarSchema } from "@share/types/calendar";
 

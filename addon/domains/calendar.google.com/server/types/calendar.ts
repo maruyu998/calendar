@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { DOMAIN } from "../../const";
 import { CalendarSchema, CalendarStyleDisplaySchema } from "@share/types/calendar";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 import { GoogleCalendarIdSchema } from "../../share/types/googleCalendar";
 
 export const GCalAccessRoleSchema = z.enum(["owner", "reader", "writer", "freeBusyReader"]);

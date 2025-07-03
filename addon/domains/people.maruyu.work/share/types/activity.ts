@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 import { PeopleSchema, PeopleType } from "./people";
 
 export const ActivityIdSchema = z.string().brand<"ActivityId">();

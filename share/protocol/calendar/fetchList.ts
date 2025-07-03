@@ -6,7 +6,7 @@ import {
   CalendarStyleDisplaySchema,
   CalendarUniqueKeyInSourceSchema,
 } from "@share/types/calendar";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 
 const RequestQuerySchema = z.object({
 

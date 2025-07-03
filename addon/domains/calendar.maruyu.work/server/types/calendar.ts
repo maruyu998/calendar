@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { DOMAIN } from "../../const";
 import { CalendarSchema, CalendarStyleDisplaySchema } from "@share/types/calendar";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 
 export const DefaultCalendarSchema = CalendarSchema
   .omit({

@@ -1,4 +1,4 @@
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 import { z } from "zod";
 
 export const PurposeSchema: z.ZodSchema = z.lazy(() =>

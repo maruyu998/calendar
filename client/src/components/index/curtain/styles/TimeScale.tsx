@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { range } from "maruyu-webcommons/commons/utils/number";
+import { numberRange as range } from "@ymwc/utils";
 import { getDivRefWidth } from "@client/utils/ReactRect";
 import { MdateTz } from "@ymwc/mdate";
 import { useSetting } from "@client/contexts/SettingProvider";
-import { HOUR } from "maruyu-webcommons/commons/utils/time";
+import { HOUR } from "@ymwc/utils";
 
 export default function TimeScale(){
   const { timezone } = useSetting();

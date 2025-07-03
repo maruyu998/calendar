@@ -3,7 +3,7 @@ import * as GcalEventList from "./process/googleCalevent";
 import { CalendarIdType } from "@share/types/calendar";
 import { CaleventIdType, CaleventType } from "@share/types/calevent";
 import { calendar_v3 } from "googleapis";
-import { HexColorType } from "maruyu-webcommons/commons/utils/color";
+import { HexColorType } from "@ymwc/utils";
 import { GoogleCalendarIdType } from "../share/types/googleCalendar";
 import { GoogleCaleventIdType } from "../share/types/googleCalevent";
 import { convertColidToColor } from "../share/func/googleCalevent";

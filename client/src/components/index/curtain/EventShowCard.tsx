@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
-import { parseColor, isBrightColor } from 'maruyu-webcommons/commons/utils/color';
+import { parseColor, isBrightColor } from '@ymwc/utils';
 import { CaleventType } from '@client/types/calevent';
 import { useEditing } from '@client/contexts/EditingProvider';
 import { useStatus } from '@client/contexts/StatusProvider';

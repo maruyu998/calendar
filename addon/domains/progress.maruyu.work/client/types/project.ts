@@ -5,7 +5,7 @@ import {
 } from "../../share/protocol/project/fetchList";
 import { ProjectIdSchema, ProjectPrioritySchema, ProjectStatusLabelSchema } from "../../share/types/project";
 import { OutcomeIdSchema } from "../../share/types/outcome";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 
 export const ProjectSchema = z.object({
   id: ProjectIdSchema,

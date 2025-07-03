@@ -1,5 +1,5 @@
 import { RiCheckLine, RiPencilLine, RiResetLeftFill } from "@remixicon/react";
-import { HexColorType } from "maruyu-webcommons/commons/utils/color";
+import { HexColorType } from "@ymwc/utils";
 import { useEffect, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { convertColidToColor } from "../../share/func/googleCalevent";

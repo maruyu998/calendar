@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { ProjectIdSchema, ProjectWithFullSchema } from "./project";
 import { OutcomeIdSchema } from "./outcome";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 
 export const TaskIdSchema = z.string().brand<"TaskId">();
 export type TaskIdType = z.infer<typeof TaskIdSchema>;

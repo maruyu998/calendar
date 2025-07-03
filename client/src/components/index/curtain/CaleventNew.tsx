@@ -5,7 +5,7 @@ import { useSetting } from '@client/contexts/SettingProvider';
 import { useStatus } from '@client/contexts/StatusProvider';
 import { CaleventNewForm } from "@addon/client";
 import { useEvents } from '@client/contexts/EventsProvider';
-import { HexColorType } from 'maruyu-webcommons/commons/utils/color';
+import { HexColorType } from '@ymwc/utils';
 
 function Card({
   name,

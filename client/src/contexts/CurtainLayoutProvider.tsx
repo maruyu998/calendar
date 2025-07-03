@@ -4,7 +4,7 @@ import { useSetting } from './SettingProvider';
 import { useTypeStateCookie } from 'maruyu-webcommons/react/reactUse';
 import { useStatus } from './StatusProvider';
 import { MdateTz } from '@ymwc/mdate';
-import { range, sum } from 'maruyu-webcommons/commons/utils/number';
+import { numberRange as range, sum } from '@ymwc/utils';
 import { useTopLayout } from './TopLayoutProvider';
 import { useEvents } from './EventsProvider';
 

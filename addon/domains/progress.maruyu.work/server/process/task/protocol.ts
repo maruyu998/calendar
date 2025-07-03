@@ -5,7 +5,7 @@ import {
 } from "../../../share/types/task";
 import { ProjectIdSchema, ProjectPrioritySchema } from "../../../share/types/project";
 import { OutcomeIdSchema } from "../../../share/types/outcome";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 //////////                           F E T C H   L I S T                           //////////

@@ -1,7 +1,7 @@
 import { fetchTaskTime, fetchTaskTimeList, updateTaskTime } from "./process/taskTime";
 import { CaleventIdType, CaleventType } from "@share/types/calevent";
 import { CalendarIdType } from "@share/types/calendar";
-import { HexColorType } from "maruyu-webcommons/commons/utils/color";
+import { HexColorType } from "@ymwc/utils";
 import { TaskTimeIdType, TaskTimeType, TaskTimeWithFullType } from "../share/types/taskTime";
 import { createTitle } from "../share/func/task";
 import { UserIdType } from "maruyu-webcommons/commons/types/user";

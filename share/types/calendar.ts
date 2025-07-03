@@ -1,4 +1,4 @@
-import { HexColorSchema } from "maruyu-webcommons/commons";
+import { HexColorSchema } from "@ymwc/utils";
 import { z } from "zod";
 
 export const CalendarIdSchema = z.string().brand<"CalendarId">();

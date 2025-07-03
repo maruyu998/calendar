@@ -9,7 +9,7 @@ import {
 import { TaskIdSchema, TaskPrioritySchema, TaskRecurringIdSchema, TaskStatusLabelSchema } from "../../share/types/task";
 import { ProjectIdSchema } from "../../share/types/project";
 import { OutcomeIdSchema } from "../../share/types/outcome";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 import { ProjectWithFullSchema, ProjectWithFullType } from "./project";
 
 export const TaskSchema = z.object({

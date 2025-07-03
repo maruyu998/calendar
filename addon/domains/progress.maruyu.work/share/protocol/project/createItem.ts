@@ -2,7 +2,7 @@ import { z } from "zod";
 import { CalendarIdSchema } from "@share/types/calendar";
 import { ProjectIdSchema, ProjectSchema } from "../../types/project";
 import { OutcomeIdSchema } from "../../types/outcome";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 import { TaskPrioritySchema } from "../../types/task";
 
 export const RequestBodySchema = z.object({

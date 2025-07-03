@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import TimeScale from './styles/TimeScale';
 import { useCurtainLayout } from '@client/contexts/CurtainLayoutProvider';
 import { useSetting } from '@client/contexts/SettingProvider';
-import { range } from 'maruyu-webcommons/commons/utils/number';
+import { numberRange as range } from '@ymwc/utils';
 import DayCurtain from './DayCurtain';
 import DayCurtainTop from './DayCurtainTop';
 import DayEventCurtain from './DayEventCurtain';

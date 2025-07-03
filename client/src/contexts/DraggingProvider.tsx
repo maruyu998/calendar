@@ -5,7 +5,7 @@ import { CaleventType } from '@client/types/calevent';
 import { useTop } from './TopProvider';
 import { useCurtainLayout } from './CurtainLayoutProvider';
 import { useSetting } from './SettingProvider';
-import { DAY, MINUTE } from 'maruyu-webcommons/commons/utils/time';
+import { DAY, MINUTE } from '@ymwc/utils';
 
 export type MouseCoordType = { x:number, y:number }
 const ProcesssStates = ["default","top","bottom","updating"] as const

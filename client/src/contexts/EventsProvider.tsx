@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { SECOND, wait } from 'maruyu-webcommons/commons/utils/time';
+import { SECOND, wait } from '@ymwc/utils';
 import { fetchCaleventList } from '@client/data/calevent';
 import { useSetting } from './SettingProvider';
 import { useStatus } from './StatusProvider';

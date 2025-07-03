@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { CalendarIdSchema, CalendarIdType } from "@share/types/calendar";
 import { TaskTimeIdSchema, TaskTimeIdType } from "../../types/taskTime";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 import { TaskClosingStatusSchema, TaskDeferStatusSchema, TaskIdSchema, TaskPrioritySchema, TaskRecurringIdSchema } from "../../types/task";
 import { ProjectWithFullSchema } from "../../types/project";
 import { OutcomeIdSchema } from "../../types/outcome";

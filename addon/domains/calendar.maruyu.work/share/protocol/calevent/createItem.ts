@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 import { CalendarIdSchema } from "@share/types/calendar";
 import { DefaultCaleventIdSchema } from "../../types/defaultCalevent";
 

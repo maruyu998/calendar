@@ -1,4 +1,4 @@
-import { HexColorType } from "maruyu-webcommons/commons/utils/color";
+import { HexColorType } from "@ymwc/utils";
 import { IsoStringSchema, TimeZoneSchema, YYYYMMDDSchema } from "@ymwc/mdate";
 import { z } from "zod";
 

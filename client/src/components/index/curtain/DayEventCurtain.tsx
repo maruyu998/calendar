@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { parseColor, isBrightColor } from 'maruyu-webcommons/commons/utils/color';
+import { parseColor, isBrightColor } from '@ymwc/utils';
 import { MdateTz } from '@ymwc/mdate';
 import { useEvents } from '@client/contexts/EventsProvider';
 import { CaleventType } from '@client/types/calevent';

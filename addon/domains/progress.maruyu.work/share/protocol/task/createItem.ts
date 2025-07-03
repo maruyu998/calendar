@@ -3,7 +3,7 @@ import { CalendarIdSchema, CalendarIdType } from "@share/types/calendar";
 import { TaskPrioritySchema, TaskPriorityType, TaskRecurringIdSchema, TaskRecurringIdType, TaskSchema, TaskWithFullSchema } from "../../types/task";
 import { ProjectIdSchema, ProjectIdType } from "../../types/project";
 import { OutcomeIdSchema, OutcomeIdType } from "../../types/outcome";
-import { HexColorSchema, HexColorType } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema, HexColorType } from "@ymwc/utils";
 
 export const RequestBodySchema = z.object({
   calendarId: CalendarIdSchema,

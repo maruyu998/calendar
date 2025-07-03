@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { CalendarSchema, CalendarStyleDisplaySchema } from "@share/types/calendar";
 import { DOMAIN } from "../../const";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 
 export const DatafootCalendarSchema = CalendarSchema
   .omit({

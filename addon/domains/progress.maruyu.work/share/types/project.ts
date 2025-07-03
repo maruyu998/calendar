@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { OutcomeIdSchema } from "./outcome";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 
 export const ProjectIdSchema = z.string().brand<"ProjectId">();
 export type ProjectIdType = z.infer<typeof ProjectIdSchema>;

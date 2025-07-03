@@ -5,7 +5,7 @@ import { storeApiKey } from "../process/connect";
 import { updateItem as mongoUpdateItem } from "@server/mongoose/CalendarModel";
 import { DOMAIN } from "../../const";
 import { CalendarSourceType, CalendarUniqueKeyInSourceType } from "@share/types/calendar";
-import { HexColorType } from "maruyu-webcommons/commons/utils/color";
+import { HexColorType } from "@ymwc/utils";
 
 import {
   RequestBodySchema as UpdateCredentialRequestBodySchema,

@@ -1,4 +1,4 @@
-import { hsvToRgb, parseColor, printColor, rgbToHsv } from "maruyu-webcommons/commons/utils/color";
+import { hsvToRgb, parseColor, printColor, rgbToHsv } from "@ymwc/utils";
 import { Mdate, MdateTz } from "@ymwc/mdate";
 import { CaleventType } from "@client/types/calevent";
 

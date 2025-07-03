@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { CalendarIdSchema } from "@share/types/calendar";
 import { CaleventIdSchema, CaleventPermissionSchema } from "@share/types/calevent";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 
 export const RequestBodySchema = z.object({
   calendarId: CalendarIdSchema,

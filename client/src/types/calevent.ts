@@ -6,7 +6,7 @@ import { CaleventIdSchema, CaleventIdType, CaleventPermissionSchema } from "@sha
 
 export type { CaleventIdType };
 import { CalendarType } from "./calendar";
-import { HexColorSchema, HexColorType } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema, HexColorType } from "@ymwc/utils";
 import { CalendarIdSchema } from "@share/types/calendar";
 
 export const CaleventSchema = z.object({

@@ -2,13 +2,13 @@ import * as Log from "./process/log";
 import { CalendarIdType } from "@share/types/calendar";
 import { CaleventIdType, CaleventType } from "@share/types/calevent";
 import { DOMAIN } from "../const";
-import { LogType, LogApiType } from "./types/log";
+import { Log as LogSDKType, LogFull } from "@maruyu/time-sdk";
 import { createTitle } from "../share/func/log";
 import { LogIdType } from "../share/types/log";
 import { UserIdType } from "maruyu-webcommons/commons/types/user";
 
 export function convertLogToCalevent(
-  log: LogApiType,
+  log: LogFull,
   calendarId: CalendarIdType,
 ):CaleventType{
   return {
@@ -25,7 +25,7 @@ export function convertLogToCalevent(
     startTime: log.startTime,
     endTime: log.endTime,
     // createdAt: log.createdAt,
-    updatedAt: log.updatedAt,
+    updatedAt: log.updatedTime,
     permissions: ["read", "write", "edit", "delete"],
     style: {
       mainColor: log.quota.styles.color,
@@ -59,6 +59,8 @@ export async function updateCalevent(props:{
 }):Promise<CaleventType>{
   const { userId, calendarId, logId: id, ...updateData } = props;
   const log = await Log.updateLog({ userId, id, ...updateData });
-  const calevent = convertLogToCalevent(log, calendarId);
+  // updateLogはLogを返すので、LogFullに変換するためにfetchLogを使う
+  const fullLog = await Log.fetchLog({ userId, id });
+  const calevent = convertLogToCalevent(fullLog, calendarId);
   return calevent;
 }

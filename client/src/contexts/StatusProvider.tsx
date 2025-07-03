@@ -4,7 +4,7 @@ import { useSetting } from './SettingProvider';
 import { CalendarType } from '@client/types/calendar';
 import { convertFetchListResponseToClient } from '@client/types/calendar';
 import { fetchCalendarList } from '@client/data/calendar';
-import { DAY, MINUTE } from 'maruyu-webcommons/commons/utils/time';
+import { DAY, MINUTE } from '@ymwc/utils';
 
 type StatusType = {
   calendarList: CalendarType[],

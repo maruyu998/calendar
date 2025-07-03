@@ -5,7 +5,7 @@ import {
   ProjectStatusLabelSchema, ProjectStatusLabelType,
 } from "../../../share/types/project";
 import { OutcomeIdSchema } from "../../../share/types/outcome";
-import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";
+import { HexColorSchema } from "@ymwc/utils";
 
 export const ProjectWithFullSchema: z.ZodSchema = z.lazy(()=>z.object({
   id: ProjectIdSchema,
