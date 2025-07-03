@@ -1,5 +1,5 @@
 import { Mdate } from '@ymwc/mdate';
-import { getPacket, postPacket, putPacket, deletePacket } from 'maruyu-webcommons/commons/utils/fetch';
+import { getPacket, postPacket, putPacket, deletePacket } from '@ymwc/http';
 import { DOMAIN } from "../../const";
 import { TimeLogApiType } from "../types/timeLog";
 import { TimeLogIdType } from '../../share/types/timeLog';

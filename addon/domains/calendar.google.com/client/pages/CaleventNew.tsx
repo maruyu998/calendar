@@ -9,7 +9,7 @@ import { convertFetchItemResponseToClient } from "../types/googleCalevent";
 import { convertColidToColor } from "../../share/func/googleCalevent";
 import { convertGoogleCaleventDateToMdate as c } from '../func/googleCalevnt';
 import ColorSelector from '../components/ColorSelector';
-import { HexColorType } from 'maruyu-webcommons/commons/utils/color';
+import { HexColorType } from '@ymwc/utils';
 import SummaryForm from '../components/SummaryForm';
 
 

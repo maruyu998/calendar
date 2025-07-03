@@ -18,7 +18,7 @@ import DuplicateButton from '../../../../client/components/DuplicateButton';
 import DescriptionForm from '../components/DescriptionForm';
 import SummaryForm from '../components/SummaryForm';
 import ColorSelector from '../components/ColorSelector';
-import { HexColorType } from 'maruyu-webcommons/commons/utils/color';
+import { HexColorType } from '@ymwc/utils';
 import { UpdateRefreshItemType } from '@client/contexts/EventsProvider';
 import { convertColidToColor } from '../../share/func/googleCalevent';
 import DurationForm from '../components/DurationForm';

@@ -8,7 +8,7 @@ import { getStoredApiKey } from '../connect';
 import { ProjectIdType, ProjectSchema } from "../../../share/types/project";
 import { OutcomeIdType } from '../../../share/types/outcome';
 import { TaskPriorityType, TaskRecurringIdType } from '../../../share/types/task';
-import { HexColorType } from 'maruyu-webcommons/commons/utils/color';
+import { HexColorType } from '@ymwc/utils';
 import { UserIdType } from 'maruyu-webcommons/commons/types/user';
 import { FetchListRequestQueryType } from "./protocol";
 
