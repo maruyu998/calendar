@@ -1,7 +1,7 @@
 import express from "express";
 import { asyncHandler, sendData } from "@ymwc/node-express";
 import { createTaskTime, deleteTaskTime, fetchTaskTime, updateTaskTime } from "../process/taskTime";
-import { deserializePacketInBody, deserializePacketInQuery, requireBodyZod, requireQueryZod } from "maruyu-webcommons/node/middleware";
+import { deserializePacketInBody, deserializePacketInQuery, requireBodyZod, requireQueryZod } from "@ymwc/node-express";
 import { 
   RequestQuerySchema as FetchItemRequestQuerySchema,
   RequestQueryType as FetchItemRequestQueryType,

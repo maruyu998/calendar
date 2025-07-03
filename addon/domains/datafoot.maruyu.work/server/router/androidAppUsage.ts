@@ -1,7 +1,7 @@
 import express from "express";
 import { asyncHandler, sendData } from "@ymwc/node-express";
 import { fetchAndroidAppUsage } from "../process/androidAppUsage";
-import { deserializePacketInQuery, requireQueryZod } from "maruyu-webcommons/node/middleware";
+import { deserializePacketInQuery, requireQueryZod } from "@ymwc/node-express";
 import {
   RequestQuerySchema as FetchItemRequestQuerySchema,
   RequestQueryType as FetchItemRequestQueryType,

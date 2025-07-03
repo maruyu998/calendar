@@ -1,5 +1,5 @@
 import express from "express";
-import { requireBodyZod, requireQueryZod } from "maruyu-webcommons/node/middleware";
+import { requireBodyZod, requireQueryZod } from "@ymwc/node-express";
 import { asyncHandler, sendData, sendNoContent } from "@ymwc/node-express";
 import { generateConnectUrl, getAndStoreTokenByCode, revokeToken, storeCredential } from "../process/connect";
 import * as sync from "../process/sync";

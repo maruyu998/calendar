@@ -1,6 +1,6 @@
 import express from "express";
 import { asyncHandler, sendData, sendError } from "@ymwc/node-express";
-import { deserializePacketInBody, deserializePacketInQuery, requireBodyZod, requireQueryZod } from "maruyu-webcommons/node/middleware";
+import { deserializePacketInBody, deserializePacketInQuery, requireBodyZod, requireQueryZod } from "@ymwc/node-express";
 import * as fCalevent from "@server/services/calevent";
 import {
   RequestQuerySchema as FetchListRequestQuerySchema,

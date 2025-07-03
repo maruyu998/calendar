@@ -1,6 +1,6 @@
 import express from "express";
 import { asyncHandler, sendData, sendError } from "@ymwc/node-express";
-import { requireQueryZod, requireBodyZod, deserializePacketInQuery, deserializePacketInBody } from "maruyu-webcommons/node/middleware";
+import { requireQueryZod, requireBodyZod, deserializePacketInQuery, deserializePacketInBody } from "@ymwc/node-express";
 import { createActivity, deleteActivity, fetchActivity, updateActivity } from "../process/activity";
 import {
   RequestQuerySchema as FetchItemRequestQuerySchema,

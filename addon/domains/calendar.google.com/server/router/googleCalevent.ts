@@ -1,6 +1,6 @@
 import express from "express";
 import { asyncHandler, sendData, sendError } from "@ymwc/node-express";
-import { requireQueryZod, requireBodyZod } from "maruyu-webcommons/node/middleware";
+import { requireQueryZod, requireBodyZod } from "@ymwc/node-express";
 import { createEvent, deleteEvent, fetchEvent, updateEvent } from "../process/googleCalevent";
 import {
   RequestQuerySchema as FetchItemRequestQuerySchema,
