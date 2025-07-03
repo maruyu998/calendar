@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { useStateRef } from 'maruyu-webcommons/react/reactUse';
+import { useStateRef } from '@ymwc/react-core';
 import { parseColor, isBrightColor } from '@ymwc/utils';
 import { MdateTz } from '@ymwc/mdate';
 import { useSetting } from '@client/contexts/SettingProvider';
