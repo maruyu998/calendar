@@ -1,4 +1,4 @@
-import { getPacket, postPacket, putPacket, deletePacket } from "maruyu-webcommons/commons/utils/fetch";
+import { getPacket, postPacket, putPacket, deletePacket } from "@ymwc/http";
 import { Mdate } from "@ymwc/mdate";
 import { DOMAIN } from "../../const";
 import { ActivityIdType } from "../../share/types/activity";

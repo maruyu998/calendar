@@ -1,4 +1,4 @@
-import { getPacket, postPacket } from 'maruyu-webcommons/commons/utils/fetch';
+import { getPacket, postPacket } from '@ymwc/http';
 import { DOMAIN } from "../../../const";
 import {
   FetchListResponseObjectSchema, FetchListResponseObjectType,

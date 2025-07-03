@@ -1,4 +1,4 @@
-import { getPacket } from "maruyu-webcommons/commons/utils/fetch";
+import { getPacket } from "@ymwc/http";
 import { Mdate, TimeZone } from "@ymwc/mdate";
 import { DOMAIN } from "../../const";
 import { getStoredApiKey } from "./connect";

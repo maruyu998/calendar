@@ -1,4 +1,4 @@
-import { getPacket } from 'maruyu-webcommons/commons/utils/fetch';
+import { getPacket } from '@ymwc/http';
 import { DOMAIN } from "../../../const";
 import { FetchListResponseObjectSchema, FetchListResponseObjectType } from "./protocol";
 import { getStoredApiKey } from '../connect';

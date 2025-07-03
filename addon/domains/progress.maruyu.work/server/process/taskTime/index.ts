@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getPacket, postPacket, putPacket, deletePacket } from 'maruyu-webcommons/commons/utils/fetch';
+import { getPacket, postPacket, putPacket, deletePacket } from '@ymwc/http';
 import { DOMAIN } from "../../../const";
 import { TaskIdType } from '../../../share/types/task';
 import { TaskTimeIdSchema, TaskTimeIdType } from "../../../share/types/taskTime";

@@ -1,4 +1,4 @@
-import { getPacket, postPacket, patchPacket } from "maruyu-webcommons/commons/utils/fetch";
+import { getPacket, postPacket, patchPacket } from "@ymwc/http";
 import { DOMAIN_ENDPOINT } from "../../const";
 import {
   ResponseObjectSchema as FetchAuthorizationUrlResponseObjectSchema,

@@ -1,4 +1,4 @@
-import { putPacket } from "maruyu-webcommons/commons/utils/fetch";
+import { putPacket } from "@ymwc/http";
 import { DOMAIN_ENDPOINT } from "../../const";
 import { RequestBodySchema, RequestBodyType, ResponseObjectSchema, ResponseObjectType } from "../../share/protocol/setting/apiKey";
 

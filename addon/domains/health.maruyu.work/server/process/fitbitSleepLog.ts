@@ -1,4 +1,4 @@
-import { getPacket } from "maruyu-webcommons/commons/utils/fetch"
+import { getPacket } from "@ymwc/http"
 import { Mdate } from "@ymwc/mdate";
 import { DOMAIN } from "../../const";
 import { RawFitbitNightEventType } from "../types/fitbitSleepLog";

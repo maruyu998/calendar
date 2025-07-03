@@ -1,4 +1,4 @@
-import { getPacket } from "maruyu-webcommons/commons/utils/fetch"
+import { getPacket } from "@ymwc/http"
 import { RawAndroidAppUsageType } from "../types/androidAppUsage";
 import { DOMAIN } from "../../const";
 import { getStoredApiKey } from "./connect";

@@ -1,4 +1,4 @@
-import { getPacket } from 'maruyu-webcommons/commons/utils/fetch';
+import { getPacket } from '@ymwc/http';
 import { DOMAIN } from "../../const";
 import { QuotaType } from "../../share/types/quota";
 import { getStoredApiKey } from './connect';

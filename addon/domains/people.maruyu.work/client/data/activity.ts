@@ -1,4 +1,4 @@
-import { deletePacket, getPacket, postPacket, patchPacket } from "maruyu-webcommons/commons/utils/fetch";
+import { deletePacket, getPacket, postPacket, patchPacket } from "@ymwc/http";
 import { DOMAIN_ENDPOINT } from "../../const";
 import {
   RequestQuerySchema as FetchItemRequestQuerySchema,

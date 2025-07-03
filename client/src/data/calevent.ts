@@ -1,4 +1,4 @@
-import { getPacket, patchPacket } from "maruyu-webcommons/commons/utils/fetch";
+import { getPacket, patchPacket } from "@ymwc/http";
 import {
   ResponseObjectSchema as FetchListResponseObjectSchema,
   ResponseObjectType as FetchListResponseObjectType,
