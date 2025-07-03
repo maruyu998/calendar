@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { updateLog, deleteLog, createLog } from '../data/log';
-import { MdateTz, TimeZone } from 'maruyu-webcommons/commons/utils/mdate';
+import { MdateTz, TimeZone } from '@ymwc/mdate';
 import { useToast } from 'maruyu-webcommons/react/toast';
 import { CalendarType } from "@client/types/calendar";
 import { CaleventIdType, CaleventType } from "@client/types/calevent";

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { ResponseObjectType as FetchItemResponseObjectType } from "../../share/protocol/fitbitSleepLog/fetchItem";
-import { MdateTz, MdateTzSchema, TimeZone } from "maruyu-webcommons/commons/utils/mdate";
+import { MdateTz, MdateTzSchema, TimeZone } from "@ymwc/mdate";
 import { FitbitIdSchema, FitbitSleepLogIdSchema } from "../../share/types/fitbitSleepLog";
 
 export const FitbitSleepLogSchema = z.object({

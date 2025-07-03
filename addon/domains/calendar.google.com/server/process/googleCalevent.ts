@@ -1,5 +1,5 @@
 import { calendar_v3 } from 'googleapis';
-import { IsoStringType, Mdate } from "maruyu-webcommons/commons/utils/mdate";
+import { IsoStringType, Mdate } from "@ymwc/mdate";
 import { getCalendar } from "./connect";
 import { RawGoogleCaleventType } from '../types/googleCalevent';
 import { GoogleCalendarIdType } from "../../share/types/googleCalendar";

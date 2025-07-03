@@ -1,5 +1,5 @@
 import { RiCheckLine, RiPencilLine, RiResetLeftFill } from '@remixicon/react';
-import { MdateTz, TimeZone, YYYYMMDD, YYYYMMDDSchema } from 'maruyu-webcommons/commons/utils/mdate';
+import { MdateTz, TimeZone, YYYYMMDD, YYYYMMDDSchema } from '@ymwc/mdate';
 import { useEffect, useMemo, useState } from 'react';
 import { createDurationText, createTimeRangeText } from '@addon/client/utils/duration';
 import { GoogleCaleventDateType as GCD } from '../../share/types/googleCalevent';

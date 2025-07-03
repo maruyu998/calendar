@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { CaleventType } from "@client/types/calevent";
 import { CalendarType } from "@client/types/calendar";
 import { createTimeRangeText, createDurationText } from "../utils/duration";
-import { TimeZone } from "maruyu-webcommons/commons/utils/mdate";
+import { TimeZone } from "@ymwc/mdate";
 
 export default function CaleventCommonView({
   calevent,

@@ -1,7 +1,7 @@
 import { 
   ProjectWithFullType as NativeProjectWithFullType
 } from "../../share/types/project";
-import { MdateTz, TimeZone } from "maruyu-webcommons/commons/utils/mdate";
+import { MdateTz, TimeZone } from "@ymwc/mdate";
 import { ProjectWithFullType } from "../types/project";
 
 export function aggregateProject(

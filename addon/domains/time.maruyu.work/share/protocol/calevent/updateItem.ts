@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { Mdate } from "maruyu-webcommons/commons/utils/mdate";
 import { CalendarIdSchema, CalendarIdType } from "@share/types/calendar";
 import { CaleventIdSchema, CaleventIdType } from "@share/types/calevent";
 import { HexColorSchema } from "maruyu-webcommons/commons/utils/color";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Datepicker from "react-tailwindcss-datepicker";
-import { MdateTz, TIME_ZONES, TimeZone } from 'maruyu-webcommons/commons/utils/mdate';
+import { MdateTz, TIME_ZONES, TimeZone } from '@ymwc/mdate';
 import { useSetting } from '@client/contexts/SettingProvider';
 import TopChovenDown from "../../../assets/icons/tsxs/TopChovenDown";
 import TopChovenUp from "../../../assets/icons/tsxs/TopChovenUp";

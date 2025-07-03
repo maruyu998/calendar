@@ -1,6 +1,6 @@
 import { CalendarType } from "@client/types/calendar";
 import { CaleventIdType, CaleventType } from "@client/types/calevent";
-import { TimeZone } from "maruyu-webcommons/commons/utils/mdate";
+import { TimeZone } from "@ymwc/mdate";
 
 import { CaleventEdit as CalendarGoogleCom } from "@addon/domains/calendar.google.com/client";
 import CalendarMaruyuWork from "@addon/domains/calendar.maruyu.work/client/form/CaleventEdit";

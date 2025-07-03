@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { MdateTz, MdateTzSchema, TimeZone } from "maruyu-webcommons/commons/utils/mdate"
+import { MdateTz, MdateTzSchema, TimeZone } from "@ymwc/mdate"
 import { ResponseObjectType as FetchListResponseObjectType } from "@share/protocol/calevent/fetchList";
 import { ResponseObjectType as UpdateItemResponseObjectType } from "@share/protocol/calevent/updateItem";
 import { CaleventIdSchema, CaleventIdType, CaleventPermissionSchema } from "@share/types/calevent";

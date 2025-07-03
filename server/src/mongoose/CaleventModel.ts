@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { CaleventIdType, CaleventPermissionList, CaleventSchema, CaleventStyleDisplayList, CaleventPermissionType, CaleventType } from "@share/types/calevent";
 import { CalendarIdType, CalendarSourceType } from "@share/types/calendar";
 import { InternalServerError } from "@ymwc/errors";
-import { Mdate } from "maruyu-webcommons/commons/utils/mdate";
+import { Mdate } from "@ymwc/mdate";
 import { UserIdType } from "maruyu-webcommons/commons/types/user";
 
 type CaleventMongoType = {

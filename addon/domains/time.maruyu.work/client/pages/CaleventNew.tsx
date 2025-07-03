@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { MdateTz, TimeZone } from 'maruyu-webcommons/commons/utils/mdate';
+import { MdateTz, TimeZone } from '@ymwc/mdate';
 import { useToast } from 'maruyu-webcommons/react/toast';
 import { convertFetchListResponseToClient as convertFetchQuotaListResponseToClient } from "../types/quota";
 import { fetchQuotaList } from "../data/quota";

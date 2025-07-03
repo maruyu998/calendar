@@ -1,5 +1,4 @@
 import { getPacket } from "maruyu-webcommons/commons/utils/fetch";
-import { Mdate } from "maruyu-webcommons/commons/utils/mdate";
 import { DOMAIN } from "../../const";
 import { RawWithingsNightEventType } from "../types/withingsSleepLog";
 import { getStoredApiKey } from "./connect";

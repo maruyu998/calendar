@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { MdateTz, MdateTzSchema, TimeZone } from "maruyu-webcommons/commons/utils/mdate";
+import { MdateTz, MdateTzSchema, TimeZone } from "@ymwc/mdate";
 import {
   ResponseObjectType as FetchListResponseObjectType
 } from "../../share/protocol/task/fetchList";

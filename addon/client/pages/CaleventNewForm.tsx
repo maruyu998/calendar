@@ -1,4 +1,4 @@
-import { MdateTz, TimeZone } from "maruyu-webcommons/commons/utils/mdate";
+import { MdateTz, TimeZone } from "@ymwc/mdate";
 import { CalendarType } from "@client/types/calendar";
 import { CaleventType } from "@client/types/calevent";
 

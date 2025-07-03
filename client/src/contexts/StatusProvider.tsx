@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Mdate, MdateTz } from 'maruyu-webcommons/commons/utils/mdate';
+import { Mdate, MdateTz } from '@ymwc/mdate';
 import { useSetting } from './SettingProvider';
 import { CalendarType } from '@client/types/calendar';
 import { convertFetchListResponseToClient } from '@client/types/calendar';

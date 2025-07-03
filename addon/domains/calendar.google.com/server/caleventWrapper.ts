@@ -1,4 +1,4 @@
-import { IsoStringType, Mdate, MdateTz, TimeZone } from "maruyu-webcommons/commons/utils/mdate";
+import { IsoStringType, Mdate, MdateTz, TimeZone } from "@ymwc/mdate";
 import * as GcalEventList from "./process/googleCalevent";
 import { CalendarIdType } from "@share/types/calendar";
 import { CaleventIdType, CaleventType } from "@share/types/calevent";

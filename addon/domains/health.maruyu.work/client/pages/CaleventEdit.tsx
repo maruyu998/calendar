@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Linkify from 'react-linkify';
 import { fetchFitbitSleepLogItem } from '../data/fitbitSleepLog';
-import { TimeZone } from 'maruyu-webcommons/commons/utils/mdate';
+import { TimeZone } from '@ymwc/mdate';
 import { useToast } from 'maruyu-webcommons/react/toast';
 import { HealthCalendarSchema, HealthCalendarType } from '../types/calendar';
 import { FitbitSleepLogType } from '../types/fitbitSleepLog';

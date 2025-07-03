@@ -1,5 +1,5 @@
 import { RiCheckLine, RiPencilLine, RiResetLeftFill, RiRestartLine } from '@remixicon/react';
-import { MdateTz, TimeZone } from 'maruyu-webcommons/commons/utils/mdate';
+import { MdateTz, TimeZone } from '@ymwc/mdate';
 import { useEffect, useMemo, useState } from 'react';
 import { createDurationText, createTimeRangeText } from '@addon/client/utils/duration';
 

@@ -3,7 +3,7 @@ import { getDivRefWidth, getDivRefHeight } from '@client/utils/ReactRect';
 import { useSetting } from './SettingProvider';
 import { useTypeStateCookie } from 'maruyu-webcommons/react/reactUse';
 import { useStatus } from './StatusProvider';
-import { MdateTz } from 'maruyu-webcommons/commons/utils/mdate';
+import { MdateTz } from '@ymwc/mdate';
 import { range, sum } from 'maruyu-webcommons/commons/utils/number';
 import { useTopLayout } from './TopLayoutProvider';
 import { useEvents } from './EventsProvider';

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { MdateTz } from 'maruyu-webcommons/commons/utils/mdate';
+import { MdateTz } from '@ymwc/mdate';
 import { CalendarSourceType, CalendarType } from "@client/types/calendar";
 import { useSetting } from '@client/contexts/SettingProvider';
 import { useStatus } from '@client/contexts/StatusProvider';

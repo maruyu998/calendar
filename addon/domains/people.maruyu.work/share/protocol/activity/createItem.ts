@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { Mdate } from "maruyu-webcommons/commons/utils/mdate";
 import { CalendarIdSchema, CalendarIdType } from "@share/types/calendar";
 import { PeopleIdSchema, PeopleIdType, PeopleSchema } from "../../types/people";
 

@@ -1,5 +1,5 @@
 import { getPacket } from "maruyu-webcommons/commons/utils/fetch"
-import { Mdate } from "maruyu-webcommons/commons/utils/mdate";
+import { Mdate } from "@ymwc/mdate";
 import { DOMAIN } from "../../const";
 import { RawFitbitNightEventType } from "../types/fitbitSleepLog";
 import { FitbitSleepLogIdType } from "../../share/types/fitbitSleepLog";

@@ -1,5 +1,5 @@
 import { DOMAIN } from "../const"
-import { Mdate } from "maruyu-webcommons/commons/utils/mdate";
+import { Mdate } from "@ymwc/mdate";
 import * as caleventWrapper from "./caleventWrapper";
 import { DatafootCalendarSchema, DatafootCalendarType } from "./types/calendar";
 import AbstractAddon from "@addon/server/addon";

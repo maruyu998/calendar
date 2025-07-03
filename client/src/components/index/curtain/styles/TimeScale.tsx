@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { range } from "maruyu-webcommons/commons/utils/number";
 import { getDivRefWidth } from "@client/utils/ReactRect";
-import { MdateTz } from "maruyu-webcommons/commons/utils/mdate";
+import { MdateTz } from "@ymwc/mdate";
 import { useSetting } from "@client/contexts/SettingProvider";
 import { HOUR } from "maruyu-webcommons/commons/utils/time";
 

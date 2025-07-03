@@ -2,7 +2,7 @@ import { z } from "zod";
 import { ResponseObjectType as FetchItemResponseObjectType } from "../../share/protocol/activity/fetchItem";
 import { ResponseObjectType as UpdateItemResponseObjectType } from "../../share/protocol/activity/updateItem";
 import { ResponseObjectType as DeleteItemResponseObjectType } from "../../share/protocol/activity/deleteItem";
-import { MdateTz, MdateTzSchema, TimeZone } from "maruyu-webcommons/commons/utils/mdate";
+import { MdateTz, MdateTzSchema, TimeZone } from "@ymwc/mdate";
 import { ActivityIdSchema } from "../../share/types/activity";
 import { PeopleSchema } from "../../share/types/people";
 import { ActivityType as ActivitySharedType } from "../../share/types/activity";

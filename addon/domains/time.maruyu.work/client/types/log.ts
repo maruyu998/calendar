@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { QuotaIdSchema, QuotaSchema, QuotaType } from "../../share/types/quota";
-import { MdateTz, MdateTzSchema, TimeZone } from "maruyu-webcommons/commons/utils/mdate";
+import { MdateTz, MdateTzSchema, TimeZone } from "@ymwc/mdate";
 import {
   ResponseObjectType as FetchItemResponseObjectType,
 } from "../../share/protocol/log/fetchItem";

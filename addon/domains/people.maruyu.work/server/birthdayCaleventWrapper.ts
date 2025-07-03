@@ -1,4 +1,4 @@
-import { TimeZone } from "maruyu-webcommons/commons/utils/mdate";
+import { TimeZone } from "@ymwc/mdate";
 import * as Birthday from "./process/birthday";
 import { CaleventIdType, CaleventType } from "@share/types/calevent";
 import { CalendarIdType } from "@share/types/calendar";

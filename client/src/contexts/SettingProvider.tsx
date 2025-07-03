@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useStateUrlSearchParamType, useTypeStateCookie } from "maruyu-webcommons/react/reactUse";
 import { CalendarIdType } from '@client/types/calendar';
-import { MdateTz, TimeZone } from 'maruyu-webcommons/commons/utils/mdate';
+import { MdateTz, TimeZone } from '@ymwc/mdate';
 import { useTop } from './TopProvider';
 
 function isUUIDv4(uuid: string): boolean {

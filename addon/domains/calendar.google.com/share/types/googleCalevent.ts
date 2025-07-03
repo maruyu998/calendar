@@ -1,5 +1,5 @@
 import { HexColorType } from "maruyu-webcommons/commons/utils/color";
-import { IsoStringSchema, TimeZoneSchema, YYYYMMDDSchema } from "maruyu-webcommons/commons/utils/mdate";
+import { IsoStringSchema, TimeZoneSchema, YYYYMMDDSchema } from "@ymwc/mdate";
 import { z } from "zod";
 
 export const GoogleCaleventIdSchema = z.string().brand<"GoogleCaleventId">();

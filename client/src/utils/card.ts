@@ -1,5 +1,5 @@
 import { hsvToRgb, parseColor, printColor, rgbToHsv } from "maruyu-webcommons/commons/utils/color";
-import { Mdate, MdateTz } from "maruyu-webcommons/commons/utils/mdate";
+import { Mdate, MdateTz } from "@ymwc/mdate";
 import { CaleventType } from "@client/types/calevent";
 
 export function getBackgroundColor(calevent: CaleventType){

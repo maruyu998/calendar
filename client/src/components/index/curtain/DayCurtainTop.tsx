@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useStatus } from '@client/contexts/StatusProvider';
-import { MdateTz } from 'maruyu-webcommons/commons/utils/mdate';
+import { MdateTz } from '@ymwc/mdate';
 import { useSetting } from '@client/contexts/SettingProvider';
 import { useCurtainLayout } from '@client/contexts/CurtainLayoutProvider';
 

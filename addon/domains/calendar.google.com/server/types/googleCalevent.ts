@@ -1,4 +1,4 @@
-import { MdateTz, MdateTzSchema } from "maruyu-webcommons/commons/utils/mdate";
+import { MdateTz, MdateTzSchema } from "@ymwc/mdate";
 import { z } from "zod";
 import { calendar_v3 } from 'googleapis';
 import { InternalServerError } from "@ymwc/errors";

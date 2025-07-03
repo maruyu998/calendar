@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useStateRef } from 'maruyu-webcommons/react/reactUse';
-import { MdateTz } from 'maruyu-webcommons/commons/utils/mdate';
+import { MdateTz } from '@ymwc/mdate';
 import { CaleventType } from '@client/types/calevent';
 import { useTop } from './TopProvider';
 import { useCurtainLayout } from './CurtainLayoutProvider';

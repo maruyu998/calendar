@@ -1,5 +1,5 @@
 import { getPacket } from "maruyu-webcommons/commons/utils/fetch";
-import { Mdate, TimeZone } from "maruyu-webcommons/commons/utils/mdate";
+import { Mdate, TimeZone } from "@ymwc/mdate";
 import { DOMAIN } from "../../const";
 import { getStoredApiKey } from "./connect";
 import { UserIdType } from "maruyu-webcommons/commons/types/user";

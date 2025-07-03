@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { range } from 'maruyu-webcommons/commons/utils/number';
-import { MdateTz } from 'maruyu-webcommons/commons/utils/mdate';
+import { MdateTz } from '@ymwc/mdate';
 import { useSetting } from '@client/contexts/SettingProvider';
 import { useCurtainLayout } from '@client/contexts/CurtainLayoutProvider';
 import { useEvents } from '@client/contexts/EventsProvider';

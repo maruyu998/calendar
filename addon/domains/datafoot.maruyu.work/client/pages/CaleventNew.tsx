@@ -1,4 +1,4 @@
-import { MdateTz } from 'maruyu-webcommons/commons/utils/mdate';
+import { MdateTz } from '@ymwc/mdate';
 import { CalendarType as RawCalendarType } from "@client/types/calendar";
 import { DOMAIN } from '../../const';
 

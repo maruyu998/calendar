@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Mdate } from "maruyu-webcommons/commons/utils/mdate";
+import { Mdate } from "@ymwc/mdate";
 import { CalendarIdSchema, CalendarIdType } from "@share/types/calendar";
 import { TimeQuotaIdSchema, TimeQuotaSchema } from "../../types/timeQuota";
 import { TimeLogIdSchema } from "../../types/timeLog";

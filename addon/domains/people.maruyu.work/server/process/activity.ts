@@ -1,5 +1,5 @@
 import { getPacket, postPacket, putPacket, deletePacket } from "maruyu-webcommons/commons/utils/fetch";
-import { Mdate } from "maruyu-webcommons/commons/utils/mdate";
+import { Mdate } from "@ymwc/mdate";
 import { DOMAIN } from "../../const";
 import { ActivityIdType } from "../../share/types/activity";
 import { PeopleIdType } from "../../share/types/people";

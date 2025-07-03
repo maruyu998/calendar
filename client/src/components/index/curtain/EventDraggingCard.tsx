@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useStateRef } from 'maruyu-webcommons/react/reactUse';
 import { parseColor, isBrightColor } from 'maruyu-webcommons/commons/utils/color';
-import { MdateTz } from 'maruyu-webcommons/commons/utils/mdate';
+import { MdateTz } from '@ymwc/mdate';
 import { useSetting } from '@client/contexts/SettingProvider';
 import { CaleventType } from '@client/types/calevent';
 import { useStatus } from '@client/contexts/StatusProvider';
