@@ -4,7 +4,7 @@ import { fetchCaleventList } from '@client/data/calevent';
 import { useSetting } from './SettingProvider';
 import { useStatus } from './StatusProvider';
 import { MdateTz, TimeZone } from '@ymwc/mdate';
-import { useToast } from 'maruyu-webcommons/react/toast';
+import { useToast } from '@ymwc/react-core';
 import { CalendarIdType, CalendarType } from '@client/types/calendar';
 import {
   CaleventIdType,

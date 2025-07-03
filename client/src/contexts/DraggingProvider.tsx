@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { useStateRef } from 'maruyu-webcommons/react/reactUse';
+import { useStateRef } from '@ymwc/react-core';
 import { MdateTz } from '@ymwc/mdate';
 import { CaleventType } from '@client/types/calevent';
 import { useTop } from './TopProvider';

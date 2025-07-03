@@ -7,7 +7,7 @@ import SideChovenRight from "@client/assets/icons/tsxs/SideChovenRight";
 import Switch from "maruyu-webcommons/react/components/Switch";
 import Button from "maruyu-webcommons/react/components/Button";
 import { Divider } from "@tremor/react";
-import { useToast } from 'maruyu-webcommons/react/toast';
+import { useToast } from '@ymwc/react-core';
 
 export default function SideBar(){
 

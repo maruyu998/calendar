@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { useStateRef } from "maruyu-webcommons/react/reactUse";
-import { ToastProvider } from "maruyu-webcommons/react/toast";
+import { useStateRef, ToastProvider } from "@ymwc/react-core";
 
 type PressedKeysType = {
   esc: boolean,

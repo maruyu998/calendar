@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { getDivRefWidth, getDivRefHeight } from '@client/utils/ReactRect';
 import { useSetting } from './SettingProvider';
-import { useTypeStateCookie } from 'maruyu-webcommons/react/reactUse';
+import { useTypeStateCookie } from '@ymwc/react-core';
 import { useStatus } from './StatusProvider';
 import { MdateTz } from '@ymwc/mdate';
 import { numberRange as range, sum } from '@ymwc/utils';

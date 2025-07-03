@@ -12,7 +12,7 @@ import { getBackgroundColor, getFontSize, getMarginTop, getTexts } from '@client
 import { ProcessStateType, useDragging } from '@client/contexts/DraggingProvider';
 import { useCurtainLayout } from '@client/contexts/CurtainLayoutProvider';
 import { numberRange as range } from '@ymwc/utils';
-import { useToast } from 'maruyu-webcommons/react/toast';
+import { useToast } from '@ymwc/react-core';
 import { convertUpdateItemResponseToClient } from '@client/types/calevent';
 
 type Ratios = { top:number, left:number, width:number, height:number }
