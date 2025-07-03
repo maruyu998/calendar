@@ -4,8 +4,7 @@ import { useStatus } from '@client/contexts/StatusProvider';
 
 import SideChovenLeft from "@client/assets/icons/tsxs/SideChovenLeft";
 import SideChovenRight from "@client/assets/icons/tsxs/SideChovenRight";
-import Switch from "maruyu-webcommons/react/components/Switch";
-import Button from "maruyu-webcommons/react/components/Button";
+import { Switch, Button } from "@ymwc/react-components";
 import { Divider } from "@tremor/react";
 import { useToast } from '@ymwc/react-core';
 

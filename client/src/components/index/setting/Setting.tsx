@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { SettingForm, getRegisteredCalendarSources } from "@addon/client";
 import { useStatus } from '@client/contexts/StatusProvider';
 import { CalendarSourceType, CalendarType } from '@client/types/calendar';
-import SmallModal from 'maruyu-webcommons/react/components/SmallModal';
+import { SmallModal } from '@ymwc/react-components';
 
 export default function Setting({
   closeModal,

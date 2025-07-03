@@ -1,5 +1,5 @@
 import { useEditing } from "@client/contexts/EditingProvider";
-import SmallModal from "maruyu-webcommons/react/components/SmallModal";
+import { SmallModal } from "@ymwc/react-components";
 import CaleventNew from "../curtain/CaleventNew";
 import CaleventEdit from "../curtain/CaleventEdit";
 

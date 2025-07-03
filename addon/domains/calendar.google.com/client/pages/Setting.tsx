@@ -1,6 +1,6 @@
 import { useToast } from "maruyu-webcommons/react/toast";
 import React, { useEffect, useState } from "react";
-import Button from "maruyu-webcommons/react/components/Button";
+import { Button } from "@ymwc/react-components";
 import { fetchAuthorizationUrl, revokeToken, updateCredential } from "../data/setting";
 
 export default function Setting({

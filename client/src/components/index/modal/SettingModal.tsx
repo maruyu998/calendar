@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useSetting } from "@client/contexts/SettingProvider";
-import SmallModal from "maruyu-webcommons/react/components/SmallModal";
+import { SmallModal } from "@ymwc/react-components";
 import Setting from "../setting/Setting";
 
 export default function SettingModal({
