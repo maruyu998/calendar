@@ -3,7 +3,7 @@ import { asyncHandler, sendData } from "@ymwc/node-express";
 import * as fCalendar from "../../../services/calendar";
 import { ResponseObjectType as FetchListResponseObjectType } from "@share/protocol/calendar/fetchList";
 import { convertRawToFetchListResponseObject } from "@server/types/calendar";
-import { UserInfoType } from "maruyu-webcommons/node/types/oauth";
+import { UserInfoType } from "@server/types/user";
 import { deserializePacketInQuery } from "@ymwc/node-express";
 
 const router = express.Router();

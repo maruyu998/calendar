@@ -9,7 +9,7 @@ import {
 } from "../../share/protocol/androidAppUsage/fetchItem";
 import { fetchCalendar, validateCalendar } from "@addon/server/calendar";
 import { DatafootCalendarSchema, DatafootCalendarType } from "../types/calendar";
-import { UserInfoType } from "maruyu-webcommons/node/types/oauth";
+import { UserInfoType } from "@server/types/user";
 
 const router = express.Router();
 

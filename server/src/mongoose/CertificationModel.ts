@@ -1,4 +1,4 @@
-import { UserIdType } from 'maruyu-webcommons/commons/types/user';
+import { UserIdType } from '@server/types/user';
 import mongoose from 'mongoose';
 
 const resourceKeyList = ["token","credential","apiKey"] as const

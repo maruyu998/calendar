@@ -4,7 +4,7 @@ import { CalendarIdType } from "@share/types/calendar";
 import { HexColorType } from "@ymwc/utils";
 import { TaskTimeIdType, TaskTimeType, TaskTimeWithFullType } from "../share/types/taskTime";
 import { createTitle } from "../share/func/task";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 function convertTaskTimeWithFullToCalevent(
   taskTimeWithTask: TaskTimeWithFullType,

@@ -7,7 +7,7 @@ import { HexColorType } from "@ymwc/utils";
 import { GoogleCalendarIdType } from "../share/types/googleCalendar";
 import { GoogleCaleventIdType } from "../share/types/googleCalevent";
 import { convertColidToColor } from "../share/func/googleCalevent";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 type RawGoogleCaleventType = calendar_v3.Schema$Event;
 

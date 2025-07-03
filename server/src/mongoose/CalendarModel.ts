@@ -9,7 +9,7 @@ import {
 } from '@share/types/calendar';
 import { InternalServerError } from '@ymwc/errors';
 import { HexColorType } from '@ymwc/utils';
-import { UserIdType } from 'maruyu-webcommons/commons/types/user';
+import { UserIdType } from '@server/types/user';
 
 type CalendarMongoType = {
   _id: mongoose.Types.ObjectId,

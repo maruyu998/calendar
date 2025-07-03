@@ -16,7 +16,7 @@ import {
   DeleteItemRequestBodyType,
 } from "./protocol";
 import { getStoredApiKey } from "../connect";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 const ENDPOINT = `https://${DOMAIN}/api/v2/taskTime`;
 

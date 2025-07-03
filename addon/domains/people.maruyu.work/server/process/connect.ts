@@ -1,5 +1,5 @@
 import CertificationModel, { ApiKeyType } from '@server/mongoose/CertificationModel';
-import { UserIdType } from 'maruyu-webcommons/commons/types/user';
+import { UserIdType } from '@server/types/user';
 import { AuthenticationError, InternalServerError } from '@ymwc/errors';
 
 

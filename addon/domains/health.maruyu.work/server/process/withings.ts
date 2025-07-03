@@ -2,7 +2,7 @@ import { getPacket } from "@ymwc/http";
 import { DOMAIN } from "../../const";
 import { RawWithingsNightEventType } from "../types/withingsSleepLog";
 import { getStoredApiKey } from "./connect";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 export async function fetchNighteventList({
   userId,

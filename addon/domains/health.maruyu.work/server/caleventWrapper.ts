@@ -6,7 +6,7 @@ import { fetchNighteventList as fetchFitbitNighteventList } from "./process/fitb
 import { fetchNighteventList as fetchWithingsNighteventList } from "./process/withings";
 import { CalendarSourceType } from "@share/types/calendar";
 import { HexColorType } from "@ymwc/utils";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 function convertFitbitNighteventToCalevent(
   nightEvent: RawFitbitNightEventType,

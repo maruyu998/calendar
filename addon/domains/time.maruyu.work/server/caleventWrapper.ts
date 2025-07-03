@@ -5,7 +5,7 @@ import { DOMAIN } from "../const";
 import { Log as LogSDKType, LogFull } from "@maruyu/time-sdk";
 import { createTitle } from "../share/func/log";
 import { LogIdType } from "../share/types/log";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 export function convertLogToCalevent(
   log: LogFull,

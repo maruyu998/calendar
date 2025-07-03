@@ -4,7 +4,7 @@ import { getNameSummary } from "./utils/people";
 import { CalendarIdType } from "@share/types/calendar";
 import { PeopleIdType } from "../share/types/people";
 import { ActivityIdType } from "../share/types/activity";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 function convertActivityToCalevent(
   activity: Activity.RawActivityType,

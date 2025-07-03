@@ -7,7 +7,7 @@ import {
   RequestBodySchema as UpdateCredentialRequestBodySchema,
   RequestBodyType as UpdateCredentialRequestBodyType,
 } from "../../share/protocol/setting/apiKey";
-import { UserInfoType } from "maruyu-webcommons/node/types/oauth";
+import { UserInfoType } from "@server/types/user";
 
 const router = express.Router();
 

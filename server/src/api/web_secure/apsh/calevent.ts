@@ -16,7 +16,7 @@ import {
   convertRawToFetchListResponseObject,
   convertRawToUpdateItemResponseObject,
 } from "@server/types/calevent";
-import { UserInfoType } from "maruyu-webcommons/node/types/oauth";
+import { UserInfoType } from "@server/types/user";
 
 const router = express.Router();
 

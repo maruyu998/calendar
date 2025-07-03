@@ -5,7 +5,7 @@ import { RawFitbitNightEventType } from "../types/fitbitSleepLog";
 import { FitbitSleepLogIdType } from "../../share/types/fitbitSleepLog";
 import { InternalServerError } from "@ymwc/errors";
 import { getStoredApiKey } from "./connect";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 export async function fetchNighteventList({
   userId,

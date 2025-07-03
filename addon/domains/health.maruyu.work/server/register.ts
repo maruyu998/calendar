@@ -5,7 +5,7 @@ import { HealthCalendarSchema, HealthCalendarType } from "./types/calendar";
 import { CalendarType } from "@share/types/calendar";
 import { CaleventType } from "@share/types/calevent";
 import { validateCalendar } from "@addon/server/calendar";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 class Addon extends AbstractAddon {
   static async fetchCaleventList({

@@ -4,7 +4,7 @@ import { getCalendar } from './connect';
 import { DOMAIN } from '../../const';
 import { CalendarPermissionType, CalendarSourceType, CalendarUniqueKeyInSourceType } from '@share/types/calendar';
 import { HexColorType } from '@ymwc/utils';
-import { UserIdType } from 'maruyu-webcommons/commons/types/user';
+import { UserIdType } from '@server/types/user';
 
 export async function refreshCalendarList({
   userId

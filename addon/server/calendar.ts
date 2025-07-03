@@ -1,6 +1,6 @@
 import { fetchItem as mongoFetchItem } from "@server/mongoose/CalendarModel";
 import { CalendarIdType, CalendarSchema, CalendarType } from "@share/types/calendar";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 import { InternalServerError } from "@ymwc/errors";
 import { z } from "zod";
 

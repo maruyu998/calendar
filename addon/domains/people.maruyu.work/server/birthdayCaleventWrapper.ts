@@ -2,7 +2,7 @@ import { TimeZone } from "@ymwc/mdate";
 import * as Birthday from "./process/birthday";
 import { CaleventIdType, CaleventType } from "@share/types/calevent";
 import { CalendarIdType } from "@share/types/calendar";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 
 function getNameSummary(people:Birthday.PeopleType):string{

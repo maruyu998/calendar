@@ -2,7 +2,7 @@ import { getPacket } from "@ymwc/http"
 import { RawAndroidAppUsageType } from "../types/androidAppUsage";
 import { DOMAIN } from "../../const";
 import { getStoredApiKey } from "./connect";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 export async function fetchAndroidAppUsageList(props:{
   userId: UserIdType,

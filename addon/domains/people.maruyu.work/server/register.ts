@@ -7,7 +7,7 @@ import * as exPeActivityCaleventWrapper from "./activityCaleventWrapper";
 import * as exPeBirthdayCaleventWrapper from "./birthdayCaleventWrapper";
 import { validateCalendar } from "@addon/server/calendar";
 import { ActivityIdType } from "../share/types/activity";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 class Addon extends AbstractAddon {
   static async fetchCaleventList({

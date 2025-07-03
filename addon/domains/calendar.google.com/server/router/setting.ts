@@ -12,7 +12,7 @@ import {
   RequestQuerySchema as TokenRedirectRequestQuerySchema,
   RequestQueryType as TokenRedirectRequestQueryType,
 } from "../../share/protocol/setting/tokenRedirect";
-import { UserInfoType } from "maruyu-webcommons/node/types/oauth";
+import { UserInfoType } from "@server/types/user";
 
 const router = express.Router();
 

@@ -18,7 +18,7 @@ import {
 } from "../types/task";
 import { fetchCalendar, validateCalendar } from "@addon/server/calendar";
 import { ProgressCalendarSchema, ProgressCalendarType } from "../types/calendar";
-import { UserInfoType } from "maruyu-webcommons/node/types/oauth";
+import { UserInfoType } from "@server/types/user";
 
 const router = express.Router();
 

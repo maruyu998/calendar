@@ -2,7 +2,7 @@ import { getPacket } from "@ymwc/http";
 import { Mdate, TimeZone } from "@ymwc/mdate";
 import { DOMAIN } from "../../const";
 import { getStoredApiKey } from "./connect";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 type TagType = {
   id: string,

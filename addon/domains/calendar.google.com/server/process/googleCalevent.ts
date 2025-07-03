@@ -4,7 +4,7 @@ import { getCalendar } from "./connect";
 import { RawGoogleCaleventType } from '../types/googleCalevent';
 import { GoogleCalendarIdType } from "../../share/types/googleCalendar";
 import { GoogleCaleventDateType, GoogleCaleventIdType } from '../../share/types/googleCalevent';
-import { UserIdType } from 'maruyu-webcommons/commons/types/user';
+import { UserIdType } from '@server/types/user';
 
 const inMemoryCacheEventList:{
   lastFetchedAt: Mdate|null,

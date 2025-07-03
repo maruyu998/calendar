@@ -2,7 +2,7 @@ import express from "express";
 import { getUserApiauths, issueApiauth } from "maruyu-webcommons/node/utils/apiauth";
 import { asyncHandler, sendData } from "@ymwc/node-express";
 import { deserializePacketInBody, deserializePacketInQuery } from "@ymwc/node-express";
-import { UserInfoType } from "maruyu-webcommons/node/types/oauth";
+import { UserInfoType } from "@server/types/user";
 
 const router = express.Router();
 

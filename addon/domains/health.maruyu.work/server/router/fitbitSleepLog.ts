@@ -12,7 +12,7 @@ import {
 } from "../types/fitbitSleepLog";
 import { fetchCalendar, validateCalendar } from "@addon/server/calendar";
 import { HealthCalendarSchema, HealthCalendarType } from "../types/calendar";
-import { UserInfoType } from "maruyu-webcommons/node/types/oauth";
+import { UserInfoType } from "@server/types/user";
 
 const router = express.Router();
 

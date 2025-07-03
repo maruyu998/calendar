@@ -4,7 +4,7 @@ import { DOMAIN } from "../../const";
 import { ActivityIdType } from "../../share/types/activity";
 import { PeopleIdType } from "../../share/types/people";
 import { getStoredApiKey } from "./connect";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 type TagType = {
   id: string,

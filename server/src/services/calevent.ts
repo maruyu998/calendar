@@ -4,7 +4,7 @@ import { CaleventIdType, CaleventSchema, CaleventType } from "@share/types/calev
 import AbstractAddon from "@addon/server/addon";
 import { fetchCalendar } from "@addon/server/calendar";
 import { InternalServerError } from "@ymwc/errors";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 const calendarSourceHandlers: Record<string, typeof AbstractAddon> = {};
 export function registerCalendarSourceHandler(source: string, handler: typeof AbstractAddon) {

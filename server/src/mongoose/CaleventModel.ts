@@ -4,7 +4,7 @@ import { CaleventIdType, CaleventPermissionList, CaleventSchema, CaleventStyleDi
 import { CalendarIdType, CalendarSourceType } from "@share/types/calendar";
 import { InternalServerError } from "@ymwc/errors";
 import { Mdate } from "@ymwc/mdate";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 type CaleventMongoType = {
   _id: mongoose.Schema.Types.ObjectId,

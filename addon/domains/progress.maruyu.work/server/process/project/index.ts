@@ -3,7 +3,7 @@ import { DOMAIN } from "../../../const";
 import { FetchListResponseObjectSchema, FetchListResponseObjectType } from "./protocol";
 import { getStoredApiKey } from '../connect';
 import { ProjectIdType } from "../../../share/types/project";
-import { UserIdType } from 'maruyu-webcommons/commons/types/user';
+import { UserIdType } from '@server/types/user';
 import { FetchListRequestQueryType } from "./protocol";
 
 const ENDPOINT = `https://${DOMAIN}/api/v2/project/full`;

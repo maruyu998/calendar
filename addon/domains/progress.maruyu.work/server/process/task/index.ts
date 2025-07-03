@@ -9,7 +9,7 @@ import { ProjectIdType, ProjectSchema } from "../../../share/types/project";
 import { OutcomeIdType } from '../../../share/types/outcome';
 import { TaskPriorityType, TaskRecurringIdType } from '../../../share/types/task';
 import { HexColorType } from '@ymwc/utils';
-import { UserIdType } from 'maruyu-webcommons/commons/types/user';
+import { UserIdType } from '@server/types/user';
 import { FetchListRequestQueryType } from "./protocol";
 
 const ENDPOINT = `https://${DOMAIN}/api/v2/task`;

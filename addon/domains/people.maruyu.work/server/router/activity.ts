@@ -30,7 +30,7 @@ import {
 } from "../types/activity";
 import { PeopleCalendarSchema, PeopleCalendarType } from "../types/calendar";
 import { fetchCalendar, validateCalendar } from "@addon/server/calendar";
-import { UserInfoType } from "maruyu-webcommons/node/types/oauth";
+import { UserInfoType } from "@server/types/user";
 
 const router = express.Router()
 

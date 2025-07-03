@@ -6,7 +6,7 @@ import { CaleventType, CaleventIdType } from "@share/types/calevent";
 import { CalendarIdType, CalendarType } from "@share/types/calendar";
 import { validateCalendar } from "@addon/server/calendar";
 import { LogIdType } from "../share/types/log";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 class Addon extends AbstractAddon {
   static async fetchCaleventList({

@@ -3,7 +3,7 @@ import { CaleventIdType, CaleventType } from "@share/types/calevent";
 import { fetchAndroidAppUsageList } from "./process/androidAppUsage";
 import { RawAndroidAppUsageType } from "./types/androidAppUsage";
 import { HexColorType } from "@ymwc/utils";
-import { UserIdType } from "maruyu-webcommons/commons/types/user";
+import { UserIdType } from "@server/types/user";
 
 function isValidDate(date: any): date is Date {
   return date instanceof Date && !isNaN(date.getTime());

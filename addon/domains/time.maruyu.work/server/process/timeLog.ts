@@ -5,7 +5,7 @@ import { TimeLogApiType } from "../types/timeLog";
 import { TimeLogIdType } from '../../share/types/timeLog';
 import { TimeQuotaIdType } from '../../share/types/timeQuota';
 import { getStoredApiKey } from './connect';
-import { UserIdType } from 'maruyu-webcommons/commons/types/user';
+import { UserIdType } from '@server/types/user';
 
 export async function fetchTimeLogList({
   userId,
