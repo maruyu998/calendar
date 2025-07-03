@@ -1,8 +1,10 @@
 import express from "express";
 import path from "path";
 import "dotenv/config";
-import env from "@ymwc/node-env";
+import env, { parseList, parseDuration } from "@ymwc/node-env";
 import { z } from "zod";
+import mongoose from "mongoose";
+import { createApp } from "@ymwc/node-app";
 
 import pubRouter from "./api/web_public/index";
 import secRouter from "./api/web_secure/index";
@@ -11,8 +13,6 @@ import apiRouter from "./api/external/index";
 import * as maruyuOAuthClient from "maruyu-webcommons/node/utils/oauth";
 import { asyncHandler, sendError } from "@ymwc/node-express";
 import { PermissionError } from "@ymwc/errors";
-
-import app from "maruyu-webcommons/node/init";
 import { requireApiKey, requireSignin } from "maruyu-webcommons/node/middleware";
 import * as pushUtils from "maruyu-webcommons/node/push";
 import register from "./register";
@@ -20,6 +20,25 @@ import register from "./register";
 const RUN_MODE = env.get("RUN_MODE", z.enum(['development','production','test']));
 const port = env.get("PORT", z.coerce.number());
 const clientPublicPath = path.join(__dirname, env.get("CLIENT_PUBLIC_PATH", z.string().nonempty()));
+
+// @ymwc/node-app設定
+const app = createApp(mongoose, {
+  mongoPath: env.get("MONGO_PATH", z.string().startsWith("mongodb://").nonempty()),
+  trustProxies: env.get("TRUST_PROXIES", z.string().transform(parseList)),
+  trustedSubnets: env.get("TRUSTED_SUBNETS", z.string().transform(parseList)),
+  rateLimitWindow: env.get("RATE_LIMIT_WINDOW", z.string().nonempty().transform(parseDuration)),
+  rateLimitCount: env.get("RATE_LIMIT_COUNT", z.coerce.number().positive()),
+  runMode: RUN_MODE,
+  scriptSources: env.get("SCRIPT_SOURCES", z.string().transform(parseList)),
+  styleSources: env.get("STYLE_SOURCES", z.string().transform(parseList)),
+  fontSources: env.get("FONT_SOURCES", z.string().transform(parseList)),
+  frameSources: env.get("FRAME_SOURCES", z.string().transform(parseList)),
+  sessionName: env.get("SESSION_NAME", z.string().regex(/^[!#$%&'*+\-.^_`|~0-9a-zA-Z]{1,64}$/)),
+  sessionSecret: env.get("SESSION_SECRET", z.string().nonempty()),
+  mongoSessionPath: env.get("MONGO_SESSION_PATH", z.string().startsWith("mongodb://").nonempty()),
+  mongoSessionCollection: env.get("MONGO_SESSION_COLLECTION", z.string().nonempty()),
+  sessionKeepDuration: env.get("SESSION_KEEP_DURATION", z.string().nonempty().transform(parseDuration)),
+});
 
 app.use('/manifest.json', express.static(path.join(clientPublicPath, 'manifest.json')));
 app.use('/favicon.ico', express.static(path.join(clientPublicPath, 'favicon.ico')));
