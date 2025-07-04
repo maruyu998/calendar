@@ -3,7 +3,7 @@ import Linkify from 'react-linkify';
 import { DatafootCalendarType, DatafootCalendarSchema } from "../types/calendar";
 import { DAY, HOUR, MINUTE } from '@ymwc/utils';
 import { MdateTz, TimeZone } from '@ymwc/mdate';
-import { useToast } from 'maruyu-webcommons/react/toast';
+import { useToast } from '@ymwc/react-core';
 import { CaleventIdType, CaleventType } from "@client/types/calevent";
 import { CalendarType } from "@client/types/calendar";
 import { AndroidAppUsageType } from "../types/androidAppUsage";

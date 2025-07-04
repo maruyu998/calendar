@@ -3,7 +3,7 @@ import Linkify from 'react-linkify';
 import { updateActivity, deleteActivity, fetchActivity } from '../data/activity';
 import { DAY, HOUR, MINUTE } from '@ymwc/utils';
 import { MdateTz, TimeZone } from '@ymwc/mdate';
-import { useToast } from 'maruyu-webcommons/react/toast';
+import { useToast } from '@ymwc/react-core';
 import { PeopleCalendarSchema, PeopleCalendarType } from '../types/calendar';
 import { ActivityType } from '../types/activity';
 import { CalendarType } from '@client/types/calendar';

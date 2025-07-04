@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Linkify from 'react-linkify';
-import { useToast } from 'maruyu-webcommons/react/toast';
+import { useToast } from '@ymwc/react-core';
 import { TimeZone } from '@ymwc/mdate';
 import { updateTaskTime, deleteTaskTime, fetchTaskTime, createTaskTime } from '../data/taskTime';
 import { CalendarType } from '@client/types/calendar';

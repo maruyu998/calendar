@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Linkify from 'react-linkify';
 import { fetchFitbitSleepLogItem } from '../data/fitbitSleepLog';
 import { TimeZone } from '@ymwc/mdate';
-import { useToast } from 'maruyu-webcommons/react/toast';
+import { useToast } from '@ymwc/react-core';
 import { HealthCalendarSchema, HealthCalendarType } from '../types/calendar';
 import { FitbitSleepLogType } from '../types/fitbitSleepLog';
 import { CalendarType } from '@client/types/calendar';

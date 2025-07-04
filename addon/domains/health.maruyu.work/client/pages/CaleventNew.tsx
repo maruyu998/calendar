@@ -3,7 +3,7 @@ import { MdateTz, TimeZone } from '@ymwc/mdate';
 import { DOMAIN } from '../../const';
 import { CalendarType } from "@client/types/calendar";
 import { CaleventType } from "@client/types/calevent";
-import { useToast } from 'maruyu-webcommons/react/toast';
+import { useToast } from '@ymwc/react-core';
 import { HealthCalendarType, HealthCalendarSchema } from "../types/calendar";
 
 export default function CaleventNew({

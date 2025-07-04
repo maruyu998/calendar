@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MdateTz, TimeZone } from '@ymwc/mdate';
-import { useToast } from 'maruyu-webcommons/react/toast';
+import { useToast } from '@ymwc/react-core';
 import { CalendarType } from '@client/types/calendar';
 import { CaleventIdType, CaleventType } from '@client/types/calevent';
 import { ProgressCalendarSchema, ProgressCalendarType } from '../types/calendar';

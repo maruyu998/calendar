@@ -1,4 +1,4 @@
-import { useToast } from "maruyu-webcommons/react/toast";
+import { useToast } from "@ymwc/react-core";
 import React, { useEffect, useState } from "react";
 import { updateApiKey } from "../data/setting";
 

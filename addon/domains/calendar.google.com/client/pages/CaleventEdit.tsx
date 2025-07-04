@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { updateGoogleCalevent, deleteGoogleCalevent, fetchGoogleCalevent, createGoogleCalevent } from '../data/googleCalevent';
 import { TimeZone } from '@ymwc/mdate';
-import { useToast } from 'maruyu-webcommons/react/toast';
+import { useToast } from '@ymwc/react-core';
 import { CalendarType } from "@client/types/calendar";
 import { CaleventIdType, CaleventType } from "@client/types/calevent";
 import {
@@ -13,8 +13,8 @@ import {
 import { GoogleCalendarSchema, GoogleCalendarType } from "../types/googleCalendar";
 import { GoogleCaleventDateType, GoogleCaleventIdType } from '../../share/types/googleCalevent';
 import CaleventCommonView from '@addon/client/components/CaleventCommonView';
-import DeleteButton from '../../../../client/components/DeleteButton';
-import DuplicateButton from '../../../../client/components/DuplicateButton';
+import DeleteButton from '@addon/client/components/DeleteButton';
+import DuplicateButton from '@addon/client/components/DuplicateButton';
 import DescriptionForm from '../components/DescriptionForm';
 import SummaryForm from '../components/SummaryForm';
 import ColorSelector from '../components/ColorSelector';

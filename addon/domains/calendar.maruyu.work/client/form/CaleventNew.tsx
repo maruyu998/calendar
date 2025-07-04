@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createCalevent } from '../data/calevent';
 import { MdateTz, TimeZone } from '@ymwc/mdate';
-import { useToast } from 'maruyu-webcommons/react/toast';
+import { useToast } from '@ymwc/react-core';
 import { CalendarType } from "@client/types/calendar";
 import { CaleventType } from '@client/types/calevent';
 import { DefaultCalendarSchema, DefaultCalendarType } from '../types/calendar';

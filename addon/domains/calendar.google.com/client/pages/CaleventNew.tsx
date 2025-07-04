@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createGoogleCalevent } from '../data/googleCalevent';
 import { MdateTz, TimeZone } from '@ymwc/mdate';
-import { useToast } from 'maruyu-webcommons/react/toast';
+import { useToast } from '@ymwc/react-core';
 import { CaleventIdType, CaleventType } from '@client/types/calevent';
 import { CalendarType } from "@client/types/calendar";
 import { GoogleCalendarSchema, GoogleCalendarType } from "../types/googleCalendar";
