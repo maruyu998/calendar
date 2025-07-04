@@ -22,28 +22,30 @@ import { UserInfoType } from "@server/types/user";
 
 const router = express.Router();
 
-router.get("/list", [
-  deserializePacketInQuery,
-  requireQueryZod(FetchListRequestQuerySchema)
-], asyncHandler(async function(request:express.Request, response:express.Response){
+router.get('/list', 
+  deserializePacketInQuery(),
+  requireQueryZod(FetchListRequestQuerySchema),
+  asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = response.locals.userInfo as UserInfoType;
     const { calendarId, ...query } = response.locals.query as FetchListRequestQueryType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), ProgressCalendarSchema);
     await fetchTaskList({ userId, ...query })
           .then(rawTask=>convertRawToFetchListResponseObject(rawTask))
           .then((responseObject:FetchListResponseObjectType)=>sendData(response, responseObject));
-}));
+  })
+);
 
-router.post("/item", [
-  deserializePacketInBody,
-  requireBodyZod(CreateItemRequestBodySchema)
-], async function(request:express.Request, response:express.Response){
+router.post('/item', 
+  deserializePacketInBody(),
+  requireBodyZod(CreateItemRequestBodySchema),
+  asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = response.locals.userInfo as UserInfoType;
     const { calendarId, ...body } = response.locals.body as CreateItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), ProgressCalendarSchema) as ProgressCalendarType;
     await createTask({ userId, ...body })
           .then(rawTask=>convertRawToCreateItemResponseObject(rawTask))
           .then((responseObject:CreateItemResponseObjectType)=>sendData(response, responseObject));
-});
+  })
+);
 
 export default router;

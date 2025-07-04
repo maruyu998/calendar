@@ -34,45 +34,48 @@ import { UserInfoType } from "@server/types/user";
 
 const router = express.Router()
 
-router.get("/item", [
-  requireQueryZod(FetchItemRequestQuerySchema)
-], asyncHandler(async function(request:express.Request, response:express.Response){
-  const { userId } = response.locals.userInfo as UserInfoType;
-  const { calendarId, eventId } = response.locals.query as FetchItemRequestQueryType;
-  const calendar = validateCalendar(await fetchCalendar({userId, calendarId}), GoogleCalendarSchema) as GoogleCalendarType;
-  const googleCalendarId = calendar.data.googleCalendarId;
-  await fetchEvent({ userId, calendarId: googleCalendarId, eventId })
-        .then(rawGoogleCalevent=>convertRawToFetchItemResponseObject(rawGoogleCalevent))
-        .then((responseObject:FetchItemResponseObjectType)=>sendData(response, responseObject));
-}));
+router.get('/item', 
+  requireQueryZod(FetchItemRequestQuerySchema),
+  asyncHandler(async function(request: express.Request, response: express.Response) {
+    const { userId } = response.locals.userInfo as UserInfoType;
+    const { calendarId, eventId } = response.locals.query as FetchItemRequestQueryType;
+    const calendar = validateCalendar(await fetchCalendar({userId, calendarId}), GoogleCalendarSchema) as GoogleCalendarType;
+    const googleCalendarId = calendar.data.googleCalendarId;
+    await fetchEvent({ userId, calendarId: googleCalendarId, eventId })
+          .then(rawGoogleCalevent=>convertRawToFetchItemResponseObject(rawGoogleCalevent))
+          .then((responseObject:FetchItemResponseObjectType)=>sendData(response, responseObject));
+  })
+);
 
-router.post("/item", [
-  requireBodyZod(CreateItemRequestBodySchema)
-], asyncHandler(async function(request:express.Request, response:express.Response){
-  const { userId } = response.locals.userInfo as UserInfoType;
-  const { calendarId, ...body } = response.locals.body as CreateItemRequestBodyType;
+router.post('/item', 
+  requireBodyZod(CreateItemRequestBodySchema),
+  asyncHandler(async function(request: express.Request, response: express.Response) {
+    const { userId } = response.locals.userInfo as UserInfoType;
+    const { calendarId, ...body } = response.locals.body as CreateItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({userId, calendarId}), GoogleCalendarSchema) as GoogleCalendarType;
     const googleCalendarId = calendar.data.googleCalendarId;
     await createEvent({ userId, calendarId: googleCalendarId, ...body })
           .then(rawGoogleCalevent=>convertRawToCreateItemResponseObject(rawGoogleCalevent))
           .then((responseObject:CreateItemResponseObjectType)=>sendData(response, responseObject));
-}));
+  })
+);
 
-router.put("/item", [
-  requireBodyZod(UpdateItemRequestBodySchema)
-], asyncHandler(async function(request:express.Request, response:express.Response){
-  const { userId } = response.locals.userInfo as UserInfoType;
-  const { calendarId, ...body } = response.locals.body as UpdateItemRequestBodyType;
-  const calendar = validateCalendar(await fetchCalendar({userId, calendarId}), GoogleCalendarSchema) as GoogleCalendarType;
-  const googleCalendarId = calendar.data.googleCalendarId;
-  await updateEvent({ userId, calendarId:googleCalendarId, ...body })
-        .then(rawGoogleCalevent=>convertRawToUpdateItemResponseObject(rawGoogleCalevent))
-        .then((responseObject:UpdateItemResponseObjectType)=>sendData(response, responseObject));
-}));
+router.put('/item', 
+  requireBodyZod(UpdateItemRequestBodySchema),
+  asyncHandler(async function(request: express.Request, response: express.Response) {
+    const { userId } = response.locals.userInfo as UserInfoType;
+    const { calendarId, ...body } = response.locals.body as UpdateItemRequestBodyType;
+    const calendar = validateCalendar(await fetchCalendar({userId, calendarId}), GoogleCalendarSchema) as GoogleCalendarType;
+    const googleCalendarId = calendar.data.googleCalendarId;
+    await updateEvent({ userId, calendarId:googleCalendarId, ...body })
+          .then(rawGoogleCalevent=>convertRawToUpdateItemResponseObject(rawGoogleCalevent))
+          .then((responseObject:UpdateItemResponseObjectType)=>sendData(response, responseObject));
+  })
+);
 
-router.delete('/item', [
-  requireBodyZod(DeleteItemRequestBodySchema)
-], asyncHandler(async function(request:express.Request, response:express.Response){
+router.delete('/item', 
+  requireBodyZod(DeleteItemRequestBodySchema),
+  asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = response.locals.userInfo as UserInfoType;
     const { calendarId, eventId } = response.locals.body as DeleteItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({userId, calendarId}), GoogleCalendarSchema) as GoogleCalendarType;
@@ -80,6 +83,7 @@ router.delete('/item', [
     await deleteEvent({ userId, calendarId:googleCalendarId, eventId })
           .then(rawGoogleCalevent=>convertRawToDeleteItemResponseObject(rawGoogleCalevent))
           .then((responseObject:DeleteItemResponseObjectType)=>sendData(response, responseObject));
-}))
+  })
+);
 
 export default router;

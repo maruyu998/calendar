@@ -13,10 +13,10 @@ import { UserInfoType } from "@server/types/user";
 
 const router = express.Router();
 
-router.get("/item", [
-  deserializePacketInQuery,
-  requireQueryZod(FetchItemRequestQuerySchema)
-], asyncHandler(async function(request:express.Request, response:express.Response){
+router.get('/item', 
+  deserializePacketInQuery(),
+  requireQueryZod(FetchItemRequestQuerySchema),
+  asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = response.locals.userInfo as UserInfoType;
     const { calendarId, id } = response.locals.query as FetchItemRequestQueryType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), DatafootCalendarSchema) as DatafootCalendarType;
@@ -27,6 +27,7 @@ router.get("/item", [
             } as FetchItemResponseObjectType
           })
           .then(responseObject=>sendData(response, responseObject));
-}));
+  })
+);
 
 export default router;

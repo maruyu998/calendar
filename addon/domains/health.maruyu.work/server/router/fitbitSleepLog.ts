@@ -16,15 +16,16 @@ import { UserInfoType } from "@server/types/user";
 
 const router = express.Router();
 
-router.get("/item", [
-  requireQueryZod(FetchItemRequestQuerySchema)
-], asyncHandler(async function(request:express.Request, response:express.Response){
+router.get('/item', 
+  requireQueryZod(FetchItemRequestQuerySchema),
+  asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = response.locals.userInfo as UserInfoType;
     const { calendarId, id } = response.locals.query as FetchItemRequestQueryType;
     const healthCalendar = validateCalendar(await fetchCalendar({ userId, calendarId }), HealthCalendarSchema) as HealthCalendarType;
     await fetchNightEventItem({ userId, id })
           .then(rawNightEvent=>convertRawToFetchItemResponseObject(rawNightEvent))
           .then((responseObject:FetchItemResponseObjectType)=>sendData(response, responseObject));
-}));
+  })
+);
 
 export default router;

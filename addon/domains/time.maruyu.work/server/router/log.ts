@@ -5,22 +5,22 @@ import { deserializePacketInBody, deserializePacketInQuery, requireBodyZod, requ
 import { 
   RequestQuerySchema as FetchItemRequestQuerySchema,
   RequestQueryType as FetchItemRequestQueryType,
-  ResponseObjectType as FetchItemResponseObjectType
+  ResponseObjectSchema as FetchItemResponseObjectSchema,
 } from "../../share/protocol/log/fetchItem";
 import { 
   RequestBodySchema as CreateItemRequestBodySchema,
   RequestBodyType as CreateItemRequestBodyType,
-  ResponseObjectType as CreateItemResponseObjectType
+  ResponseObjectSchema as CreateItemResponseObjectSchema,
 } from "../../share/protocol/log/createItem";
 import { 
   RequestBodySchema as UpdateItemRequestBodySchema,
   RequestBodyType as UpdateItemRequestBodyType,
-  ResponseObjectType as UpdateItemResponseObjectType
+  ResponseObjectSchema as UpdateItemResponseObjectSchema,
 } from "../../share/protocol/log/updateItem";
 import { 
   RequestBodySchema as DeleteItemRequestBodySchema,
   RequestBodyType as DeleteItemRequestBodyType,
-  ResponseObjectType as DeleteItemResponseObjectType
+  ResponseObjectSchema as DeleteItemResponseObjectSchema,
 } from "../../share/protocol/log/deleteItem";
 import {
   convertRawToFetchItemResponseObject,
@@ -34,52 +34,52 @@ import { UserInfoType } from "@server/types/user";
 
 const router = express.Router();
 
-router.get("/item", [
-  deserializePacketInQuery,
-  requireQueryZod(FetchItemRequestQuerySchema)
-], asyncHandler(async function(request:express.Request, response:express.Response){
+router.get('/item', 
+  deserializePacketInQuery(),
+  requireQueryZod(FetchItemRequestQuerySchema),
+  asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = response.locals.userInfo as UserInfoType;
     const { calendarId, id } = response.locals.query as FetchItemRequestQueryType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), TimeCalendarSchema) as TimeCalendarType;
-    await fetchLog({ userId, id })
-          .then(rawTimeLog=>convertRawToFetchItemResponseObject(rawTimeLog))
-          .then((responseObject:FetchItemResponseObjectType)=>sendData(response, responseObject))
-}));
+    const log = await fetchLog({ userId, id });
+    sendData(response, FetchItemResponseObjectSchema.parse(log));
+  })
+);
 
-router.post("/item", [
-  deserializePacketInBody,
-  requireBodyZod(CreateItemRequestBodySchema)
-], asyncHandler(async function(request:express.Request, response:express.Response){
+router.post('/item', 
+  deserializePacketInBody(),
+  requireBodyZod(CreateItemRequestBodySchema),
+  asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = response.locals.userInfo as UserInfoType;
     const { calendarId, ...body } = response.locals.body as CreateItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), TimeCalendarSchema) as TimeCalendarType;
-    await createLog({ userId, ...body })
-          .then(rawTimeLog=>convertRawToCreateItemResponseObject(rawTimeLog))
-          .then((responseObject:CreateItemResponseObjectType)=>sendData(response, responseObject));
-}));
+    const log = await createLog({ userId, ...body });
+    sendData(response, CreateItemResponseObjectSchema.parse(log));
+  })
+);
 
-router.patch("/item", [
-  deserializePacketInBody,
-  requireBodyZod(UpdateItemRequestBodySchema)
-], asyncHandler(async function(request:express.Request, response:express.Response){
+router.patch('/item', 
+  deserializePacketInBody(),
+  requireBodyZod(UpdateItemRequestBodySchema),
+  asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = response.locals.userInfo as UserInfoType;
     const { calendarId, ...body } = response.locals.body as UpdateItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), TimeCalendarSchema) as TimeCalendarType;
-    await updateLog({ userId, ...body })
-          .then(rawTimeLog=>convertRawToUpdateItemResponseObject(rawTimeLog))
-          .then((responseObject:UpdateItemResponseObjectType)=>sendData(response, responseObject));
-}));
+    const log = await updateLog({ userId, ...body });
+    sendData(response, UpdateItemResponseObjectSchema.parse(log));
+  })
+);
 
-router.delete("/item", [
-  deserializePacketInBody,
-  requireBodyZod(DeleteItemRequestBodySchema)
-], asyncHandler(async function(request:express.Request, response:express.Response){
+router.delete('/item', 
+  deserializePacketInBody(),
+  requireBodyZod(DeleteItemRequestBodySchema),
+  asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = response.locals.userInfo as UserInfoType;
     const { calendarId, id } = response.locals.body as DeleteItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), TimeCalendarSchema) as TimeCalendarType;
-    await deleteLog({ userId, id })
-          .then(rawTimeLog=>convertRawToDeleteItemResponseObject(rawTimeLog))
-          .then((responseObject:DeleteItemResponseObjectType)=>sendData(response, responseObject));
-}));
+    const log = await deleteLog({ userId, id });
+    sendData(response, DeleteItemResponseObjectSchema.parse(log));
+  })
+);
 
 export default router;

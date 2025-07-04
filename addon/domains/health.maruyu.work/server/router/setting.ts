@@ -11,13 +11,14 @@ import { UserInfoType } from "@server/types/user";
 
 const router = express.Router();
 
-router.put("/apiKey", [
-  requireBodyZod(UpdateCredentialRequestBodySchema)
-], asyncHandler(async function(request:express.Request, response:express.Response){
-  const { userId } = response.locals.userInfo as UserInfoType;
-  const { apiKey } = response.locals.body as UpdateCredentialRequestBodyType;
-  await storeApiKey({userId, apiKey});
-  sendNoContent(response, "store ApiKey successfully.");
-}));
+router.put('/apiKey', 
+  requireBodyZod(UpdateCredentialRequestBodySchema),
+  asyncHandler(async function(request: express.Request, response: express.Response) {
+    const { userId } = response.locals.userInfo as UserInfoType;
+    const { apiKey } = response.locals.body as UpdateCredentialRequestBodyType;
+    await storeApiKey({userId, apiKey});
+    sendNoContent(response, "store ApiKey successfully.");
+  })
+);
 
 export default router;

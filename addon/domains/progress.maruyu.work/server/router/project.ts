@@ -16,16 +16,17 @@ import { UserInfoType } from "@server/types/user";
 
 const router = express.Router();
 
-router.get("/list", [
-  deserializePacketInQuery,
-  requireQueryZod(FetchListRequestQuerySchema)
-], asyncHandler(async function(request:express.Request, response:express.Response){
+router.get('/list', 
+  deserializePacketInQuery(),
+  requireQueryZod(FetchListRequestQuerySchema),
+  asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = response.locals.userInfo as UserInfoType;
     const { calendarId, ...query } = response.locals.query as FetchListRequestQueryType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), ProgressCalendarSchema);
     await fetchProjectList({ userId, ...query })
           .then(rawProject=>convertRawToFetchListResponseObject(rawProject))
           .then((responseObject:FetchListResponseObjectType)=>sendData(response, responseObject));
-}));
+  })
+);
 
 export default router;
