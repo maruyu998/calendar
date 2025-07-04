@@ -13,8 +13,7 @@ import apiRouter from "./api/external/index";
 import * as maruyuOAuthClient from "maruyu-webcommons/node/utils/oauth";
 import { asyncHandler, sendError } from "@ymwc/node-express";
 import { PermissionError } from "@ymwc/errors";
-import { requireApiKey, requireSignin } from "maruyu-webcommons/node/middleware";
-import * as pushUtils from "maruyu-webcommons/node/push";
+import * as push from "@ymwc/node-push";
 import register from "./register";
 
 const RUN_MODE = env.get("RUN_MODE", z.enum(['development','production','test']));
@@ -57,9 +56,9 @@ if(RUN_MODE!="test"){
   // リクエスト先のURIをSessionに保存してAuthServerへログインするためにリダイレクトする
   app.use(maruyuOAuthClient.redirectIfNotSignedIn);
   
-  app.get("/sec/push", requireSignin, pushUtils.sendPublicVapidKey);
-  app.post("/sec/push", requireSignin, asyncHandler(pushUtils.registerSubscription));
-  app.delete("/sec/push", requireSignin, asyncHandler(pushUtils.unregisterSubscription));
+  app.get("/sec/push", requireSignin, asyncHandler(push.sendPublicVapidKey));
+  app.post("/sec/push", requireSignin, asyncHandler(push.registerSubscription));
+  app.delete("/sec/push", requireSignin, asyncHandler(push.unregisterSubscription));
   app.get("/sec/signout", maruyuOAuthClient.signout);
   app.get("/sec/refresh", maruyuOAuthClient.refreshUserInfo);
   
@@ -82,9 +81,9 @@ if(RUN_MODE!="test"){
   app.use("/pub", pubRouter);
   app.use("/api", apiRouter);
   
-  app.get("/sec/push", pushUtils.sendPublicVapidKey);
-  app.post("/sec/push", asyncHandler(pushUtils.registerSubscription));
-  app.delete("/sec/push", asyncHandler(pushUtils.unregisterSubscription));
+  app.get("/sec/push", asyncHandler(push.sendPublicVapidKey));
+  app.post("/sec/push", asyncHandler(push.registerSubscription));
+  app.delete("/sec/push", asyncHandler(push.unregisterSubscription));
   app.get("/sec/signout", maruyuOAuthClient.signout);
   app.get("/sec/refresh", maruyuOAuthClient.refreshUserInfo); 
   app.use("/sec", secRouter);
@@ -101,4 +100,17 @@ app.listen(port, ()=>{
   console.log(`starting: listening port ${port}`);
 })
 register();
-pushUtils.register();
+
+declare module "@ymwc/node-push/dist/config" {
+  interface PushTypes {
+    UserIdBrand: authSdk.UserIdBrandType
+  }
+}
+
+push.register({
+  collectionName: "mwc_pushsubscription",
+  publicVapidKey: env.get("PUBLIC_VAPID_KEY", z.string().nonempty()),
+  privateVapidKey: env.get("PRIVATE_VAPID_KEY", z.string().nonempty()),
+  vapidEmail: env.get("VAPID_EMAIL", z.string().nonempty()),
+  getUserId: ({ response }) => response ? authSdk.getUserInfoLocals(response).userId : null
+});
