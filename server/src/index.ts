@@ -10,9 +10,9 @@ import pubRouter from "./api/web_public/index";
 import secRouter from "./api/web_secure/index";
 import apiRouter from "./api/external/index";
 
-import * as maruyuOAuthClient from "maruyu-webcommons/node/utils/oauth";
 import { asyncHandler, sendError } from "@ymwc/node-express";
 import { PermissionError } from "@ymwc/errors";
+import * as authSdk from "@maruyu/auth-sdk";
 import * as push from "@ymwc/node-push";
 import register from "./register";
 
@@ -20,7 +20,6 @@ const RUN_MODE = env.get("RUN_MODE", z.enum(['development','production','test'])
 const port = env.get("PORT", z.coerce.number());
 const clientPublicPath = path.join(__dirname, env.get("CLIENT_PUBLIC_PATH", z.string().nonempty()));
 
-// @ymwc/node-app設定
 const app = createApp(mongoose, {
   mongoPath: env.get("MONGO_PATH", z.string().startsWith("mongodb://").nonempty()),
   trustProxies: env.get("TRUST_PROXIES", z.string().transform(parseList)),
@@ -42,28 +41,28 @@ const app = createApp(mongoose, {
 app.use('/manifest.json', express.static(path.join(clientPublicPath, 'manifest.json')));
 app.use('/favicon.ico', express.static(path.join(clientPublicPath, 'favicon.ico')));
 app.use('/robots.txt', express.static(path.join(clientPublicPath, 'robots.txt')));
-app.get("/pub/signin", maruyuOAuthClient.redirectToSignin);
+app.get("/pub/signin", authSdk.redirectToSignin);
 
 console.log({RUN_MODE});
 if(RUN_MODE!="test"){
   // AuthServerからのアクセスをCorsに追加する
-  app.use(env.get("OAUTH_CALLBACK_PATH",z.string().nonempty()), maruyuOAuthClient.addCors);
+  app.use(env.get("OAUTH_CALLBACK_PATH",z.string().nonempty()), authSdk.addCors);
   // AuthServerからのリダイレクトを受けてSessionに保存していたURIへリダイレクトする
-  app.get(env.get("OAUTH_CALLBACK_PATH",z.string().nonempty()), maruyuOAuthClient.processCallbackThenRedirect);
+  app.get(env.get("OAUTH_CALLBACK_PATH",z.string().nonempty()), authSdk.processCallbackThenRedirect);
   app.use("/pub", pubRouter);
   app.use("/api", requireApiKey(), apiRouter);
   
   // リクエスト先のURIをSessionに保存してAuthServerへログインするためにリダイレクトする
-  app.use(maruyuOAuthClient.redirectIfNotSignedIn);
+  app.use(authSdk.redirectIfNotSignedIn);
   
-  app.get("/sec/push", requireSignin, asyncHandler(push.sendPublicVapidKey));
-  app.post("/sec/push", requireSignin, asyncHandler(push.registerSubscription));
-  app.delete("/sec/push", requireSignin, asyncHandler(push.unregisterSubscription));
-  app.get("/sec/signout", maruyuOAuthClient.signout);
-  app.get("/sec/refresh", maruyuOAuthClient.refreshUserInfo);
+  app.get("/sec/push", authSdk.requireSignin, asyncHandler(push.sendPublicVapidKey));
+  app.post("/sec/push", authSdk.requireSignin, asyncHandler(push.registerSubscription));
+  app.delete("/sec/push", authSdk.requireSignin, asyncHandler(push.unregisterSubscription));
+  app.get("/sec/signout", authSdk.signout);
+  app.get("/sec/refresh", authSdk.refreshUserInfo);
   
   app.use(async (req,res,next)=>{
-    await maruyuOAuthClient.getData(req).then((data:{status?:string})=>{
+    await authSdk.getData(req).then((data:{status?:string})=>{
       const message = [
         "Permission required. Please contact application owner to add permission.",
         "Access /sec/signout to signout or /sec/refresh to refresh user info"
@@ -72,7 +71,7 @@ if(RUN_MODE!="test"){
       next();
     }).catch((error:Error)=>sendError(res, error));
   });
-  app.use("/sec", requireSignin, secRouter);
+  app.use("/sec", authSdk.requireSignin, secRouter);
 }else{
   app.use((request:express.Request, response:express.Response, next:express.NextFunction)=>{
     response.locals.userInfo = { userId: "tmp" }
@@ -84,8 +83,8 @@ if(RUN_MODE!="test"){
   app.get("/sec/push", asyncHandler(push.sendPublicVapidKey));
   app.post("/sec/push", asyncHandler(push.registerSubscription));
   app.delete("/sec/push", asyncHandler(push.unregisterSubscription));
-  app.get("/sec/signout", maruyuOAuthClient.signout);
-  app.get("/sec/refresh", maruyuOAuthClient.refreshUserInfo); 
+  app.get("/sec/signout", authSdk.signout);
+  app.get("/sec/refresh", authSdk.refreshUserInfo); 
   app.use("/sec", secRouter);
 }
 
