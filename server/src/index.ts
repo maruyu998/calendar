@@ -13,6 +13,7 @@ import apiRouter from "./api/external/index";
 import { asyncHandler, sendError } from "@ymwc/node-express";
 import { PermissionError } from "@ymwc/errors";
 import * as authSdk from "@maruyu/auth-sdk";
+import { requireApiKey } from "@ymwc/node-apikeys";
 import * as push from "@ymwc/node-push";
 import register from "./register";
 
