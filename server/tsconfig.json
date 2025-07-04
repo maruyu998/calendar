@@ -15,8 +15,6 @@
   },
   "include": [
     "src",
-    "../webcommons/commons",
-    "../webcommons/node",
     "../addon/server/**/*.ts",
     "../addon/domains/**/server/*.ts",
     "../addon/domains/**/protocol/*.ts",

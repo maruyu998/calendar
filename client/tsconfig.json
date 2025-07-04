@@ -8,8 +8,6 @@
   },
   "include": [
     "src",
-    "../webcommons/commons",
-    "../webcommons/react",
     "../addon/client",
     "../addon/domains/**/client",
     "../addon/domains/**/protocol",

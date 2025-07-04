@@ -103,13 +103,6 @@ export default {
           chunks: 'all',
           priority: 10,
         },
-        // webcommonsを別チャンクに
-        webcommons: {
-          test: /[\\/]webcommons[\\/]/,
-          name: 'webcommons',
-          chunks: 'all',
-          priority: 15,
-        },
         // React関連ライブラリ
         react: {
           test: /[\\/]node_modules[\\/](react|react-dom|react-router)[\\/]/,
