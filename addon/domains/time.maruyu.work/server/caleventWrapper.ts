@@ -2,13 +2,13 @@ import * as Log from "./process/log";
 import { CalendarIdType } from "@share/types/calendar";
 import { CaleventIdType, CaleventType } from "@share/types/calevent";
 import { DOMAIN } from "../const";
-import { Log as LogSDKType, LogFull } from "@maruyu/time-sdk";
 import { createTitle } from "../share/func/log";
 import { LogIdType } from "../share/types/log";
+import { LogApiType } from "./types/log";
 import { UserIdType } from "@server/types/user";
 
 export function convertLogToCalevent(
-  log: LogFull,
+  log: LogApiType,
   calendarId: CalendarIdType,
 ):CaleventType{
   return {
@@ -25,7 +25,7 @@ export function convertLogToCalevent(
     startTime: log.startTime,
     endTime: log.endTime,
     // createdAt: log.createdAt,
-    updatedAt: log.updatedTime,
+    updatedAt: log.updatedAt,
     permissions: ["read", "write", "edit", "delete"],
     style: {
       mainColor: log.quota.styles.color,

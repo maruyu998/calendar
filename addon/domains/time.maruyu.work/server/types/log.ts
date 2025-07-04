@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { QuotaSchema } from "../../share/types/quota";
-import { Mdate } from "maruyu-webcommons/commons/utils/mdate";
+import { Mdate } from "@ymwc/mdate";
 import { ResponseObjectType as FetchItemResponseObjectType } from "../../share/protocol/log/fetchItem";
 import { ResponseObjectType as CreateItemResponseObjectType } from "../../share/protocol/log/createItem";
 import { ResponseObjectType as UpdateItemResponseObjectType } from "../../share/protocol/log/updateItem";
