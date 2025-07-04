@@ -9,9 +9,9 @@ type TopLayoutType = {
   setWindowSize: React.Dispatch<React.SetStateAction<{width: number; height: number;}>>,
   setCurtainWidth: React.Dispatch<React.SetStateAction<number>>,
   setMainHeight: React.Dispatch<React.SetStateAction<number>>,
-  wholeElm: React.RefObject<HTMLDivElement>,
-  headerElm: React.RefObject<HTMLDivElement>,
-  curtainElm: React.RefObject<HTMLDivElement>
+  wholeElm: React.RefObject<HTMLDivElement|null>,
+  headerElm: React.RefObject<HTMLDivElement|null>,
+  curtainElm: React.RefObject<HTMLDivElement|null>
 }
 
 const TopLayoutContext = createContext<TopLayoutType|undefined>(undefined);

@@ -17,10 +17,10 @@ type CurtainLayoutType = {
   widths: {[dateString: string]: number;},
   updateDayWidth: (date:MdateTz,width:number|undefined)=>void,
   checkIsDayWidthSet: (date:MdateTz)=>boolean,
-  timeScaleElm: React.RefObject<HTMLDivElement>,
-  dayTopElm: React.RefObject<HTMLDivElement>,
-  dayEventElm: React.RefObject<HTMLDivElement>,
-  calendarElm: React.RefObject<HTMLDivElement>,
+  timeScaleElm: React.RefObject<HTMLDivElement | null>,
+  dayTopElm: React.RefObject<HTMLDivElement | null>,
+  dayEventElm: React.RefObject<HTMLDivElement | null>,
+  calendarElm: React.RefObject<HTMLDivElement | null>,
   calendarLeft: number,
   calendarWidth: number,
   calendarHeight: number,
@@ -42,6 +42,11 @@ export function CurtainLayoutProvider({children}: {children: React.ReactNode}){
   const { curtainWidth, mainHeight } = useTopLayout();
   const { dayEventGroup } = useEvents();
 
+  const timeScaleElm = useRef<HTMLDivElement|null>(null);
+  const dayTopElm = useRef<HTMLDivElement|null>(null);
+  const dayEventElm = useRef<HTMLDivElement|null>(null);
+  const calendarElm = useRef<HTMLDivElement|null>(null);
+
   const [ calendarHeight, setCalendarHeight ] = useState<number>(0);
   const [ calendarLeft, setCalendarLeft ] = useState<number>(0);
   const [ calendarWidth, setCalendarWidth ] = useState<number>(0);
@@ -51,7 +56,7 @@ export function CurtainLayoutProvider({children}: {children: React.ReactNode}){
     setCalendarLeft(getDivRefWidth(timeScaleElm))
     setCalendarWidth(curtainWidth - getDivRefWidth(timeScaleElm))
     setCalendarHeight(mainHeight - getDivRefHeight(dayTopElm) - getDivRefHeight(dayEventElm))
-  }, [curtainWidth, mainHeight, dayEventGroup])
+  }, [curtainWidth, mainHeight, dayEventGroup, timeScaleElm, dayTopElm, dayEventElm])
   useEffect(()=>{
     setCurtainVirtualHeight(calendarHeight * heightScale / 100)
   }, [calendarHeight, heightScale])
@@ -122,11 +127,6 @@ export function CurtainLayoutProvider({children}: {children: React.ReactNode}){
     setWidths(widths);
   }, [dayDuration, today, startMdate, timezone, curtainWidth, dayWidths, calendarWidth])
 
-  const timeScaleElm = useRef<HTMLDivElement>(null);
-  const dayTopElm = useRef<HTMLDivElement>(null);
-  const dayEventElm = useRef<HTMLDivElement>(null);
-  const calendarElm = useRef<HTMLDivElement>(null);
-
   return (
     <CurtainLayoutContext.Provider
       value={{
@@ -134,7 +134,6 @@ export function CurtainLayoutProvider({children}: {children: React.ReactNode}){
         updateDayWidth,
         checkIsDayWidthSet,
         timeScaleElm,
-
         dayTopElm,
         dayEventElm,
         calendarElm,

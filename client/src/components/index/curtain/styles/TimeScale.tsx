@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import { numberRange as range } from "@ymwc/utils";
 import { getDivRefWidth } from "@client/utils/ReactRect";
 import { MdateTz } from "@ymwc/mdate";
@@ -8,8 +8,8 @@ import { HOUR } from "@ymwc/utils";
 export default function TimeScale(){
   const { timezone } = useSetting();
 
-  const firstRef = useRef<HTMLDivElement>(null);
-  const width = useMemo(()=>getDivRefWidth(firstRef), [firstRef.current]);
+  const firstRef = useRef<HTMLDivElement|null>(null);
+  const width = useMemo(()=>getDivRefWidth(firstRef), [firstRef]);
   const startEndRanges = useMemo(()=>{
     return [...range(25)].map(i=>{
       const startR = (i===0) ? 0 : new MdateTz(undefined, timezone).resetTime().addMs((i-0.5)*HOUR).getRatio("date");
