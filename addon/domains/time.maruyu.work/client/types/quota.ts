@@ -1,8 +1,11 @@
+import { QuotaFullType, QuotaFullSchema } from "@maruyu/time-sdk";
 import { ResponseObjectType as FetchListResponseObjectType } from "../../share/protocol/quota/fetchList";
-import { QuotaType } from "../../share/types/quota";
+
+export type { QuotaFullType } from "@maruyu/time-sdk";
+export { QuotaFullSchema } from "@maruyu/time-sdk";
 
 export function convertFetchListResponseToClient(
-  responseObject:FetchListResponseObjectType
-):QuotaType[]{
+  responseObject: FetchListResponseObjectType
+): QuotaFullType[] {
   return responseObject.quotaList;
 }

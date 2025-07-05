@@ -4,21 +4,21 @@ import { getPurposeList } from '../../share/func/log';
 import { RiSearchLine } from '@remixicon/react';
 import { aggregateQuota } from '../func/quota';
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react'
-import { QuotaType } from '../../share/types/quota';
+import { QuotaFullType } from '@maruyu/time-sdk';
 
 export default function QuotaForm({
   quotaList,
   quota,
   setQuota,
 }:{
-  quotaList: QuotaType[],
-  quota: QuotaType|null,
-  setQuota: (quota:QuotaType)=>void,
+  quotaList: QuotaFullType[],
+  quota: QuotaFullType|null,
+  setQuota: (quota:QuotaFullType)=>void,
 }){
   const [ editing, setEditing ] = useState<boolean>(false);
   useEffect(()=>{ setEditing(quota==null) }, [quota]);
 
-  const [draftQuota, setDraftQuota] = useState<QuotaType|null>(quota);
+  const [draftQuota, setDraftQuota] = useState<QuotaFullType|null>(quota);
   const [quotaSearchKey, setQuotaSearchKey] = useState<string>("");
 
   function cancelEdit(){

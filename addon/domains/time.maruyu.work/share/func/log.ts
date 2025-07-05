@@ -1,16 +1,16 @@
-import { QuotaType } from "../types/quota";
+import { QuotaFullType } from "@maruyu/time-sdk";
+import { PurposeFullType } from "@maruyu/time-sdk";
 
-export function getPurposeList(quota:QuotaType):string[]{
+export function getPurposeList(quota:QuotaFullType):string[]{
   const purposeList = new Array<string>();
-  type PurposeType = QuotaType["purpose"];
-  let purpose:PurposeType|null = quota.purpose;
+  let purpose:PurposeFullType|null = quota.purpose;
   while(purpose){
-    purposeList.unshift(purpose.name)
+    purposeList.unshift(purpose.name);
     purpose = purpose.parentPurpose;
   }
   return purposeList;
 }
 
-export function createTitle(quota:QuotaType){
+export function createTitle(quota:QuotaFullType){
   return `[T]${quota.name}<${getPurposeList(quota).join("/")}>`;
 }

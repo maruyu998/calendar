@@ -1,104 +1,78 @@
 import { UserIdType } from '@server/types/user';
-import { getPacket, postPacket, putPacket, deletePacket } from '@ymwc/http';
-import { DOMAIN } from "../../const";
-import { LogApiType } from "../types/log";
-import { LogIdType } from '../../share/types/log';
-import { QuotaIdType } from '../../share/types/quota';
+import * as timeSdk from '@maruyu/time-sdk';
 import { getStoredApiKey } from './connect';
+import { DOMAIN } from "../../const";
+
+// Initialize SDK once
+timeSdk.initSDK({
+  baseURL: `https://${DOMAIN}`
+});
 
 export async function fetchLogList(props:{
   userId: UserIdType,
   startTime: Date,
   endTime: Date,
-}):Promise<LogApiType[]>{
+}):Promise<timeSdk.LogFullType[]>{
   const { userId, ...queryData } = props;
   const { apiKey } = await getStoredApiKey({ userId });
-  const url = new URL(`https://${DOMAIN}/api/log/list`);
-  const option = { accessToken: apiKey };
-  return await getPacket({ url, queryData, option })
-              .then((data)=>{
-                if (typeof data != "object") throw new Error("data is not object");
-                if (!("timeLogList" in (data as object))) throw new Error("timeLogList is not found");
-                const timeLogList = (data as { timeLogList: LogApiType[] }).timeLogList;
-                return timeLogList;
-              }).catch(e=>{
-                console.error("fetchEvent<in Time>", e);
-                return new Array<LogApiType>();
-              })
+  const result = await timeSdk.fetchLogListFull(apiKey, queryData);
+  return result.logList;
 }
 
 export async function fetchLog(props:{
   userId: UserIdType,
-  id: LogIdType,
-}):Promise<LogApiType>{
+  id: timeSdk.LogIdType,
+}):Promise<timeSdk.LogType>{
   const { userId, ...queryData } = props;
   const { apiKey } = await getStoredApiKey({ userId });
-  const url = new URL(`https://${DOMAIN}/api/log/item`);
-  const option = { accessToken: apiKey };
-  return await getPacket({ url, queryData, option })
-              .then((data)=>{
-                if (typeof data != "object") throw new Error("data is not object");
-                if (!("log" in (data as object))) throw new Error("timeLog is not found");
-                const timeLog = (data as { log: LogApiType }).log;
-                return timeLog;
-              })
+  const result = await timeSdk.fetchLog(apiKey, queryData);
+  return result.log;
+}
+
+export async function fetchLogFull(props:{
+  userId: UserIdType,
+  id: timeSdk.LogIdType,
+}):Promise<timeSdk.LogFullType>{
+  const { userId, ...queryData } = props;
+  const { apiKey } = await getStoredApiKey({ userId });
+  const result = await timeSdk.fetchLogFull(apiKey, queryData);
+  return result.log;
 }
 
 export async function createLog(props:{
   userId: UserIdType,
-  quotaId: QuotaIdType,
+  quotaId: timeSdk.QuotaIdType,
   startTime: Date,
   endTime: Date,
   output: string,
   review: string,
-}):Promise<LogApiType>{
+}):Promise<timeSdk.LogType>{
   const { userId, ...bodyData } = props;
   const { apiKey } = await getStoredApiKey({ userId });
-  const url = new URL(`https://${DOMAIN}/api/log/item`);
-  const option = { accessToken: apiKey };
-  return await postPacket({ url, bodyData, option })
-              .then((data)=>{
-                if (typeof data != "object") throw new Error("data is not object");
-                if (!("log" in (data as object))) throw new Error("timeLog is not found");
-                const timeLog = (data as { log: LogApiType }).log;
-                return timeLog;
-              })
+  const result = await timeSdk.createLog(apiKey, bodyData);
+  return result.log;
 }
 
 export async function updateLog(props:{
   userId: UserIdType,
-  id: LogIdType,
+  id: timeSdk.LogIdType,
+  quotaId?: timeSdk.QuotaIdType,
   startTime?: Date,
   endTime?: Date,
   output?: string,
   review?: string,
-}):Promise<LogApiType>{
+}):Promise<timeSdk.LogType>{
   const { userId, ...bodyData } = props;
   const { apiKey } = await getStoredApiKey({ userId });
-  const url = new URL(`https://${DOMAIN}/api/log/item`);
-  const option = { accessToken: apiKey };
-  return await putPacket({ url, bodyData, option })
-              .then((data)=>{
-                if (typeof data != "object") throw new Error("data is not object");
-                if (!("log" in (data as object))) throw new Error("timeLog is not found");
-                const timeLog = (data as { log: LogApiType }).log;
-                return timeLog;
-              })
+  const result = await timeSdk.updateLog(apiKey, bodyData);
+  return result.log;
 }
 
 export async function deleteLog(props:{
   userId: UserIdType,
-  id: LogIdType,
-}):Promise<LogApiType>{
+  id: timeSdk.LogIdType,
+}):Promise<void>{
   const { userId, ...bodyData } = props;
   const { apiKey } = await getStoredApiKey({ userId });
-  const url = new URL(`https://${DOMAIN}/api/log/item`);
-  const option = { accessToken: apiKey };
-  return await deletePacket({ url, bodyData, option })
-              .then((data)=>{
-                if (typeof data != "object") throw new Error("data is not object");
-                if (!("log" in (data as object))) throw new Error("timeLog is not found");
-                const timeLog = (data as { log: LogApiType }).log;
-                return timeLog;
-              })
+  await timeSdk.deleteLog(apiKey, bodyData);
 }

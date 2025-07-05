@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { QuotaIdSchema, QuotaSchema, QuotaType } from "../../share/types/quota";
+import { QuotaFullType } from "@maruyu/time-sdk";
 import { MdateTz, MdateTzSchema, TimeZone } from "@ymwc/mdate";
 import {
   ResponseObjectType as FetchItemResponseObjectType,
@@ -11,70 +11,72 @@ import {
   ResponseObjectType as UpdateItemResponseObjectType,
 } from "../../share/protocol/log/updateItem";
 import { LogIdSchema } from "../../share/types/log";
+import { QuotaFullSchema } from "./quota";
+import * as timeSdk from "@maruyu/time-sdk";
 
+// Client-side log schema with MdateTz for time fields
 export const LogSchema = z.object({
   id: LogIdSchema,
-  quota: QuotaSchema,
+  quota: QuotaFullSchema,
   startMdate: MdateTzSchema,
   endMdate: MdateTzSchema,
   output: z.string(),
   review: z.string(),
-  // createdAt: z.date(),
-  // updatedAt: z.date(),
 })
 
 export type LogType = z.infer<typeof LogSchema>;
 
-export function convertFetchItemResponseToClient(
-  responseObject: FetchItemResponseObjectType,
-  quotaList: QuotaType[],
+function convertLogToClient(
+  log: timeSdk.LogType,
+  quotaList: QuotaFullType[],
   timezone: TimeZone,
-):LogType{
-  const { id, quotaId, startTime, endTime, output, review } = responseObject.log;
-  const quota = quotaList.find(q=>q.id == quotaId);
-  if(quota == undefined) throw new Error("Quota is not found.");
+): LogType {
+  const { quotaId, startTime, endTime, ...logRest } = log;
+  
+  // Use provided quota or find by quotaId
+  const quota = quotaList.find(q => q.id === quotaId);
+  if (!quota) throw new Error("Quota is not found.");
+  
   return {
-    id,
+    ...logRest,
     quota,
     startMdate: new MdateTz(startTime.getTime(), timezone),
-    endMdate: new MdateTz(endTime.getTime(), timezone), 
-    output, 
-    review,
-  }
+    endMdate: new MdateTz(endTime.getTime(), timezone),
+  };
+}
+
+
+function convertLogFullToClient(
+  log: timeSdk.LogFullType,
+  timezone: TimeZone,
+): LogType {
+  const { startTime, endTime, ...logRest } = log;  
+  return {
+    ...logRest,
+    startMdate: new MdateTz(startTime.getTime(), timezone),
+    endMdate: new MdateTz(endTime.getTime(), timezone),
+  };
+}
+
+export function convertFetchItemResponseToClient(
+  responseObject: FetchItemResponseObjectType,
+  timezone: TimeZone,
+): LogType {
+  return convertLogFullToClient(responseObject.log, timezone);
 }
 
 export function convertCreateItemResponseToClient(
-  responseObject:CreateItemResponseObjectType,
-  quotaList: QuotaType[],
+  responseObject: CreateItemResponseObjectType,
+  quotaList: QuotaFullType[],
   timezone: TimeZone,
-):LogType{
-  const { id, quotaId, startTime, endTime, output, review } = responseObject.log;
-  const quota = quotaList.find(q=>q.id == quotaId);
-  if(quota == undefined) throw new Error("Quota is not found.");
-  return {
-    id,
-    quota,
-    startMdate: new MdateTz(startTime.getTime(), timezone),
-    endMdate: new MdateTz(endTime.getTime(), timezone),
-    output, 
-    review,
-  }
+): LogType {
+  return convertLogToClient(responseObject.log, quotaList, timezone);
 }
 
 export function convertUpdateItemResponseToClient(
-  responseObject:UpdateItemResponseObjectType,
-  quotaList: QuotaType[],
+  responseObject: UpdateItemResponseObjectType,
+  quotaList: QuotaFullType[],
   timezone: TimeZone,
-):LogType{
-  const { id, quotaId, startTime, endTime, output, review } = responseObject.log;
-  const quota = quotaList.find(q=>q.id == quotaId);
-  if(quota == undefined) throw new Error("Quota is not found.");
-  return {
-    id,
-    quota,
-    startMdate: new MdateTz(startTime.getTime(), timezone),
-    endMdate: new MdateTz(endTime.getTime(), timezone),
-    output, 
-    review,
-  }
+): LogType {
+  return convertLogToClient(responseObject.log, quotaList, timezone);
 }
