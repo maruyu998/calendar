@@ -46,7 +46,7 @@ export default function TitleForm({
       ) : (
         <div className="relative">
           <input
-            className="w-full text-sm border rounded p-2 my-0.5 pr-10 h-9"
+            className="w-full text-sm border border-gray-300 rounded p-2 my-0.5 pr-10 h-9"
             placeholder={title}
             defaultValue={title}
             onChange={(e) => setDraft(e.target.value)}

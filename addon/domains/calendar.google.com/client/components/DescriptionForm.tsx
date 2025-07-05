@@ -51,7 +51,7 @@ export default function DescriptionForm({
       ) : (
         <div className="relative">
           <textarea
-            className="w-full text-xs border rounded p-2 pr-10 h-24"
+            className="w-full text-xs border border-gray-300 rounded p-2 pr-10 h-24"
             placeholder={description}
             defaultValue={description}
             onChange={(e) => setDraft(e.target.value)}

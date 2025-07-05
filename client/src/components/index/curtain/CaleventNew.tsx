@@ -26,7 +26,7 @@ function Card({
       onClick={e=>onClickHandler()}
     >
       <div className="flex gap-x-3 items-center">
-        { color && <div className="w-8 h-8 rounded-full border" style={{backgroundColor:color}}/> }
+        { color && <div className="w-8 h-8 rounded-full border border-gray-300" style={{backgroundColor:color}}/> }
         <div>
           <p className="text-xs font-light">{calendarSource}</p>
           <p className="text-sm">{name}</p>

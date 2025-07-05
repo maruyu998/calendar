@@ -28,7 +28,7 @@ export default function ColorSelector({
       { editing && (
         <div className="
             absolute top-6 left-0 
-            bg-white border shadow rounded p-2 grid grid-cols-6
+            bg-white border border-gray-300 shadow rounded p-2 grid grid-cols-6
             gap-1 z-auto w-36
           "
           tabIndex={0}
@@ -36,7 +36,7 @@ export default function ColorSelector({
           onBlur={()=>setEditing(false)}
         >
           {GoogleCaleventColorList.map((color, idx)=>(
-            <div key={idx} className="w-5 h-5 rounded-full cursor-pointer border"
+            <div key={idx} className="w-5 h-5 rounded-full cursor-pointer border border-gray-300"
               style={{ backgroundColor: color ?? defaultColor }}
               onClick={()=>{ setColorId(idx); setEditing(false); }}
               title={`Color ${idx}`}

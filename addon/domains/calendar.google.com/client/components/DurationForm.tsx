@@ -102,8 +102,8 @@ function DateTimeDurationForm({
               after:top-[2px]
               after:start-[2px]
               after:bg-white
-              after:border-gray-300
-              after:border
+              after:border after:border-gray-300-gray-300
+              after:border after:border-gray-300
               after:rounded-full
               after:h-3
               after:w-3
@@ -233,7 +233,7 @@ export default function DurationForm({
                   }
                 }
               }}
-              className="text-sm px-3 py-1 border rounded-lg hover:bg-gray-50 flex items-center gap-1"
+              className="text-sm px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1"
             >
               {allDayMode ? "時刻指定に変更" : "全日に変更"}
             </button>

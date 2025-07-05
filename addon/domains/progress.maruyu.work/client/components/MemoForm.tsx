@@ -51,7 +51,7 @@ export default function MemoForm({
       ) : (
         <div className="relative">
           <textarea
-            className="w-full text-sm border rounded p-2 pr-10 h-24"
+            className="w-full text-sm border border-gray-300 rounded p-2 pr-10 h-24"
             placeholder={memo}
             defaultValue={memo}
             onChange={(e) => setDraft(e.target.value)}

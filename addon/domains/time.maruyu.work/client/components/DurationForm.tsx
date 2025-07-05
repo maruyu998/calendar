@@ -118,8 +118,8 @@ export default function DurationForm({
                   after:top-[2px]
                   after:start-[2px]
                   after:bg-white
-                  after:border-gray-300
-                  after:border
+                  after:border after:border-gray-300-gray-300
+                  after:border after:border-gray-300
                   after:rounded-full
                   after:h-3
                   after:w-3

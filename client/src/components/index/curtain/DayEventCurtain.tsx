@@ -21,7 +21,7 @@ export default function DayEventCurtain({
   }, [dateMdate, dayEventGroup])
 
   return (
-    <div className="border-end w-full" draggable={false}>
+    <div className="border-e border-gray-200 w-full" draggable={false}>
       { dayCalevents.map(calevent=>{
         const backgroundColor = getBackgroundColor(calevent);
         const textColor = isBrightColor(parseColor(backgroundColor)) ? "white" : "black";

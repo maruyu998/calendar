@@ -44,7 +44,7 @@ export default function TaskForm({
                 .map(({projectText, id, title})=>(
                   <div key={id} 
                     className={`
-                      block py-1 px-3 bg-white border rounded-lg shadow-sm cursor-pointer
+                      block py-1 px-3 bg-white border border-gray-300 rounded-lg shadow-sm cursor-pointer
                       ${task !== null && task.id === id  ? "hover:bg-indigo-200 bg-indigo-100 border-red-200"
                                                          : "hover:bg-gray-100 bg-white border-gray-200"
                       }
@@ -61,7 +61,7 @@ export default function TaskForm({
         </div>
       ) : (
         <div onClick={e=>setTask(null)} 
-          className="block py-1 px-3 bg-white border rounded-lg shadow-sm 
+          className="block py-1 px-3 bg-white border border-gray-300 rounded-lg shadow-sm 
                   hover:bg-indigo-200 border-gray-50 cursor-pointer"          
         >
           <p className="text-xs font-light">{getProjectList(task.project).join(" / ")}</p>

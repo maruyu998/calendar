@@ -18,7 +18,7 @@ export default function ColorSelector({
         <div className="mb-1 flex gap-x-2">
           <span className="text-sm font-medium text-gray-900">Color</span>
           <p className="text-sm font-mono">{color}</p>
-          <div className="w-5 h-5 rounded-full border cursor-pointer"
+          <div className="w-5 h-5 rounded-full border border-gray-300 cursor-pointer"
             style={{backgroundColor:color}}
             onClick={()=>setEditing(true)}
           />

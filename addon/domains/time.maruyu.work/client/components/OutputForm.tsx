@@ -51,7 +51,7 @@ export default function OutputForm({
       ) : (
         <div className="relative">
           <textarea
-            className="w-full text-sm border rounded p-2 pr-10 h-24"
+            className="w-full text-sm border border-gray-300 rounded p-2 pr-10 h-24"
             placeholder={output}
             defaultValue={output}
             onChange={(e) => setDraft(e.target.value)}

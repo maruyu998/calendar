@@ -42,8 +42,8 @@ export default function Setting({
               <div key={`${source.calendarSourceType}-${source.uniqueKeyInSource || index}`}>
                 <div 
                   className={`
-                    border rounded-lg p-4 transition-all duration-200 cursor-pointer
-                    border-gray-300 hover:border-gray-400 hover:bg-gray-50 hover:shadow-sm
+                    border border-gray-300 rounded-lg p-4 transition-all duration-200 cursor-pointer
+                    hover:border-gray-400 hover:bg-gray-50 hover:shadow-sm
                   `}
                   onClick={() => {
                     setCalendarSource(source.calendarSourceType);
