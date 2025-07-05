@@ -12,7 +12,7 @@ import * as authSdk from "@maruyu/auth-sdk";
 
 const router = express.Router();
 
-router.patch('/apiKey', 
+router.put('/apiKey', 
   deserializePacketInBody(),
   requireBodyZod(UpdateCredentialRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
