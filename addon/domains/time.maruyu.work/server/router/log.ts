@@ -37,7 +37,7 @@ router.get('/item/full',
     const { calendarId, id } = response.locals.query as FetchItemRequestQueryType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), TimeCalendarSchema) as TimeCalendarType;
     const log = await fetchLogFull({ userId, id });
-    sendData(response, FetchItemResponseObjectSchema.parse(log));
+    sendData(response, FetchItemResponseObjectSchema.parse({log}));
   })
 );
 
@@ -49,7 +49,7 @@ router.post('/item',
     const { calendarId, ...body } = response.locals.body as CreateItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), TimeCalendarSchema) as TimeCalendarType;
     const log = await createLog({ userId, ...body });
-    sendData(response, CreateItemResponseObjectSchema.parse(log));
+    sendData(response, CreateItemResponseObjectSchema.parse({log}));
   })
 );
 
@@ -61,7 +61,7 @@ router.patch('/item',
     const { calendarId, ...body } = response.locals.body as UpdateItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), TimeCalendarSchema) as TimeCalendarType;
     const log = await updateLog({ userId, ...body });
-    sendData(response, UpdateItemResponseObjectSchema.parse(log));
+    sendData(response, UpdateItemResponseObjectSchema.parse({log}));
   })
 );
 
