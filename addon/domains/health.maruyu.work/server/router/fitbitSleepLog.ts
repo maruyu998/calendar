@@ -1,7 +1,7 @@
 import express from "express";
 import { asyncHandler, sendData } from "@ymwc/node-express";
 import { fetchNightEventItem } from "../process/fitbitSleepLog";
-import { requireQueryZod } from "@ymwc/node-express";
+import { deserializePacketInQuery, requireQueryZod } from "@ymwc/node-express";
 import { 
   RequestQuerySchema as FetchItemRequestQuerySchema,
   RequestQueryType as FetchItemRequestQueryType,
@@ -18,6 +18,7 @@ import * as authSdk from "@maruyu/auth-sdk";
 const router = express.Router();
 
 router.get('/item', 
+  deserializePacketInQuery(),
   requireQueryZod(FetchItemRequestQuerySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = authSdk.getUserInfoLocals(response);
