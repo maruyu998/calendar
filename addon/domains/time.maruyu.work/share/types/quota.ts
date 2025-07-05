@@ -1,9 +1,10 @@
 import { z } from "zod";
 import { PurposeSchema } from "./purpose"
 import { HexColorSchema } from "@ymwc/utils";
+import { QuotaIdSchema, QuotaIdType } from "@maruyu/time-sdk";
 
-export const QuotaIdSchema = z.string().brand<"QuotaId">();
-export type QuotaIdType = z.infer<typeof QuotaIdSchema>;
+export { QuotaIdSchema };
+export type { QuotaIdType };
 
 export const QuotaGenreList = ["SelfOrganization","ReviewAndPlanning","GrowthOrientedAction"] as const;
 export const QuotaGenreSchema = z.enum(QuotaGenreList);

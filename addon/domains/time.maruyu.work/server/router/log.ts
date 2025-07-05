@@ -1,6 +1,6 @@
 import express from "express";
-import { asyncHandler, sendData } from "@ymwc/node-express";
-import { fetchLog, createLog, updateLog, deleteLog } from "../process/log";
+import { asyncHandler, sendData, sendNoContent } from "@ymwc/node-express";
+import { fetchLog, fetchLogFull, createLog, updateLog, deleteLog } from "../process/log";
 import { deserializePacketInBody, deserializePacketInQuery, requireBodyZod, requireQueryZod } from "@ymwc/node-express";
 import { 
   RequestQuerySchema as FetchItemRequestQuerySchema,
@@ -19,15 +19,9 @@ import {
 } from "../../share/protocol/log/updateItem";
 import { 
   RequestBodySchema as DeleteItemRequestBodySchema,
-  RequestBodyType as DeleteItemRequestBodyType,
-  ResponseObjectSchema as DeleteItemResponseObjectSchema,
+  RequestBodyType as DeleteItemRequestBodyType
 } from "../../share/protocol/log/deleteItem";
-import {
-  convertRawToFetchItemResponseObject,
-  convertRawToCreateItemResponseObject,
-  convertRawToUpdateItemResponseObject,
-  convertRawToDeleteItemResponseObject,
-} from "../types/log";
+import { LogType, LogFullType } from "@maruyu/time-sdk";
 import { fetchCalendar, validateCalendar } from "@addon/server/calendar";
 import { TimeCalendarSchema, TimeCalendarType } from "../types/calendar";
 import { UserInfoType } from "@server/types/user";
@@ -35,14 +29,14 @@ import * as authSdk from "@maruyu/auth-sdk";
 
 const router = express.Router();
 
-router.get('/item', 
+router.get('/item/full',
   deserializePacketInQuery(),
   requireQueryZod(FetchItemRequestQuerySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = authSdk.getUserInfoLocals(response);
     const { calendarId, id } = response.locals.query as FetchItemRequestQueryType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), TimeCalendarSchema) as TimeCalendarType;
-    const log = await fetchLog({ userId, id });
+    const log = await fetchLogFull({ userId, id });
     sendData(response, FetchItemResponseObjectSchema.parse(log));
   })
 );
@@ -78,8 +72,8 @@ router.delete('/item',
     const { userId } = authSdk.getUserInfoLocals(response);
     const { calendarId, id } = response.locals.body as DeleteItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), TimeCalendarSchema) as TimeCalendarType;
-    const log = await deleteLog({ userId, id });
-    sendData(response, DeleteItemResponseObjectSchema.parse(log));
+    await deleteLog({ userId, id });
+    sendNoContent(response);
   })
 );
 

@@ -1,16 +1,17 @@
-import { QuotaIdType, QuotaType } from "../../share/types/quota";
+import { QuotaIdType } from "../../share/types/quota";
+import { QuotaFullType } from "@maruyu/time-sdk";
 
 export function aggregateQuota(
-  quotaList:QuotaType[], 
+  quotaList:QuotaFullType[], 
   searchKey:string|null
 ):{purposesText:string, id:QuotaIdType, name:string}[]{
   return quotaList.map(quota=>{
     let purpose = quota.purpose;
     const purposes = new Array<string>();
-    while(true) {
-      purposes.push(purpose.name);
-      if(purpose.parentPurpose == null) break;
-      purpose = purpose.parentPurpose;
+    while(purpose && typeof purpose === 'object' && 'name' in purpose) {
+      purposes.push(purpose.name as string);
+      purpose = (purpose as any).parentPurpose;
+      if(!purpose) break;
     }
     const purposesText = purposes.reverse().join("/");
     return ({ purposesText, id: quota.id, name: quota.name});

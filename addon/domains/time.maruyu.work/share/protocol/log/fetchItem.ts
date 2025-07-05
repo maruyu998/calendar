@@ -1,8 +1,6 @@
 import { z } from "zod";
 import { CalendarIdSchema } from "@share/types/calendar";
-import { QuotaIdSchema } from "../../types/quota";
-import { LogIdSchema } from "../../types/log";
-
+import { LogIdSchema, LogFetchItemFullResponseObjectSchema } from "@maruyu/time-sdk";
 
 export const RequestQuerySchema = z.object({
   calendarId: CalendarIdSchema,
@@ -11,16 +9,5 @@ export const RequestQuerySchema = z.object({
 
 export type RequestQueryType = z.infer<typeof RequestQuerySchema>;
 
-
-export const ResponseObjectSchema = z.object({
-  log: z.object({
-    id: LogIdSchema,
-    quotaId: QuotaIdSchema,
-    startTime: z.date(),
-    endTime: z.date(),
-    output: z.string(),
-    review: z.string(),
-  })
-});
-
+export const ResponseObjectSchema = LogFetchItemFullResponseObjectSchema;
 export type ResponseObjectType = z.infer<typeof ResponseObjectSchema>;

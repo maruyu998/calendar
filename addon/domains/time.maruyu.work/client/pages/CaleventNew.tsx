@@ -13,7 +13,7 @@ import QuotaForm from '../components/QuotaForm';
 import DurationForm from '../components/DurationForm';
 import OutputForm from '../components/OutputForm';
 import ReviewForm from '../components/ReviewForm';
-import { QuotaType } from '../../share/types/quota';
+import { QuotaFullType } from '@maruyu/time-sdk';
 
 function LogNew({
   clickedDate,
@@ -26,7 +26,7 @@ function LogNew({
   clickedDate: MdateTz,
   timezone: TimeZone,
   timeCalendar: TimeCalendarType,
-  quotaList: QuotaType[],
+  quotaList: QuotaFullType[],
   refreshCaleventByCreate:(calevent:CaleventType)=>void,
   closeModal: ()=>void,
 }){
@@ -56,7 +56,7 @@ function LogNew({
   //   if(endTimeRef.current) endTimeRef.current.value = endMdate.format("YYYY-MM-DDTHH:mm");
   // }, [endMdate])
   
-  const [ quota, setQuota ] = useState<QuotaType|null>(null);
+  const [ quota, setQuota ] = useState<QuotaFullType|null>(null);
   const [ output, setOutput ] = useState<string>("");
   const [ review, setReview ] = useState<string>("");
   
@@ -66,7 +66,7 @@ function LogNew({
       <QuotaForm
         quotaList={quotaList}
         quota={quota}
-        setQuota={(quota:QuotaType)=>{ setQuota(quota) }}
+        setQuota={(quota:QuotaFullType)=>{ setQuota(quota) }}
       />
       <DurationForm 
         startMdate={startMdate}
@@ -181,7 +181,7 @@ export default function CaleventNew({
     return timeCalendar;
   }, [ calendar ]);
 
-  const [quotaList, setQuotaList] = useState<QuotaType[]|null>(null);
+  const [quotaList, setQuotaList] = useState<QuotaFullType[]|null>(null);
   useEffect(()=>{ 
     if(timeCalendar === null) return;
     fetchQuotaList({ calendarId: timeCalendar.id })

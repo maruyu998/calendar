@@ -3,29 +3,20 @@ import { CalendarIdType } from "@share/types/calendar";
 import { CaleventIdType, CaleventType } from "@share/types/calevent";
 import { DOMAIN } from "../const";
 import { createTitle } from "../share/func/log";
-import { LogIdType } from "../share/types/log";
-import { LogApiType } from "./types/log";
+import { LogIdType, LogFullType } from "../share/types/log";
 import { UserIdType } from "@server/types/user";
 
 export function convertLogToCalevent(
-  log: LogApiType,
+  log: LogFullType,
   calendarId: CalendarIdType,
 ):CaleventType{
   return {
     id: log.id as unknown as CaleventIdType,
     calendarId: calendarId,
-    // calendarSource: DOMAIN,
     title: createTitle(log.quota),
-    // description:
-    //     `url: https://${DOMAIN}/?logId=${log.id}\n`
-    //   + `TimeQuotaId: ${log.quota.id}\n`
-    //   + `Purposes: ${timePurposeList.join("/")}\n\n`
-    //   + (log.output ? `<output>\n${log.output}\n\n` : "") 
-    //   + (log.review ? `<review>\n${log.review}` : ""),
     startTime: log.startTime,
     endTime: log.endTime,
-    // createdAt: log.createdAt,
-    updatedAt: log.updatedAt,
+    updatedAt: log.updatedTime,
     permissions: ["read", "write", "edit", "delete"],
     style: {
       mainColor: log.quota.styles.color,
@@ -59,8 +50,7 @@ export async function updateCalevent(props:{
 }):Promise<CaleventType>{
   const { userId, calendarId, logId: id, ...updateData } = props;
   const log = await Log.updateLog({ userId, id, ...updateData });
-  // updateLogはLogを返すので、LogFullに変換するためにfetchLogを使う
-  const fullLog = await Log.fetchLog({ userId, id });
-  const calevent = convertLogToCalevent(fullLog, calendarId);
+  const logFull = await Log.fetchLogFull({ userId, id });
+  const calevent = convertLogToCalevent(logFull, calendarId);
   return calevent;
 }

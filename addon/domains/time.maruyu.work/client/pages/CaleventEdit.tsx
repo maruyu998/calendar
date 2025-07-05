@@ -23,7 +23,7 @@ import ReviewForm from '../components/ReviewForm';
 import QuotaForm from '../components/QuotaForm';
 import DurationForm from '../components/DurationForm';
 import { UpdateRefreshItemType } from '@client/contexts/EventsProvider';
-import { QuotaType } from '../../share/types/quota';
+import { QuotaFullType } from '@maruyu/time-sdk';
 import { LogIdType } from '../../share/types/log';
 
 function LogEdit({
@@ -43,7 +43,7 @@ function LogEdit({
   timezone: TimeZone,
   log: LogType,
   setLog: (log:LogType)=>void,
-  quotaList: QuotaType[],
+  quotaList: QuotaFullType[],
   refreshCaleventByCreate:(calevent:CaleventType)=>void,
   refreshCaleventByUpdate:(caleventId:CaleventIdType,update:UpdateRefreshItemType)=>void,
   refreshCaleventByRemove:(caleventId:CaleventIdType)=>void,
@@ -100,7 +100,7 @@ function LogEdit({
       <QuotaForm
         quotaList={quotaList}
         quota={log.quota}
-        setQuota={(quota:QuotaType)=>{
+        setQuota={(quota:QuotaFullType)=>{
           if(quota.id == log.quota.id) return;
           updateLog({ calendarId: timeCalendar.id, id: log.id, quotaId: quota.id })
             .then(responseObject=>convertLogUpdateItemResponseToClient(responseObject, quotaList, timezone))
@@ -184,13 +184,21 @@ export default function CaleventEdit({
 
   const { addToast } = useToast();
   const [ log, setLog ] = useState<LogType|null>(null);
+  const [quotaList, setQuotaList] = useState<QuotaFullType[]|null>(null);
 
-  const [quotaList, setQuotaList] = useState<QuotaType[]|null>(null);
+  useEffect(()=>{
+    fetchQuotaList({ calendarId: calendar.id })
+    .then(responseObject=>convertFetchQuotaListResponseToClient(responseObject))
+    .then(quotaList=>setQuotaList(quotaList))
+    .catch(error=>{
+      addToast("FetchQuotaListFailed", error.message, "error");
+    })
+  }, [calendar]);
 
   useEffect(()=>{
     if(quotaList == null) return;
     fetchLog({ calendarId: calendar.id, id: calevent.id as unknown as LogIdType })
-    .then(responseObject=>convertLogFetchItemResponseToClient(responseObject, quotaList, timezone))
+    .then(responseObject=>convertLogFetchItemResponseToClient(responseObject, timezone))
     .then(log=>setLog(log))
     .catch(error=>{
       addToast("FetchLogFailed", error.message, "error");
