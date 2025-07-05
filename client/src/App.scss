@@ -27,6 +27,12 @@ textarea {
     field-sizing: content;
 }
 
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
 /* Custom Range Slider Styles */
 .range-slider::-webkit-slider-thumb {
   appearance: none;
