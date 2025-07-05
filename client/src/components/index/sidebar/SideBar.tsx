@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useSetting } from '@client/contexts/SettingProvider';
 import { useStatus } from '@client/contexts/StatusProvider';
 
@@ -7,6 +7,7 @@ import SideChovenRight from "@client/assets/icons/tsxs/SideChovenRight";
 import { Switch, Button } from "@ymwc/react-components";
 import { Divider } from "@tremor/react";
 import { useToast } from '@ymwc/react-core';
+import { CalendarType } from '@client/types/calendar';
 
 export default function SideBar(){
 
@@ -19,6 +20,34 @@ export default function SideBar(){
   const { calendarList, setCalendarList } = useStatus();
 
   const [isHovering, setIsHovering] = useState(false);
+  const [collapsedSources, setCollapsedSources] = useState<Set<string>>(new Set());
+
+  // Group calendars by source
+  const groupedCalendars = useMemo(() => {
+    if (!calendarList) return {};
+    
+    return calendarList.reduce((groups, calendar) => {
+      const source = calendar.calendarSource;
+      if (!groups[source]) {
+        groups[source] = [];
+      }
+      groups[source].push(calendar);
+      return groups;
+    }, {} as Record<string, CalendarType[]>);
+  }, [calendarList]);
+
+  // Toggle source group collapse state
+  const toggleSourceCollapse = (source: string) => {
+    setCollapsedSources(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(source)) {
+        newSet.delete(source);
+      } else {
+        newSet.add(source);
+      }
+      return newSet;
+    });
+  };
 
   // Mouse proximity detection for toggle button visibility
   useEffect(() => {
@@ -80,34 +109,62 @@ export default function SideBar(){
             
             {/* Calendar List */}
             <div className="flex-1 overflow-y-auto">
-              {calendarList && calendarList.length > 0 ? (
-                <div className="p-2 space-y-1">
-                  {calendarList.map(calendar => (
-                    <div 
-                      key={calendar.id} 
-                      className="flex items-center gap-3 p-2 rounded-md hover:bg-gray-50 transition-colors group"
-                    >
-                      <Switch 
-                        id={`switch-${calendar.id}`}
-                        size="sm"
-                        customColor={calendar.style.color}
-                        checked={showCalIds.includes(calendar.id)}
-                        onChange={checked => {
-                          if (!checked && showCalIds.includes(calendar.id)) {
-                            const newShowCalIds = showCalIds.filter(id => id !== calendar.id);
-                            setShowCalIds(newShowCalIds);
-                          } else if (checked && !showCalIds.includes(calendar.id)) {
-                            setShowCalIds([...showCalIds, calendar.id]);
-                          }
-                        }}
-                      />
-                      <label 
-                        htmlFor={`switch-${calendar.id}`} 
-                        className="flex-1 text-sm text-gray-700 cursor-pointer truncate group-hover:text-gray-900 transition-colors"
-                        title={calendar.name}
+              {Object.keys(groupedCalendars).length > 0 ? (
+                <div className="p-2 space-y-2">
+                  {Object.entries(groupedCalendars).map(([source, calendars]) => (
+                    <div key={source} className="space-y-0.5">
+                      {/* Source Header */}
+                      <div
+                        className="flex items-center gap-2 px-2 py-1 cursor-pointer hover:bg-gray-50 rounded-md transition-colors"
+                        onClick={() => toggleSourceCollapse(source)}
                       >
-                        {calendar.name}
-                      </label>
+                        <svg
+                          className={`w-3 h-3 text-gray-400 transition-transform ${
+                            collapsedSources.has(source) ? '' : 'rotate-90'
+                          }`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                        <span className="text-xs font-medium text-gray-600">{source}</span>
+                        <span className="text-xs text-gray-400">({calendars.length})</span>
+                      </div>
+                      
+                      {/* Calendar Items */}
+                      {!collapsedSources.has(source) && (
+                        <div className="ml-5 space-y-0.5">
+                          {calendars.map(calendar => (
+                            <div 
+                              key={calendar.id} 
+                              className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-50 transition-colors group"
+                            >
+                              <Switch 
+                                id={`switch-${calendar.id}`}
+                                size="sm"
+                                customColor={calendar.style.color}
+                                checked={showCalIds.includes(calendar.id)}
+                                onChange={checked => {
+                                  if (!checked && showCalIds.includes(calendar.id)) {
+                                    const newShowCalIds = showCalIds.filter(id => id !== calendar.id);
+                                    setShowCalIds(newShowCalIds);
+                                  } else if (checked && !showCalIds.includes(calendar.id)) {
+                                    setShowCalIds([...showCalIds, calendar.id]);
+                                  }
+                                }}
+                              />
+                              <label 
+                                htmlFor={`switch-${calendar.id}`} 
+                                className="flex-1 text-sm text-gray-700 cursor-pointer truncate group-hover:text-gray-900 transition-colors"
+                                title={calendar.name}
+                              >
+                                {calendar.name}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
