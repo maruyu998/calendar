@@ -15,11 +15,14 @@ import { PermissionError } from "@ymwc/errors";
 import * as authSdk from "@maruyu/auth-sdk";
 import { requireApiKey } from "@ymwc/node-apikeys";
 import * as push from "@ymwc/node-push";
+import { setServerTimeZone } from "@ymwc/node-express";
+import { TIME_ZONES, TimeZone } from "@ymwc/mdate";
 import register from "./register";
 
 const RUN_MODE = env.get("RUN_MODE", z.enum(['development','production','test']));
 const port = env.get("PORT", z.coerce.number());
 const clientPublicPath = path.join(__dirname, env.get("CLIENT_PUBLIC_PATH", z.string().nonempty()));
+setServerTimeZone(env.get("SERVER_TIME_ZONE", z.enum(Object.keys(TIME_ZONES) as [TimeZone, ...TimeZone[]])));
 
 const app = createApp(mongoose, {
   mongoPath: env.get("MONGO_PATH", z.string().startsWith("mongodb://").nonempty()),
