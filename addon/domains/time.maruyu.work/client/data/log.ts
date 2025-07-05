@@ -26,7 +26,7 @@ import {
 } from "../../share/protocol/log/deleteItem";
 
 export async function fetchLog(queryData: FetchItemRequestQueryType):Promise<FetchItemResponseObjectType>{
-  const url = new URL(`${DOMAIN_ENDPOINT}/log/item`, window.location.href);
+  const url = new URL(`${DOMAIN_ENDPOINT}/log/item/full`, window.location.href);
   const querySchema = FetchItemRequestQuerySchema;
   const responseSchema = FetchItemResponseObjectSchema;
   return await getPacket({ url, queryData, querySchema, responseSchema })
