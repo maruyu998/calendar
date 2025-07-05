@@ -1,5 +1,5 @@
 import express from "express";
-import { requireBodyZod } from "@ymwc/node-express";
+import { deserializePacketInBody, requireBodyZod } from "@ymwc/node-express";
 import { asyncHandler, sendData, sendNoContent } from "@ymwc/node-express";
 import { storeApiKey } from "../process/connect";
 
@@ -13,6 +13,7 @@ import * as authSdk from "@maruyu/auth-sdk";
 const router = express.Router();
 
 router.put('/apiKey', 
+  deserializePacketInBody(),
   requireBodyZod(UpdateCredentialRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = authSdk.getUserInfoLocals(response);
