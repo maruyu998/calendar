@@ -10,6 +10,7 @@ const config: Config = {
     path.resolve(__dirname, "./src/**/*.{html,js,ts,jsx,tsx}"),
     path.resolve(__dirname, '../node_modules/@tremor/**/*.{js,ts,jsx,tsx}'),
     path.resolve(__dirname, '../node_modules/@material-tailwind/react/**/*.{js,ts,jsx,tsx}'),
+    path.resolve(__dirname, '../node_modules/@ymwc/**/*.{js,ts,jsx,tsx}'),
   ],
   theme: {
     extend: {
