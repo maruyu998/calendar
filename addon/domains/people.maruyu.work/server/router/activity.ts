@@ -61,7 +61,7 @@ router.post('/item',
   })
 );
 
-router.put('/item', 
+router.patch('/item', 
   deserializePacketInBody(),
   requireBodyZod(UpdateItemRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {

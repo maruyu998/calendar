@@ -1,4 +1,4 @@
-import { getPacket, postPacket, patchPacket } from "@ymwc/http";
+import { getPacket, postPacket, putPacket } from "@ymwc/http";
 import { DOMAIN_ENDPOINT } from "../../const";
 import {
   ResponseObjectSchema as FetchAuthorizationUrlResponseObjectSchema,
@@ -19,7 +19,7 @@ export async function updateCredential(bodyData: UpdateCredentialRequestBodyType
   const url = new URL(`${DOMAIN_ENDPOINT}/setting/credential`, window.location.href);
   const bodySchema = UpdateCredentialRequestBodySchema;
   const responseSchema = UpdateCredentialResponseObjectSchema;
-  return await patchPacket({ url, bodyData, bodySchema, responseSchema })
+  return await putPacket({ url, bodyData, bodySchema, responseSchema })
                 .catch(error => {
                   console.error(error);
                   throw error;
