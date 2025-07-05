@@ -47,9 +47,9 @@ export default function SideBar(){
     <div className="relative flex h-full">
       {/* Main Sidebar Content */}
       {showSide && (
-        <div className="w-64 bg-white border-r border-gray-200 shadow-sm overflow-hidden">
+        <div className="w-64 bg-white border-r border-gray-200 shadow-sm overflow-hidden h-full flex flex-col">
           {/* Header with Close Button */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50 flex-none">
             <h2 className="text-sm font-semibold text-gray-800">Calendars</h2>
             <button
               onClick={handleToggle}
@@ -63,7 +63,7 @@ export default function SideBar(){
           </div>
           
           {/* Content */}
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col flex-1 min-h-0">
             {/* Settings Button */}
             <div className="p-3 border-b border-gray-100">
               <button
