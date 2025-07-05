@@ -36,7 +36,7 @@ router.get('/list',
 );
 
 
-router.put('/item', 
+router.patch('/item', 
   deserializePacketInBody(),
   requireBodyZod(UpdateItemRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
