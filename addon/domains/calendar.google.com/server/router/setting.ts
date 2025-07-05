@@ -1,5 +1,5 @@
 import express from "express";
-import { requireBodyZod, requireQueryZod } from "@ymwc/node-express";
+import { deserializePacketInBody, deserializePacketInQuery, requireBodyZod, requireQueryZod } from "@ymwc/node-express";
 import { asyncHandler, sendData, sendNoContent } from "@ymwc/node-express";
 import { generateConnectUrl, getAndStoreTokenByCode, revokeToken, storeCredential } from "../process/connect";
 import * as sync from "../process/sync";
@@ -28,6 +28,7 @@ router.post('/refreshList',
 );
 
 router.put('/credential', 
+  deserializePacketInBody(),
   requireBodyZod(UpdateCredentialRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = authSdk.getUserInfoLocals(response);
@@ -46,6 +47,7 @@ router.get('/authorizationUrl',
 );
 
 router.get('/tokenRedirect', 
+  deserializePacketInQuery(),
   requireQueryZod(TokenRedirectRequestQuerySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = authSdk.getUserInfoLocals(response);

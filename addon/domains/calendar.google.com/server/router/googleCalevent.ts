@@ -1,6 +1,6 @@
 import express from "express";
 import { asyncHandler, sendData, sendError } from "@ymwc/node-express";
-import { requireQueryZod, requireBodyZod } from "@ymwc/node-express";
+import { deserializePacketInBody, deserializePacketInQuery, requireQueryZod, requireBodyZod } from "@ymwc/node-express";
 import { createEvent, deleteEvent, fetchEvent, updateEvent } from "../process/googleCalevent";
 import {
   RequestQuerySchema as FetchItemRequestQuerySchema,
@@ -36,6 +36,7 @@ import * as authSdk from "@maruyu/auth-sdk";
 const router = express.Router()
 
 router.get('/item', 
+  deserializePacketInQuery(),
   requireQueryZod(FetchItemRequestQuerySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = authSdk.getUserInfoLocals(response);
@@ -49,6 +50,7 @@ router.get('/item',
 );
 
 router.post('/item', 
+  deserializePacketInBody(),
   requireBodyZod(CreateItemRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = authSdk.getUserInfoLocals(response);
@@ -62,6 +64,7 @@ router.post('/item',
 );
 
 router.put('/item', 
+  deserializePacketInBody(),
   requireBodyZod(UpdateItemRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = authSdk.getUserInfoLocals(response);
@@ -75,6 +78,7 @@ router.put('/item',
 );
 
 router.delete('/item', 
+  deserializePacketInBody(),
   requireBodyZod(DeleteItemRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
     const { userId } = authSdk.getUserInfoLocals(response);
