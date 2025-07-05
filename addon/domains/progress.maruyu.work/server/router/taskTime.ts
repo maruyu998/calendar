@@ -31,6 +31,7 @@ import {
 import { fetchCalendar, validateCalendar } from "@addon/server/calendar";
 import { ProgressCalendarSchema, ProgressCalendarType } from "../types/calendar";
 import { UserInfoType } from "@server/types/user";
+import * as authSdk from "@maruyu/auth-sdk";
 
 const router = express.Router();
 
@@ -38,7 +39,7 @@ router.get('/item',
   deserializePacketInQuery(),
   requireQueryZod(FetchItemRequestQuerySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { calendarId, ...query } = response.locals.query as FetchItemRequestQueryType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), ProgressCalendarSchema) as ProgressCalendarType;
     await fetchTaskTime({ userId, ...query })
@@ -51,7 +52,7 @@ router.post('/item',
   deserializePacketInBody(),
   requireBodyZod(CreateItemRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { calendarId, ...body } = response.locals.body as CreateItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), ProgressCalendarSchema) as ProgressCalendarType;
     await createTaskTime({ userId, ...body })
@@ -64,7 +65,7 @@ router.patch('/item',
   deserializePacketInBody(),
   requireBodyZod(UpdateItemRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { calendarId, ...body } = response.locals.body as UpdateItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), ProgressCalendarSchema) as ProgressCalendarType;
     await updateTaskTime({ userId, ...body })
@@ -77,7 +78,7 @@ router.delete('/item',
   deserializePacketInBody(),
   requireBodyZod(DeleteItemRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { calendarId, ...body } = response.locals.body as DeleteItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), ProgressCalendarSchema) as ProgressCalendarType;
     await deleteTaskTime({ userId, ...body })

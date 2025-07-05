@@ -39,6 +39,16 @@ const app = createApp(mongoose, {
   sessionKeepDuration: env.get("SESSION_KEEP_DURATION", z.string().nonempty().transform(parseDuration)),
 });
 
+authSdk.register({
+  clientId: env.get("CLIENT_ID", z.string().nonempty()),
+  clientSecret: env.get("CLIENT_SECRET", z.string().nonempty()),
+  oauthDomain: env.get("OAUTH_DOMAIN", z.string().url()),
+  serviceDomain: env.get("SERVICE_DOMAIN", z.string().url()),
+  oauthCallbackPath: env.get("OAUTH_CALLBACK_PATH", z.string().startsWith("/")),
+  userInfoKeepDuration: env.get("USER_INFO_KEEP_DURATION", z.string().nonempty().transform(parseDuration)),
+  authSessionKeepDuration: env.get("AUTH_SESSION_KEEP_DURATION", z.string().nonempty().transform(parseDuration)),
+});
+
 app.use('/manifest.json', express.static(path.join(clientPublicPath, 'manifest.json')));
 app.use('/favicon.ico', express.static(path.join(clientPublicPath, 'favicon.ico')));
 app.use('/robots.txt', express.static(path.join(clientPublicPath, 'robots.txt')));

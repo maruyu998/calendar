@@ -13,12 +13,13 @@ import {
   RequestQueryType as TokenRedirectRequestQueryType,
 } from "../../share/protocol/setting/tokenRedirect";
 import { UserInfoType } from "@server/types/user";
+import * as authSdk from "@maruyu/auth-sdk";
 
 const router = express.Router();
 
 router.post('/refreshList', 
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     // refresh Google Calendar List
     // https://developers.google.com/calendar/api/v3/reference/events/list
     await sync.refreshCalendarList({userId})
@@ -29,7 +30,7 @@ router.post('/refreshList',
 router.put('/credential', 
   requireBodyZod(UpdateCredentialRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { clientId, clientSecret, redirectUri } = response.locals.body as UpdateCredentialRequestBodyType;
     await storeCredential({userId, clientId, clientSecret, redirectUri});
     sendNoContent(response, "added credential successfully.");
@@ -38,7 +39,7 @@ router.put('/credential',
 
 router.get('/authorizationUrl', 
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const authorizationUrl = await generateConnectUrl({userId});
     sendData(response, { authorizationUrl });
   })
@@ -47,7 +48,7 @@ router.get('/authorizationUrl',
 router.get('/tokenRedirect', 
   requireQueryZod(TokenRedirectRequestQuerySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { code } = response.locals.query as TokenRedirectRequestQueryType;
     await getAndStoreTokenByCode({userId, code});
     sendNoContent(response);
@@ -56,7 +57,7 @@ router.get('/tokenRedirect',
 
 router.get('/revokeToken', 
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     await revokeToken({userId});
     sendNoContent(response, "RevokeTokenSuccess");
   })

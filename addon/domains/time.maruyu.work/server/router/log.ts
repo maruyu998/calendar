@@ -31,6 +31,7 @@ import {
 import { fetchCalendar, validateCalendar } from "@addon/server/calendar";
 import { TimeCalendarSchema, TimeCalendarType } from "../types/calendar";
 import { UserInfoType } from "@server/types/user";
+import * as authSdk from "@maruyu/auth-sdk";
 
 const router = express.Router();
 
@@ -38,7 +39,7 @@ router.get('/item',
   deserializePacketInQuery(),
   requireQueryZod(FetchItemRequestQuerySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { calendarId, id } = response.locals.query as FetchItemRequestQueryType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), TimeCalendarSchema) as TimeCalendarType;
     const log = await fetchLog({ userId, id });
@@ -50,7 +51,7 @@ router.post('/item',
   deserializePacketInBody(),
   requireBodyZod(CreateItemRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { calendarId, ...body } = response.locals.body as CreateItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), TimeCalendarSchema) as TimeCalendarType;
     const log = await createLog({ userId, ...body });
@@ -62,7 +63,7 @@ router.patch('/item',
   deserializePacketInBody(),
   requireBodyZod(UpdateItemRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { calendarId, ...body } = response.locals.body as UpdateItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), TimeCalendarSchema) as TimeCalendarType;
     const log = await updateLog({ userId, ...body });
@@ -74,7 +75,7 @@ router.delete('/item',
   deserializePacketInBody(),
   requireBodyZod(DeleteItemRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { calendarId, id } = response.locals.body as DeleteItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), TimeCalendarSchema) as TimeCalendarType;
     const log = await deleteLog({ userId, id });

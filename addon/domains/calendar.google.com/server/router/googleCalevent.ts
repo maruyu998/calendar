@@ -31,13 +31,14 @@ import {
 import { GoogleCalendarSchema, GoogleCalendarType } from "../types/calendar";
 import { fetchCalendar, validateCalendar } from "@addon/server/calendar";
 import { UserInfoType } from "@server/types/user";
+import * as authSdk from "@maruyu/auth-sdk";
 
 const router = express.Router()
 
 router.get('/item', 
   requireQueryZod(FetchItemRequestQuerySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { calendarId, eventId } = response.locals.query as FetchItemRequestQueryType;
     const calendar = validateCalendar(await fetchCalendar({userId, calendarId}), GoogleCalendarSchema) as GoogleCalendarType;
     const googleCalendarId = calendar.data.googleCalendarId;
@@ -50,7 +51,7 @@ router.get('/item',
 router.post('/item', 
   requireBodyZod(CreateItemRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { calendarId, ...body } = response.locals.body as CreateItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({userId, calendarId}), GoogleCalendarSchema) as GoogleCalendarType;
     const googleCalendarId = calendar.data.googleCalendarId;
@@ -63,7 +64,7 @@ router.post('/item',
 router.put('/item', 
   requireBodyZod(UpdateItemRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { calendarId, ...body } = response.locals.body as UpdateItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({userId, calendarId}), GoogleCalendarSchema) as GoogleCalendarType;
     const googleCalendarId = calendar.data.googleCalendarId;
@@ -76,7 +77,7 @@ router.put('/item',
 router.delete('/item', 
   requireBodyZod(DeleteItemRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { calendarId, eventId } = response.locals.body as DeleteItemRequestBodyType;
     const calendar = validateCalendar(await fetchCalendar({userId, calendarId}), GoogleCalendarSchema) as GoogleCalendarType;
     const googleCalendarId = calendar.data.googleCalendarId;

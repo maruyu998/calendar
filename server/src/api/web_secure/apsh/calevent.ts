@@ -17,6 +17,7 @@ import {
   convertRawToUpdateItemResponseObject,
 } from "@server/types/calevent";
 import { UserInfoType } from "@server/types/user";
+import * as authSdk from "@maruyu/auth-sdk";
 
 const router = express.Router();
 
@@ -24,7 +25,7 @@ router.get('/list',
   deserializePacketInQuery(),
   requireQueryZod(FetchListRequestQuerySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { startTime, endTime, calendarIdList } = response.locals.query as FetchListRequestQueryType;
     await Promise.allSettled(calendarIdList.map(calendarId=>fCalevent.fetchList({userId, calendarId, startTime, endTime})))
           // .then(caleventListArray=>caleventListArray.flat())
@@ -39,7 +40,7 @@ router.put('/item',
   deserializePacketInBody(),
   requireBodyZod(UpdateItemRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { calendarId, caleventId, startTime, endTime } = response.locals.body as UpdateItemRequestBodyType;
     await fCalevent.updateItem({ userId, calendarId, caleventId, startTime, endTime })
           .then(rawCalevent=>convertRawToUpdateItemResponseObject(rawCalevent))

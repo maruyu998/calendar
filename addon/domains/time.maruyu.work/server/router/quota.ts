@@ -9,6 +9,7 @@ import {
 import { fetchCalendar, validateCalendar } from "@addon/server/calendar";
 import { TimeCalendarSchema, TimeCalendarType } from "../types/calendar";
 import { UserInfoType } from "@server/types/user";
+import * as authSdk from "@maruyu/auth-sdk";
 
 const router = express.Router();
 
@@ -16,7 +17,7 @@ router.get('/list',
   deserializePacketInQuery(),
   requireQueryZod(FetchListRequestQuerySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { calendarId } = response.locals.query as FetchListRequestQueryType;
     const calendar = validateCalendar(await fetchCalendar({ userId, calendarId }), TimeCalendarSchema) as TimeCalendarType;
     await fetchQuotaList({ userId })

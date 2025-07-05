@@ -13,13 +13,14 @@ import {
 import { fetchCalendar, validateCalendar } from "@addon/server/calendar";
 import { HealthCalendarSchema, HealthCalendarType } from "../types/calendar";
 import { UserInfoType } from "@server/types/user";
+import * as authSdk from "@maruyu/auth-sdk";
 
 const router = express.Router();
 
 router.get('/item', 
   requireQueryZod(FetchItemRequestQuerySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { calendarId, id } = response.locals.query as FetchItemRequestQueryType;
     const healthCalendar = validateCalendar(await fetchCalendar({ userId, calendarId }), HealthCalendarSchema) as HealthCalendarType;
     await fetchNightEventItem({ userId, id })

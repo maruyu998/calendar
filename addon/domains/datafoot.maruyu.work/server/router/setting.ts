@@ -12,6 +12,7 @@ import {
   RequestBodyType as UpdateCredentialRequestBodyType,
 } from "../../share/protocol/setting/apiKey";
 import { UserInfoType } from "@server/types/user";
+import * as authSdk from "@maruyu/auth-sdk";
 
 const router = express.Router();
 
@@ -19,7 +20,7 @@ router.put('/apiKey',
   deserializePacketInBody(),
   requireBodyZod(UpdateCredentialRequestBodySchema),
   asyncHandler(async function(request: express.Request, response: express.Response) {
-    const { userId } = response.locals.userInfo as UserInfoType;
+    const { userId } = authSdk.getUserInfoLocals(response);
     const { apiKey } = response.locals.body as UpdateCredentialRequestBodyType;
     await storeApiKey({userId, apiKey});
     
