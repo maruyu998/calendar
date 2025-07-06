@@ -2,6 +2,7 @@ import { z } from "zod";
 import { CalendarSchema, CalendarStyleDisplaySchema } from "@share/types/calendar";
 import { DOMAIN } from "../../const";
 import { HexColorSchema } from "@ymwc/utils";
+import { CategorySchema } from "../../share/types/calendar";
 
 export const DatafootCalendarSchema = CalendarSchema
   .omit({
@@ -16,7 +17,7 @@ export const DatafootCalendarSchema = CalendarSchema
       color: HexColorSchema,
     }),
     data: z.object({
-      category: z.string(),
+      category: CategorySchema,
     })
   });
 
