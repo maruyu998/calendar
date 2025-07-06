@@ -1,7 +1,19 @@
-import { fetchItem as mongoFetchItem } from "@server/mongoose/CalendarModel";
-import { CalendarIdType, CalendarSchema, CalendarType } from "@share/types/calendar";
+import { 
+  fetchItem as mongoFetchItem,
+  updateItem as mongoUpdateItem 
+} from "@server/mongoose/CalendarModel";
+import { 
+  CalendarIdType, 
+  CalendarSchema, 
+  CalendarType,
+  CalendarSourceType,
+  CalendarUniqueKeyInSourceType,
+  CalendarPermissionType,
+  CalendarStyleDisplayType
+} from "@share/types/calendar";
 import { UserIdType } from "@server/types/user";
 import { InternalServerError } from "@ymwc/errors";
+import { HexColorType } from "@ymwc/utils";
 import { z } from "zod";
 
 export function validateCalendar<T extends z.ZodRawShape>(
@@ -33,3 +45,52 @@ export async function fetchCalendar({
   return parsedCalendar;
 }
 
+export async function replaceCalendar<T extends z.ZodRawShape>({
+  userId,
+  calendarSource,
+  uniqueKeyInSource,
+  name,
+  description,
+  permissions,
+  style,
+  data,
+  calendarSchema,
+}:{
+  userId: UserIdType,
+  calendarSource: CalendarSourceType,
+  uniqueKeyInSource: CalendarUniqueKeyInSourceType,
+  name: string,
+  description: string,
+  permissions: CalendarPermissionType[],
+  style: {
+    display: CalendarStyleDisplayType,
+    color: HexColorType,
+  },
+  data: Record<string, any>,
+  calendarSchema: z.ZodObject<T>,
+}):Promise<z.infer<typeof calendarSchema>>{
+  const mongoCalendar = await mongoUpdateItem({ 
+    userId, 
+    calendarSource,
+    uniqueKeyInSource,
+    name, 
+    description,
+    permissions,
+    style,
+    data 
+  });
+  
+  // Convert mongo result to CalendarType format
+  const calendar: CalendarType = {
+    id: mongoCalendar.id,
+    calendarSource: mongoCalendar.calendarSource,
+    uniqueKeyInSource: mongoCalendar.uniqueKeyInSource,
+    name: mongoCalendar.name,
+    description: mongoCalendar.description,
+    permissions: mongoCalendar.permissions,
+    style: mongoCalendar.style,
+    data: mongoCalendar.data,
+  };
+  
+  return validateCalendar(calendar, calendarSchema);
+}
