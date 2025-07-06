@@ -46,6 +46,7 @@ authSdk.register({
   clientId: env.get("CLIENT_ID", z.string().nonempty()),
   clientSecret: env.get("CLIENT_SECRET", z.string().nonempty()),
   oauthDomain: env.get("OAUTH_DOMAIN", z.string().url()),
+  oauthInternalDomain: env.get("OAUTH_INTERNAL_DOMAIN", z.string().url()),
   serviceDomain: env.get("SERVICE_DOMAIN", z.string().url()),
   oauthCallbackPath: env.get("OAUTH_CALLBACK_PATH", z.string().startsWith("/")),
   userInfoKeepDuration: env.get("USER_INFO_KEEP_DURATION", z.string().nonempty().transform(parseDuration)),
