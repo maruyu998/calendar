@@ -91,9 +91,7 @@ export async function fetchCalevent({
       const appUsageList = await fetchAndroidAppUsageList({ userId, startTime, endTime });
       const eventList = appUsageList
         .map(au => convertAndroidAppUsageToCalevent(au, calendarId, backgroundColor))
-        .filter((event): event is CaleventType => event !== null); // nullを除去
-      
-      console.log(`✅ Datafoot: Converted ${appUsageList.length} raw entries to ${eventList.length} valid events`);
+        .filter((event): event is CaleventType => event !== null);
       return eventList;
     } catch (error) {
       console.error('❌ Datafoot: Failed to fetch app usage data:', error);

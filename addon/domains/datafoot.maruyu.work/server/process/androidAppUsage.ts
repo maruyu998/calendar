@@ -25,18 +25,19 @@ export async function fetchAndroidAppUsageList(props:{
               })
 }
 
-export async function fetchAndroidAppUsage(props:{
-  userId: UserIdType,
-  id: string,
-}):Promise<RawAndroidAppUsageType>{
-  const { userId, ...queryData } = props;
-  const { apiKey } = await getStoredApiKey({ userId });
-  const url = new URL(`https://${DOMAIN}/api/v1/calendar/android/appUsage/item`);
-  return await getPacket({ url, queryData, option: { accessToken: apiKey } })
-              .then((data)=>{
-                if (typeof data != "object") throw new Error("data is not object");
-                if (!("appUsage" in (data as object))) throw new Error("appUsage is not found");
-                const appUsage = (data as { appUsage: RawAndroidAppUsageType }).appUsage;
-                return appUsage;
-              })
-}
+// doesn't exist
+// export async function fetchAndroidAppUsage(props:{
+//   userId: UserIdType,
+//   id: string,
+// }):Promise<RawAndroidAppUsageType>{
+//   const { userId, ...queryData } = props;
+//   const { apiKey } = await getStoredApiKey({ userId });
+//   const url = new URL(`https://${DOMAIN}/api/v1/calendar/android/appUsage/item`);
+//   return await getPacket({ url, queryData, option: { accessToken: apiKey } })
+//               .then((data)=>{
+//                 if (typeof data != "object") throw new Error("data is not object");
+//                 if (!("appUsage" in (data as object))) throw new Error("appUsage is not found");
+//                 const appUsage = (data as { appUsage: RawAndroidAppUsageType }).appUsage;
+//                 return appUsage;
+//               })
+// }
