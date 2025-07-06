@@ -164,7 +164,7 @@ function GoogleCaleventNew({
                 title: googleCalevent.summary,
                 startMdate: c(googleCalevent.start, timezone),
                 endMdate: c(googleCalevent.end, timezone),
-                permissions: ["read", "write", "edit", "delete"],
+                permissions: ["read", "edit"],
                 style: {
                   mainColor: (color == null) ? googleCalendar.style.color : color,
                   isAllDay: googleCalevent.start.date ? true : false,

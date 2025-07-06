@@ -40,7 +40,7 @@ function convertGcaleventToCalevent(
     endTime: parseGcalDate(rawGoogleCalevent.end).toDate(),
     // createdAt: rawGoogleCalevent.created ? new Date(rawGoogleCalevent.created) : null,
     updatedAt: new Date(rawGoogleCalevent.updated),
-    permissions: ["read", "write", "edit", "delete"],
+    permissions: ["read", "edit"],
     style: {
       mainColor: (color == null) ? defaultBackgroundColor : color,
       isAllDay,

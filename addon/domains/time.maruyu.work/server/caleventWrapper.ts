@@ -17,7 +17,7 @@ export function convertLogToCalevent(
     startTime: log.startTime,
     endTime: log.endTime,
     updatedAt: log.updatedTime,
-    permissions: ["read", "write", "edit", "delete"],
+    permissions: ["read", "edit"],
     style: {
       mainColor: log.quota.styles.color,
       isAllDay: false,

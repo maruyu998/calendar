@@ -18,7 +18,7 @@ function convertTaskTimeWithFullToCalevent(
     startTime,
     endTime,
     updatedAt: updatedTime,
-    permissions: ["read", "write", "edit", "delete"],
+    permissions: ["read", "edit"],
     style: {
       mainColor: task.style.customColor ?? "#808080" as HexColorType,
       isAllDay: false,

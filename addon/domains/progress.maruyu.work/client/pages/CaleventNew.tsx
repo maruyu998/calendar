@@ -104,7 +104,7 @@ function TaskTimeNew({
                   title: createTitle(taskTime.task), 
                   startMdate: taskTime.startMdate,
                   endMdate: taskTime.endMdate,
-                  permissions: ["read", "write", "edit", "delete"],
+                  permissions: ["read", "edit"],
                   style: {
                     mainColor: taskTime.task.style.customColor ?? "#3b82f6" as HexColorType,
                     isAllDay: false,
@@ -231,7 +231,7 @@ function TaskNew({
                   title: createTitle(taskTime.task), 
                   startMdate: taskTime.startMdate, 
                   endMdate: taskTime.endMdate,
-                  permissions: ["read", "write", "edit", "delete"],
+                  permissions: ["read", "edit"],
                   style: {
                     mainColor: taskTime.task.style.customColor ?? "#3b82f6" as HexColorType,
                     isAllDay: false,
@@ -482,7 +482,7 @@ function ProgressNew({
                 title:task.title, 
                 startMdate:task.startMdate, 
                 endMdate:task.endMdate,
-                permissions: ["read", "write", "edit", "delete"],
+                permissions: ["read", "edit"],
                 style: {
                   mainColor: "#333333" as HexColorType,
                   isAllDay: false,

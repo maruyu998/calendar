@@ -135,7 +135,7 @@ function LogNew({
                   title: createTitle(log.quota), 
                   startMdate: log.startMdate, 
                   endMdate: log.endMdate,
-                  permissions: ["read", "write", "edit", "delete"],
+                  permissions: ["read", "edit"],
                   style: {
                     mainColor: log.quota.styles.color,
                     isAllDay: false,

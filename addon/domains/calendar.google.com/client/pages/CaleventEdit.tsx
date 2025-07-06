@@ -68,7 +68,7 @@ function GoogleCaleventEdit({
                 title: googleCalevent.summary,
                 startMdate: convertGoogleCaleventDateToMdate(googleCalevent.start, timezone),
                 endMdate: convertGoogleCaleventDateToMdate(googleCalevent.end, timezone),
-                permissions: ["read", "write", "edit", "delete"],
+                permissions: ["read", "edit"],
                 style: {
                   mainColor: convertColidToColor(googleCalevent.colorId) ?? googleCalendar.style.color ?? "#000000" as HexColorType,
                   isAllDay: false,

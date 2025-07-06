@@ -5,7 +5,7 @@ import { HexColorSchema } from "@ymwc/utils";
 export const CaleventIdSchema = z.string().brand<"CaleventId">();
 export type CaleventIdType = z.infer<typeof CaleventIdSchema>;
 
-export const CaleventPermissionList = ["read","write","edit","delete"] as const;
+export const CaleventPermissionList = ["read","edit"] as const;
 export const CaleventPermissionSchema = z.enum(CaleventPermissionList);
 export type CaleventPermissionType = z.infer<typeof CaleventPermissionSchema>;
 

@@ -28,7 +28,7 @@ function convertActivityToCalevent(
     endTime: activity.endTime,
     // createdAt: activity.createdAt,
     updatedAt: activity.updatedAt,
-    permissions: ["read", "write", "edit", "delete"],
+    permissions: ["read", "edit"],
     style: {
       // mainColor: timeLog.timeQuota.styles.color
       mainColor: null,
