@@ -71,9 +71,14 @@ export default function EventShowCard({
   const touchTimerRef = useRef<number|null>(null);
   const LONG_PRESS_DURATION = 500;
 
+  // Check if event is editable based on permissions
+  const isEditable = useMemo(()=>{
+    return calevent.permissions.includes("edit");
+  }, [calevent.permissions]);
+
   return (
     <>
-      <div className="shadow-sm absolute overflow-hidden cursor-pointer"
+      <div className={`shadow-sm absolute overflow-hidden ${isEditable ? "cursor-pointer" : "cursor-default"}`}
         ref={divRef}
         style={{
           top:`${ratios.top*100}%`,
@@ -113,12 +118,14 @@ export default function EventShowCard({
             // console.log(`<TOP> onClick, draggingStatusRef.current?.calevent.id=${draggingStatusRef.current?.calevent.id} ${draggingStatusRef.current?.calevent.id == calevent.id ? "==" : "!="} calevent.id=${calevent.id} `);
             e.stopPropagation();
             if(draggingStatusRef.current?.calevent.id == calevent.id){ // ドラッグし終えたとき
-              setDraggingStatus({...draggingStatusRef.current, state:"updating"});
-              if(draggingDateRangeRef.current){
-                refreshCaleventByUpdate(calevent.id, {
-                  startMdate: draggingDateRangeRef.current.start,
-                  endMdate: draggingDateRangeRef.current.end,
-                });
+              if(isEditable){
+                setDraggingStatus({...draggingStatusRef.current, state:"updating"});
+                if(draggingDateRangeRef.current){
+                  refreshCaleventByUpdate(calevent.id, {
+                    startMdate: draggingDateRangeRef.current.start,
+                    endMdate: draggingDateRangeRef.current.end,
+                  });
+                }
               }
             }else{ // 通常のクリックをしたとき
               setDraggingStatus(null);
@@ -132,9 +139,9 @@ export default function EventShowCard({
         <p className="my-0 py-0 break-all select-none" draggable={false} style={{color:textColor, fontSize, marginTop}}>
           {texts.map((item,ind)=><React.Fragment key={ind}>{item}<br/></React.Fragment>)}
         </p>
-        <div className="absolute w-full top-0 cursor-pointer" style={{ height: `${topHeight}px` }}
+        <div className={`absolute w-full top-0 ${isEditable ? "cursor-pointer" : "cursor-default"}`} style={{ height: `${topHeight}px` }}
           onPointerMove={event=>{
-            if(deviceGenre == "pc"){
+            if(deviceGenre == "pc" && isEditable){
               event.stopPropagation();
               if(event.buttons == 1){ // 左クリック
                 // console.log(`<TOP> onPointerMove, event.buttons=${event.buttons}`);
@@ -154,9 +161,9 @@ export default function EventShowCard({
             }
           }}
         />
-        <div className="absolute w-full bottom-0 cursor-ns-resize" style={{ height: `${bottomHeight}px` }}
+        <div className={`absolute w-full bottom-0 ${isEditable ? "cursor-ns-resize" : "cursor-default"}`} style={{ height: `${bottomHeight}px` }}
           onPointerMove={event=>{
-            if(deviceGenre == "pc"){
+            if(deviceGenre == "pc" && isEditable){
               event.stopPropagation();
               if(event.buttons == 1){  // 左クリック
                 // console.log(`<BOTTOM> onPointerMove, event.buttons=${event.buttons}`);
