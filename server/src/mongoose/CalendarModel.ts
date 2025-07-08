@@ -188,3 +188,13 @@ export async function updateItem({
       }
     }, { upsert: true, new: true });
 }
+
+export async function deleteItem({
+  userId,
+  calendarId,
+}:{
+  userId: UserIdType,
+  calendarId: CalendarIdType,
+}){
+  return await CalendarModel.deleteOne({ userId, id: calendarId });
+}

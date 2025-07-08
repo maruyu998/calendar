@@ -1,6 +1,7 @@
 import { 
   fetchItem as mongoFetchItem,
-  updateItem as mongoUpdateItem 
+  updateItem as mongoUpdateItem,
+  deleteItem as mongoDeleteItem 
 } from "@server/mongoose/CalendarModel";
 import { 
   CalendarIdType, 
@@ -93,4 +94,14 @@ export async function replaceCalendar<T extends z.ZodRawShape>({
   };
   
   return validateCalendar(calendar, calendarSchema);
+}
+
+export async function deleteCalendar({
+  userId,
+  calendarId,
+}:{
+  userId: UserIdType,
+  calendarId: CalendarIdType,
+}):Promise<void>{
+  await mongoDeleteItem({ userId, calendarId });
 }
