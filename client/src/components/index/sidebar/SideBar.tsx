@@ -1,39 +1,38 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useSetting } from '@client/contexts/SettingProvider';
 import { useStatus } from '@client/contexts/StatusProvider';
 
 import SideChovenLeft from "@client/assets/icons/tsxs/SideChovenLeft";
 import SideChovenRight from "@client/assets/icons/tsxs/SideChovenRight";
-import { Switch, Button } from "@ymwc/react-components";
-import { Divider } from "@tremor/react";
-import { useToast } from '@ymwc/react-core';
+import { Switch } from "@ymwc/react-components";
 import { CalendarType } from '@client/types/calendar';
 
 export default function SideBar(){
 
-  const { addToast } = useToast();
   const {
     showSide, setShowSide,
     showCalIds, setShowCalIds,
     setIsSettingOpen,
   } = useSetting();
-  const { calendarList, setCalendarList } = useStatus();
+  const { calendarList } = useStatus();
 
   const [isHovering, setIsHovering] = useState(false);
   const [collapsedSources, setCollapsedSources] = useState<Set<string>>(new Set());
 
-  // Group calendars by source
+  // Group calendars by source, filtering out hidden calendars
   const groupedCalendars = useMemo(() => {
     if (!calendarList) return {};
     
-    return calendarList.reduce((groups, calendar) => {
-      const source = calendar.calendarSource;
-      if (!groups[source]) {
-        groups[source] = [];
-      }
-      groups[source].push(calendar);
-      return groups;
-    }, {} as Record<string, CalendarType[]>);
+    return calendarList
+      .filter(calendar => calendar.style.display === "showInList") // Only show calendars marked as showInList
+      .reduce((groups, calendar) => {
+        const source = calendar.calendarSource;
+        if (!groups[source]) {
+          groups[source] = [];
+        }
+        groups[source].push(calendar);
+        return groups;
+      }, {} as Record<string, CalendarType[]>);
   }, [calendarList]);
 
   // Toggle source group collapse state
