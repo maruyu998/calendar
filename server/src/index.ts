@@ -89,7 +89,12 @@ if(RUN_MODE!="test"){
   app.use("/sec", authSdk.requireSignin, secRouter);
 }else{
   app.use((request:express.Request, response:express.Response, next:express.NextFunction)=>{
-    response.locals.userInfo = { userId: "tmp" }
+    authSdk.setUserInfoLocals(response, { 
+      userId: env.get("TEST_USER_ID",z.string().nonempty()) as authSdk.UserIdType,
+      userName: "test_mode_user" as authSdk.UserNameType,
+      data: {},
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
+    });
     next();
   })
   app.use("/pub", pubRouter);
