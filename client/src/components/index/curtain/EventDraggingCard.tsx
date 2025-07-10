@@ -9,6 +9,7 @@ import { DAY } from '@ymwc/utils';
 import { updateCalevent } from '@client/data/calevent';
 import { useEvents } from '@client/contexts/EventsProvider';
 import { getBackgroundColor, getFontSize, getMarginTop, getTexts } from '@client/utils/card';
+import { randomizeText } from '@client/utils/demoMode';
 import { ProcessStateType, useDragging } from '@client/contexts/DraggingProvider';
 import { useCurtainLayout } from '@client/contexts/CurtainLayoutProvider';
 import { numberRange as range } from '@ymwc/utils';
@@ -137,6 +138,7 @@ function EventDraggingCard({
   caleventEndMdate: MdateTz
 }){
   const { widths, curtainVirtualHeight } = useCurtainLayout();
+  const { demoMode } = useSetting();
 
   const [, setShowingGlobalRatios, showingRatiosGlobalRef ] = useStateRef<Ratios|null>(null);
 
@@ -152,13 +154,21 @@ function EventDraggingCard({
   /////////////////////////////////////////////// style ///////////////////////////////////////////////
   const fontSize = useMemo(()=>getFontSize({width:widthPx, height:heightPx}), [widthPx, heightPx]);
   const marginTop = useMemo(()=>getMarginTop({height:heightPx}), [heightPx]);
-  const texts = useMemo(()=>getTexts({
-    width: widthPx,
-    height: heightPx,
-    startMdate: caleventStartMdate,
-    endMdate: caleventEndMdate,
-    title: calevent.title
-  }), [widthPx, heightPx, caleventStartMdate, caleventEndMdate, calevent])
+  const texts = useMemo(()=>{
+    const originalTexts = getTexts({
+      width: widthPx,
+      height: heightPx,
+      startMdate: caleventStartMdate,
+      endMdate: caleventEndMdate,
+      title: calevent.title
+    });
+    
+    if (demoMode) {
+      return originalTexts.map(text => randomizeText(text));
+    }
+    
+    return originalTexts;
+  }, [widthPx, heightPx, caleventStartMdate, caleventEndMdate, calevent, demoMode])
   const backgroundColor = useMemo(()=>getBackgroundColor(calevent), [calevent, cardStartMdate, cardEndMdate]);
   const textColor = useMemo(()=>(
     isBrightColor(parseColor(backgroundColor)) ? "white" : "black"
@@ -193,7 +203,8 @@ function EventDraggingCard({
           borderRadius:"3px",
           backgroundColor,
           zIndex: "100",
-          boxShadow: "0 10px 25px 0 rgba(0,0,0,.5)"
+          boxShadow: "0 10px 25px 0 rgba(0,0,0,.5)",
+          filter: demoMode ? "blur(3px)" : "none",
         }}
       >
         <p className="my-0 py-0 break-all select-none" draggable={false} style={{color:textColor, fontSize, marginTop}}>

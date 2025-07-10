@@ -1,10 +1,12 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { parseColor, isBrightColor } from '@ymwc/utils';
 import { MdateTz } from '@ymwc/mdate';
 import { useEvents } from '@client/contexts/EventsProvider';
+import { useSetting } from '@client/contexts/SettingProvider';
 import { CaleventType } from '@client/types/calevent';
 import { useEditing } from '@client/contexts/EditingProvider';
 import { getBackgroundColor } from '@client/utils/card';
+import { randomizeText } from '@client/utils/demoMode';
 
 const DAYEVENT_HEIGHT = 12;
 
@@ -15,6 +17,7 @@ export default function DayEventCurtain({
 }){
   const { dayEventGroup } = useEvents();
   const { editCalevent } = useEditing();
+  const { demoMode } = useSetting();
   const dayCalevents = useMemo<CaleventType[]>(()=>{
     const dateString = dateMdate.format("YYYY-MM-DD");
     return ((dayEventGroup[dateString]||[]).sort((a,b)=>a.startMdate.unix-b.startMdate.unix));
@@ -25,6 +28,7 @@ export default function DayEventCurtain({
       { dayCalevents.map(calevent=>{
         const backgroundColor = getBackgroundColor(calevent);
         const textColor = isBrightColor(parseColor(backgroundColor)) ? "white" : "black";
+        const displayTitle = demoMode ? randomizeText(calevent.title) : calevent.title;
         return (
           <React.Fragment key={calevent.id}>
             <div 
@@ -37,7 +41,8 @@ export default function DayEventCurtain({
                 width: "100%",
                 height:`${DAYEVENT_HEIGHT}px`,
                 border: "solid 0.2px rgba(0,0,0,0.2)",
-                backgroundColor
+                backgroundColor,
+                filter: demoMode ? "blur(3px)" : "none",
               }}
             >
               <p className='my-[-0.2em] py-0' draggable={false} style={{
@@ -46,7 +51,7 @@ export default function DayEventCurtain({
                 wordBreak:"break-all",
                 userSelect:"none"
               }}>
-                {calevent.title}
+                {displayTitle}
               </p>
             </div>
           </React.Fragment>

@@ -17,6 +17,7 @@ type SettingType = {
   timezone: TimeZone,
   showCalIds: CalendarIdType[],
   startMdate: MdateTz,
+  demoMode: boolean,
   setShowTop: React.Dispatch<React.SetStateAction<boolean>>,
   setShowSide: React.Dispatch<React.SetStateAction<boolean>>,
   setDayDuration: React.Dispatch<React.SetStateAction<number>>,
@@ -24,6 +25,7 @@ type SettingType = {
   setTimezone: React.Dispatch<React.SetStateAction<TimeZone>>,
   setShowCalIds: React.Dispatch<React.SetStateAction<CalendarIdType[]>>,
   setStartMdate: React.Dispatch<React.SetStateAction<MdateTz>>,
+  setDemoMode: React.Dispatch<React.SetStateAction<boolean>>,
   isSettingOpen: boolean,
   setIsSettingOpen: React.Dispatch<React.SetStateAction<boolean>>,
 }
@@ -96,6 +98,11 @@ export function SettingProvider({children}: {children: React.ReactNode}){
     )
   )
 
+  const [ demoMode, setDemoMode ] = useStateUrlSearchParamType<boolean>(
+    'demoMode', false,
+    (v:boolean)=>String(v), (v:string)=>v==="true"
+  );
+
   const [ isSettingOpen, setIsSettingOpen ] = useState<boolean>(false);
 
   return (
@@ -108,6 +115,7 @@ export function SettingProvider({children}: {children: React.ReactNode}){
         timezone,
         showCalIds: showCalIdsWrap,
         startMdate,
+        demoMode,
         setShowTop,
         setShowSide,
         setDayDuration,
@@ -115,6 +123,7 @@ export function SettingProvider({children}: {children: React.ReactNode}){
         setTimezone,
         setShowCalIds: setShowCalIdsWrap,
         setStartMdate,
+        setDemoMode,
         isSettingOpen,
         setIsSettingOpen,
       }}

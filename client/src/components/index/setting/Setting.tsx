@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { SettingForm, getRegisteredCalendarSources } from "@addon/client";
 import { useStatus } from '@client/contexts/StatusProvider';
+import { useSetting } from '@client/contexts/SettingProvider';
 import { CalendarSourceType, CalendarType } from '@client/types/calendar';
-import { SmallModal } from '@ymwc/react-components';
+import { SmallModal, Switch } from '@ymwc/react-components';
 
 export default function Setting({
   closeModal,
@@ -10,6 +11,7 @@ export default function Setting({
   closeModal: ()=>void,
 }){
   const { calendarList } = useStatus();
+  const { demoMode, setDemoMode } = useSetting();
   const [ calendarSource, setCalendarSource ] = useState<CalendarSourceType|null>(null);
   const [ showConfigModal, setShowConfigModal ] = useState(false);
   
@@ -32,6 +34,23 @@ export default function Setting({
 
   return (
     <div onClick={e=>e.stopPropagation()}>
+      {/* Demo Mode Toggle */}
+      <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-sm font-medium text-gray-900">Demo Mode</h3>
+            <p className="text-xs text-gray-600 mt-1">
+              Blur event cards and randomize text for presentations
+            </p>
+          </div>
+          <Switch 
+            checked={demoMode}
+            onChange={setDemoMode}
+            size="sm"
+          />
+        </div>
+      </div>
+
       <div className="mb-6">
         <label className="block mb-3 text-sm font-medium text-gray-900">Available Calendar Sources</label>
         {allCalendarSources.length === 0 ? (

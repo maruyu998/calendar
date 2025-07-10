@@ -3,7 +3,9 @@ import { parseColor, isBrightColor } from '@ymwc/utils';
 import { CaleventType } from '@client/types/calevent';
 import { useEditing } from '@client/contexts/EditingProvider';
 import { useStatus } from '@client/contexts/StatusProvider';
+import { useSetting } from '@client/contexts/SettingProvider';
 import { getBackgroundColor, getFontSize, getMarginTop, getTexts } from '@client/utils/card';
+import { randomizeText } from '@client/utils/demoMode';
 import { useDragging } from '@client/contexts/DraggingProvider';
 import { useEvents } from '@client/contexts/EventsProvider';
 import { useTop } from '@client/contexts/TopProvider';
@@ -24,6 +26,7 @@ export default function EventShowCard({
 }){
   const { deviceGenre } = useTop();
   const { currentTime } = useStatus();
+  const { demoMode } = useSetting();
   const { editCalevent } = useEditing();
   const { refreshCaleventByUpdate } = useEvents();
   const {
@@ -44,13 +47,21 @@ export default function EventShowCard({
   /////////////////////////////////////////////// style ///////////////////////////////////////////////
   const fontSize = useMemo(()=>getFontSize({width: pxs.width, height: pxs.height}), [pxs]);
   const marginTop = useMemo(()=>getMarginTop({height: pxs.height}), [pxs]);
-  const texts = useMemo(()=>getTexts({
-    width: pxs.width,
-    height: pxs.height,
-    title: calevent.title,
-    startMdate: calevent.startMdate,
-    endMdate: calevent.endMdate
-  }), [pxs, calevent])
+  const texts = useMemo(()=>{
+    const originalTexts = getTexts({
+      width: pxs.width,
+      height: pxs.height,
+      title: calevent.title,
+      startMdate: calevent.startMdate,
+      endMdate: calevent.endMdate
+    });
+    
+    if (demoMode) {
+      return originalTexts.map(text => randomizeText(text));
+    }
+    
+    return originalTexts;
+  }, [pxs, calevent, demoMode])
   const backgroundColor = useMemo(()=>getBackgroundColor(calevent), [currentTime, calevent]);
   const textColor = useMemo(()=>(isBrightColor(parseColor(backgroundColor)) ? "white" : "black"), [currentTime, backgroundColor])
   /////////////////////////////////////////////// style ///////////////////////////////////////////////
@@ -89,6 +100,7 @@ export default function EventShowCard({
           borderRadius:"3px",
           backgroundColor,
           opacity: draggingStatusRef.current?.calevent.id == calevent.id ? 0.4 : 1,
+          filter: demoMode ? "blur(3px)" : "none",
         }}
         onTouchStart={e=>{
           // console.log("onTouchStart");
