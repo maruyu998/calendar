@@ -6,7 +6,7 @@ import { DOMAIN } from "../const";
 
 registerCalendarSource({
   calendarSourceType: DOMAIN as any,
-  name: "Health Tracker",
+  name: "Health",
   description: "Monitor health data from Fitbit and Withings"
 });
 

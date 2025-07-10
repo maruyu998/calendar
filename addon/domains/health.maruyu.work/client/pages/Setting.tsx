@@ -292,7 +292,7 @@ export default function Setting({
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">Health Settings</h1>
+      <h1 className="text-2xl font-bold mb-6">Health</h1>
       
       {/* Tab Navigation */}
       <div className="mb-6 border-b border-gray-200">
