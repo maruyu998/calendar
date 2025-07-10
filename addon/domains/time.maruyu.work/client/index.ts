@@ -6,7 +6,7 @@ import { DOMAIN } from "../const";
 
 registerCalendarSource({
   calendarSourceType: DOMAIN as any,
-  name: "Time Tracker",
+  name: "Time",
   description: "Track time logs and quotas"
 });
 
