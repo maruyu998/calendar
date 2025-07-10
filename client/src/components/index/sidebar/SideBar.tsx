@@ -134,34 +134,42 @@ export default function SideBar(){
                       {/* Calendar Items */}
                       {!collapsedSources.has(source) && (
                         <div className="ml-5 space-y-0.5">
-                          {calendars.map(calendar => (
-                            <div 
-                              key={calendar.id} 
-                              className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-50 transition-colors group"
-                            >
-                              <Switch 
-                                id={`switch-${calendar.id}`}
-                                size="sm"
-                                customColor={calendar.style.color}
-                                checked={showCalIds.includes(calendar.id)}
-                                onChange={checked => {
-                                  if (!checked && showCalIds.includes(calendar.id)) {
-                                    const newShowCalIds = showCalIds.filter(id => id !== calendar.id);
-                                    setShowCalIds(newShowCalIds);
-                                  } else if (checked && !showCalIds.includes(calendar.id)) {
-                                    setShowCalIds([...showCalIds, calendar.id]);
-                                  }
-                                }}
-                              />
-                              <label 
-                                htmlFor={`switch-${calendar.id}`} 
-                                className="flex-1 text-sm text-gray-700 cursor-pointer truncate group-hover:text-gray-900 transition-colors"
-                                title={calendar.name}
+                          {calendars.map(calendar => {
+                            const isCurrentlyShowing = showCalIds.includes(calendar.id);
+                            
+                            return (
+                              <div 
+                                key={calendar.id} 
+                                className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-50 transition-colors group"
                               >
-                                {calendar.name}
-                              </label>
-                            </div>
-                          ))}
+                                <Switch 
+                                  id={`switch-${calendar.id}`}
+                                  size="sm"
+                                  customColor={calendar.style.color}
+                                  checked={isCurrentlyShowing}
+                                  onChange={checked => {
+                                    if (!checked && isCurrentlyShowing) {
+                                      const newShowCalIds = showCalIds.filter(id => id !== calendar.id);
+                                      setShowCalIds(newShowCalIds);
+                                    } else if (checked && !isCurrentlyShowing) {
+                                      setShowCalIds([...showCalIds, calendar.id]);
+                                    }
+                                  }}
+                                />
+                                <label 
+                                  htmlFor={`switch-${calendar.id}`} 
+                                  className={`flex-1 text-sm cursor-pointer truncate transition-colors group-hover:text-gray-900 ${
+                                    isCurrentlyShowing 
+                                      ? 'text-gray-700 font-medium' 
+                                      : 'text-gray-500 font-light'
+                                  }`}
+                                  title={calendar.name}
+                                >
+                                  {calendar.name}
+                                </label>
+                              </div>
+                            );
+                          })}
                         </div>
                       )}
                     </div>
