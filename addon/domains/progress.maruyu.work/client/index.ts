@@ -6,7 +6,7 @@ import { DOMAIN } from "../const";
 
 registerCalendarSource({
   calendarSourceType: DOMAIN as any,
-  name: "Progress Tracker",
+  name: "Progress",
   description: "Monitor project progress and task time"
 });
 
