@@ -18,6 +18,9 @@ const config: Config = {
         transparent: 'transparent',
         current: 'currentColor',
       },
+      fontFamily: {
+        'sans': ['Roboto', 'system-ui', 'sans-serif'],
+      },
     },
   },
   plugins: [
