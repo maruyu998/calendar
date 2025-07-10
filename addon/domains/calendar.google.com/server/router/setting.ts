@@ -12,8 +12,22 @@ import {
   RequestQuerySchema as TokenRedirectRequestQuerySchema,
   RequestQueryType as TokenRedirectRequestQueryType,
 } from "../../share/protocol/setting/tokenRedirect";
-import { UserInfoType } from "@server/types/user";
+import {
+  ResponseObjectSchema as ListCalendarsResponseObjectSchema,
+  ResponseObjectType as ListCalendarsResponseObjectType,
+} from "../../share/protocol/setting/listCalendars";
+import {
+  RequestBodySchema as UpdateCalendarVisibilityRequestBodySchema,
+  RequestBodyType as UpdateCalendarVisibilityRequestBodyType,
+  ResponseObjectSchema as UpdateCalendarVisibilityResponseObjectSchema,
+  ResponseObjectType as UpdateCalendarVisibilityResponseObjectType,
+} from "../../share/protocol/setting/updateCalendarVisibility";
 import * as authSdk from "@maruyu/auth-sdk";
+import { fetchList as fetchCalendarList, fetchItem as fetchCalendar } from "@server/mongoose/CalendarModel";
+import { fetchCalendar as fetchCalendarByIdAndUserId, replaceCalendar } from "@addon/server/calendar";
+import { CalendarIdType } from "@share/types/calendar";
+import { DOMAIN } from "../../const";
+import { GoogleCalendarSchema } from "../types/calendar";
 
 const router = express.Router();
 
@@ -62,6 +76,59 @@ router.get('/revokeToken',
     const { userId } = authSdk.getUserInfoLocals(response);
     await revokeToken({userId});
     sendNoContent(response, "RevokeTokenSuccess");
+  })
+);
+
+router.get('/calendars', 
+  asyncHandler(async function(request: express.Request, response: express.Response) {
+    const { userId } = authSdk.getUserInfoLocals(response);
+    const calendarList = await fetchCalendarList({ userId });
+    const googleCalendars = calendarList
+      .filter((cal: any) => cal.calendarSource === DOMAIN)
+      .map((cal: any) => ({
+        id: cal.id,
+        name: cal.name,
+        description: cal.description,
+        googleCalendarId: cal.uniqueKeyInSource,
+        timezone: cal.data?.timezone || "",
+        accessRole: cal.data?.accessRole || "reader",
+        color: cal.style.color,
+        display: cal.style.display,
+      }));
+    
+    const responseData: ListCalendarsResponseObjectType = {
+      calendars: googleCalendars
+    };
+    sendData(response, responseData);
+  })
+);
+
+router.put('/calendar/visibility', 
+  deserializePacketInBody(),
+  requireBodyZod(UpdateCalendarVisibilityRequestBodySchema),
+  asyncHandler(async function(request: express.Request, response: express.Response) {
+    const { userId } = authSdk.getUserInfoLocals(response);
+    const { calendarId, display } = response.locals.body as UpdateCalendarVisibilityRequestBodyType;
+    
+    // First fetch the existing calendar to get current values
+    const existingCalendar = await fetchCalendarByIdAndUserId({ userId, calendarId: calendarId as CalendarIdType });
+    
+    // Update the calendar with new visibility
+    await replaceCalendar({
+      userId,
+      calendarSource: existingCalendar.calendarSource,
+      uniqueKeyInSource: existingCalendar.uniqueKeyInSource,
+      name: existingCalendar.name,
+      description: existingCalendar.description,
+      permissions: existingCalendar.permissions,
+      style: {
+        display: display,
+        color: existingCalendar.style.color,
+      },
+      data: existingCalendar.data || {},
+      calendarSchema: GoogleCalendarSchema,
+    });
+    sendNoContent(response);
   })
 );
 
