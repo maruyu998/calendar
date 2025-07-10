@@ -11,6 +11,7 @@
     "update": "ncu -u && npm install"
   },
   "dependencies": {
+    "@fontsource/roboto": "^5.2.6",
     "@headlessui/react": "^2.2.4",
     "@headlessui/tailwindcss": "^0.2.2",
     "@internationalized/date": "^3.8.2",
