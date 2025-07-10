@@ -37,7 +37,7 @@ export function useDragging(){
 export function DraggingProvider({children}: {children: React.ReactNode}){
   const { pressedKeys } = useTop();
   const { timezone, dayDuration, startMdate } = useSetting();
-  const { widths, curtainVirtualHeight } = useCurtainLayout();
+  const { widths, curtainVirtualHeight, calendarElm } = useCurtainLayout();
 
   const [ , setDraggingStatus, draggingStatusRef ] = useStateRef<DraggingStatusType|null>(null);
   const [ , setMouseCoord, mouseCoordRef ] = useStateRef<MouseCoordType|null>(null);
@@ -64,14 +64,18 @@ export function DraggingProvider({children}: {children: React.ReactNode}){
       widthCur.push({num, mdate});
     }
     const getMdateFromPointX = (x:number)=>{
-      if(x < 0) return startMdate.forkAdd(-1,"date");
+      // Get the calendar's left offset from the page left edge
+      const calendarLeftOffset = calendarElm.current?.getBoundingClientRect().left || 0;
+      const calendarRelativeX = x - calendarLeftOffset;
+      
+      if(calendarRelativeX < 0) return startMdate.forkAdd(-1,"date");
       for(const {num,mdate} of widthCur){
-        if(num > x) return mdate;
+        if(num > calendarRelativeX) return mdate;
       }
       return startMdate.forkAdd(dayDuration,"date");
     }
     return getMdateFromPointX;
-  }, [widths, timezone, startMdate, dayDuration])
+  }, [widths, timezone, startMdate, dayDuration, calendarElm])
 
   useEffect(()=>{
     if(draggingStatusRef.current == null) return;
