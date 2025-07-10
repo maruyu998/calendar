@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CalendarSchema } from "@share/types/calendar";
-import { UniqueKeySchema } from "../../share/types/calendar";
+import { CategorySchema } from "../../share/types/calendar";
 import { DOMAIN } from "../../const";
 
 export const PeopleCalendarSchema = CalendarSchema
@@ -10,7 +10,10 @@ export const PeopleCalendarSchema = CalendarSchema
   })
   .extend({
     calendarSource: z.literal(DOMAIN).brand("CalendarSource"),
-    uniqueKeyInSource: UniqueKeySchema.brand("UniqueKeyInSource"),
+    uniqueKeyInSource: CategorySchema.brand("UniqueKeyInSource"),
+    data: z.object({
+      category: CategorySchema,
+    })
   });
 
 export type PeopleCalendarType = z.infer<typeof PeopleCalendarSchema>;
