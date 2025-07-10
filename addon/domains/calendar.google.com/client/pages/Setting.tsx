@@ -2,6 +2,9 @@ import { useToast } from "@ymwc/react-core";
 import React, { useEffect, useState } from "react";
 import { Button } from "@ymwc/react-components";
 import { fetchAuthorizationUrl, revokeToken, updateCredential, listCalendars, updateCalendarVisibility } from "../data/setting";
+import { useStatus } from "@client/contexts/StatusProvider";
+import { fetchCalendarList } from "@client/data/calendar";
+import { convertFetchListResponseToClient } from "@client/types/calendar";
 
 export default function Setting({
   closeModal,
@@ -10,6 +13,7 @@ export default function Setting({
 }){
 
   const { addToast } = useToast();
+  const { setCalendarList } = useStatus();
 
   const [activeTab, setActiveTab] = useState<"credentials" | "calendars">("credentials");
   const [clientId, setClientId] = useState<string>("");
@@ -44,6 +48,16 @@ export default function Setting({
     }
   }
 
+  async function refreshCalendar() {
+    try {
+      const response = await fetchCalendarList();
+      const calendars = convertFetchListResponseToClient(response);
+      setCalendarList(calendars);
+    } catch (error) {
+      console.error("Failed to refresh calendar list:", error);
+    }
+  }
+
   useEffect(()=>{
     loadGoogleCalendars();
   }, [])
@@ -72,6 +86,7 @@ export default function Setting({
       const newDisplay = currentDisplay === "showInList" ? "hiddenInList" : "showInList";
       await updateCalendarVisibility({ calendarId, display: newDisplay });
       await loadGoogleCalendars();
+      await refreshCalendar();
       addToast(null, "Calendar visibility updated successfully", "success");
     } catch (error: any) {
       addToast("Failed to update visibility", error.message, "error");
