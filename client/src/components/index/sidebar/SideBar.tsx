@@ -1,9 +1,8 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useSetting } from '@client/contexts/SettingProvider';
 import { useStatus } from '@client/contexts/StatusProvider';
 
 import SideChovenLeft from "@client/assets/icons/tsxs/SideChovenLeft";
-import SideChovenRight from "@client/assets/icons/tsxs/SideChovenRight";
 import { Switch } from "@ymwc/react-components";
 import { CalendarType } from '@client/types/calendar';
 
@@ -16,7 +15,6 @@ export default function SideBar(){
   } = useSetting();
   const { calendarList } = useStatus();
 
-  const [isHovering, setIsHovering] = useState(false);
   const [collapsedSources, setCollapsedSources] = useState<Set<string>>(new Set());
 
   // Group calendars by source, filtering out hidden calendars
@@ -47,24 +45,6 @@ export default function SideBar(){
       return newSet;
     });
   };
-
-  // Mouse proximity detection for toggle button visibility
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const mouseX = e.clientX;
-      const proximity = 60; // Show when within 60px of left
-      const isNearLeft = mouseX <= proximity;
-      
-      setIsHovering(isNearLeft);
-    };
-    
-    // Add event listener
-    document.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
 
   // Handle manual show/hide button clicks
   const handleToggle = () => {
@@ -185,24 +165,6 @@ export default function SideBar(){
         </div>
       )}
       
-      {/* Floating Toggle Button - Shows on mouse proximity to left */}
-      {!showSide && (
-        <div 
-          className={`fixed left-0 top-3 z-50 transition-opacity duration-500 ${
-            isHovering ? 'opacity-60' : 'opacity-0'
-          }`}
-        >
-          <button
-            className="text-gray-400 hover:text-gray-600 transition-colors"
-            onClick={handleToggle}
-            title="Show sidebar"
-          >
-            <div className="w-3 h-3">
-              <SideChovenRight/>
-            </div>
-          </button>
-        </div>
-      )}
     </div>
   );
 }
