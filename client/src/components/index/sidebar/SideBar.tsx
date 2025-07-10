@@ -75,7 +75,7 @@ export default function SideBar(){
     <div className="relative flex h-full">
       {/* Main Sidebar Content */}
       {showSide && (
-        <div className="w-64 bg-white border-r border-gray-200 shadow-sm overflow-hidden h-full flex flex-col">
+        <div className="w-56 bg-white border-r border-gray-200 shadow-sm overflow-hidden h-full flex flex-col">
           {/* Header with Close Button */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50 flex-none">
             <h2 className="text-sm font-semibold text-gray-800">Calendars</h2>
@@ -158,7 +158,7 @@ export default function SideBar(){
                                 />
                                 <label 
                                   htmlFor={`switch-${calendar.id}`} 
-                                  className={`flex-1 text-sm cursor-pointer truncate transition-colors group-hover:text-gray-900 ${
+                                  className={`flex-1 text-xs cursor-pointer truncate transition-colors group-hover:text-gray-900 ${
                                     isCurrentlyShowing 
                                       ? 'text-gray-700 font-medium' 
                                       : 'text-gray-500 font-light'
